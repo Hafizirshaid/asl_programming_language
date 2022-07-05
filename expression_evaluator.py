@@ -1,3 +1,5 @@
+# Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+
 """
 Expression Evaluator Module
 """

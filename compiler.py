@@ -1,3 +1,5 @@
+# Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+
 from statements.break_statement import Break
 from statements.condition_statement import ConditionStatement
 from statements.echo_statement import Echo

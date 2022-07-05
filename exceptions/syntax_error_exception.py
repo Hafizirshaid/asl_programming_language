@@ -1,3 +1,4 @@
+# Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
 class SyntaxError(Exception):
     """ Syntax Error Exception """

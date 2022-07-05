@@ -1,3 +1,14 @@
+# Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+
+"""
+Lexer Library
+
+"""
+
+__version__ = '1.1'
+__all__ = ['Lexer']
+
+
 import re
 
 from exceptions.syntax_error_exception import SyntaxError

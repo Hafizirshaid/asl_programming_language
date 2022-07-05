@@ -1,3 +1,5 @@
+# Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+
 from enum import Enum
 
 class StatementType(Enum):

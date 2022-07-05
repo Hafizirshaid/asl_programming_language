@@ -1,3 +1,5 @@
+# Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+
 from statements.statement import Statement
 import string
 

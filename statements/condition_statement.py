@@ -1,3 +1,5 @@
+# Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+
 from statements.else_statement import Else
 from statements.if_statement import If
 from statements.statement import Statement
@@ -9,6 +11,7 @@ class ConditionStatement(Statement):
         ifstatmenet: If, 
         elseIfStatement: list, 
         elseStatement: Else) -> None:
+        super().__init__(StatementType.CONDITION)
 
         if ifstatmenet is None:
             raise Exception("Error, if statment can't be None")
@@ -16,4 +19,3 @@ class ConditionStatement(Statement):
         self.ifstatmenet = ifstatmenet
         self.elseifstatement = elseIfStatement
         self.elsestatement = elseStatement
-        super().__init__(StatementType.CONDITION)
