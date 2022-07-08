@@ -1,7 +1,6 @@
 # Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
 import argparse
-from unicodedata import name
 from compiler import Compiler
 from executor import Executor
 from expression_evaluator import Evaluator
@@ -12,17 +11,21 @@ from parser import Parser
 
 def main():
 
-    parser = argparse.ArgumentParser("Asil Programming Language Command Line")
+    parser = argparse.ArgumentParser("Asl Programming Language Command Line")
+
     parser.add_argument('-f', '--filename',
         default='main.asl',
         help='name of source file',
         nargs=argparse.OPTIONAL,
     )
-   
+
     args = parser.parse_args()
 
     filename = args.filename
     
+    if not filename:
+        print(f"file {filename} does not exist")
+        exit(1)
     """ Read File"""
     text = ""
     with open(filename) as file:
@@ -32,6 +35,14 @@ def main():
     """ Tokenize """
     lexer = Lexer()
     lexes = lexer.tokenize(text)
+    print("------ Lexes ---------")
+    for i in lexes:
+        lex_type = i['token_type']
+        line_number = i['line_number']
+        
+        print(f"{line_number} {lex_type}")
+
+    print("------ Lexes ---------")
 
     """ Parse Tokens """
     statements = []

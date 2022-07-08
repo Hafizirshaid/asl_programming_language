@@ -21,10 +21,11 @@ class Lexer(object):
         """ init """
 
         self.regex_list = [
+            {'type': 'comment', 'regex': '(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)'},
             {'type': 'call', 'regex': '^call'},
             {'type': 'method', 'regex': '^method'},
-            {'type': 'if', 'regex': '^if'},
             {'type': 'elif', 'regex': '^elif'},
+            {'type': 'if', 'regex': '^if'},
             {'type': 'else', 'regex': '^else'},
             {'type': 'fi', 'regex': '^fi'},
             {'type': 'endfor', 'regex': '^endfor'},
@@ -61,7 +62,6 @@ class Lexer(object):
             {'type': 'space', 'regex': '\s'},
             {'type': 'openparanthesis', 'regex': '^\('},
             {'type': 'closingparanthesis', 'regex': '^\)'},
-            {'type': 'comment', 'regex': '^#[^#]*\n'},
         ]
 
     def tokenize(self, text: str) -> list:
@@ -93,7 +93,7 @@ class Lexer(object):
                 pass
 
             if match is not None:
-                """ New Token Found """
+                """ New Token Found, remove token from text """
                 text = text.removeprefix(match.group())
                 tokens.append(
                     {'match': match, 'token_type': token_type,
@@ -103,6 +103,6 @@ class Lexer(object):
                     line_number += 1
             else:
                 """ Exception, unrecognized char, syntax error """
-                raise SyntaxError(f"Syntax Error {text}")
+                raise SyntaxError(f"Syntax Error at line {line_number} \n {text}")
             pass
         return tokens

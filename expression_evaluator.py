@@ -11,7 +11,8 @@ class Evaluator:
     """ Expression Evaluator Class """
 
     def calculate(self, v1, v2, op):
-        """ Calcuate the result value of v1 and v2 by op
+        """ Calcuate the result value 
+            of v1 and v2 by op
         Args:
             v1: first value 
             v2: second value
@@ -51,7 +52,11 @@ class Evaluator:
         return result
 
     def evaluate(self, expression):
-        """ evaluate expression
+        """ 
+        Desc:
+            evaluate expression like (10 * 30 > 5), 
+            this should work for both logical and 
+            mathimatical expressions 
         Args:
             expression: expression to be evaluated
         Returns:
@@ -68,8 +73,8 @@ class Evaluator:
         lexes = lexer.tokenize(expression)
 
         for lex in lexes:
-            lex_type = lex['token_type']['type']
 
+            lex_type = lex['token_type']['type']
             value = lex['match'].group()
 
             if  lex_type == 'equivalent' or \
@@ -91,9 +96,7 @@ class Evaluator:
                 operators_stack.append(value)
                 pass
 
-            if lex_type == "space":
-                pass
-            if lex_type == "openparanthesis":
+            if lex_type == "space" or lex_type == "openparanthesis":
                 pass
 
             if lex_type == "closingparanthesis":

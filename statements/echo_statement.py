@@ -7,10 +7,10 @@ from statements.statement_types import StatementType
 
 class Echo(Statement):
 
-    def __init__(self, echoString: string) -> None:
+    def __init__(self, echo_string: string) -> None:
         super().__init__(StatementType.ECHO)
-        self.echoString = echoString
+        self.echo_string = echo_string
 
     def __str__(self) -> str:
-        return str(self.echoString)
+        return str(self.echo_string)
 

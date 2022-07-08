@@ -8,14 +8,14 @@ from statements.statement_types import StatementType
 class ConditionStatement(Statement):
 
     def __init__(self, 
-        ifstatmenet: If, 
-        elseIfStatement: list, 
-        elseStatement: Else) -> None:
+        if_statmenet: If, 
+        elseif_statements: list, 
+        else_statement: Else) -> None:
         super().__init__(StatementType.CONDITION)
 
-        if ifstatmenet is None:
+        if if_statmenet is None:
             raise Exception("Error, if statment can't be None")
         
-        self.ifstatmenet = ifstatmenet
-        self.elseifstatement = elseIfStatement
-        self.elsestatement = elseStatement
+        self.if_statmenet = if_statmenet
+        self.elseif_statements = elseif_statements
+        self.else_statement = else_statement
