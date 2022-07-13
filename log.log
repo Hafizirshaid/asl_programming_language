@@ -1,0 +1,521 @@
+INFO:root:hi
+INFO:root:hi
+INFO:root:------ Lexes ---------
+INFO:root:1 TokenType.ECHO
+INFO:root:1 TokenType.STRING
+INFO:root:1 TokenType.NEWLINE
+INFO:root:2 TokenType.IDENTIFICATION
+INFO:root:2 TokenType.EQUAL
+INFO:root:2 TokenType.NUMBER
+INFO:root:2 TokenType.NEWLINE
+INFO:root:3 TokenType.IF
+INFO:root:3 TokenType.STRING
+INFO:root:3 TokenType.NEWLINE
+INFO:root:4 TokenType.ECHO
+INFO:root:4 TokenType.STRING
+INFO:root:4 TokenType.NEWLINE
+INFO:root:5 TokenType.ELSE
+INFO:root:5 TokenType.NEWLINE
+INFO:root:6 TokenType.ECHO
+INFO:root:6 TokenType.STRING
+INFO:root:6 TokenType.NEWLINE
+INFO:root:7 TokenType.FI
+INFO:root:7 TokenType.NEWLINE
+INFO:root:8 TokenType.COMMENT
+INFO:root:8 TokenType.NEWLINE
+INFO:root:9 TokenType.COMMENT
+INFO:root:9 TokenType.NEWLINE
+INFO:root:10 TokenType.FOR
+INFO:root:10 TokenType.STRING
+INFO:root:10 TokenType.NEWLINE
+INFO:root:11 TokenType.ECHO
+INFO:root:11 TokenType.STRING
+INFO:root:11 TokenType.NEWLINE
+INFO:root:12 TokenType.ENDFOR
+INFO:root:12 TokenType.NEWLINE
+INFO:root:13 TokenType.NEWLINE
+INFO:root:14 TokenType.IDENTIFICATION
+INFO:root:14 TokenType.EQUAL
+INFO:root:14 TokenType.NUMBER
+INFO:root:14 TokenType.NEWLINE
+INFO:root:15 TokenType.WHILE
+INFO:root:15 TokenType.STRING
+INFO:root:15 TokenType.NEWLINE
+INFO:root:16 TokenType.ECHO
+INFO:root:16 TokenType.STRING
+INFO:root:16 TokenType.NEWLINE
+INFO:root:17 TokenType.IDENTIFICATION
+INFO:root:17 TokenType.EQUAL
+INFO:root:17 TokenType.IDENTIFICATION
+INFO:root:17 TokenType.SUB
+INFO:root:17 TokenType.NUMBER
+INFO:root:17 TokenType.NEWLINE
+INFO:root:18 TokenType.IF
+INFO:root:18 TokenType.IDENTIFICATION
+INFO:root:18 TokenType.EQUIVALENT
+INFO:root:18 TokenType.NUMBER
+INFO:root:18 TokenType.NEWLINE
+INFO:root:19 TokenType.ECHO
+INFO:root:19 TokenType.STRING
+INFO:root:19 TokenType.NEWLINE
+INFO:root:20 TokenType.BREAK
+INFO:root:20 TokenType.NEWLINE
+INFO:root:21 TokenType.FI
+INFO:root:21 TokenType.NEWLINE
+INFO:root:22 TokenType.ENDWHILE
+INFO:root:22 TokenType.NEWLINE
+INFO:root:------ Lexes ---------
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.VAR
+INFO:root:StatementType.IF
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ELSE
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ENDIF
+INFO:root:StatementType.FOR
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ENDFOR
+INFO:root:StatementType.VAR
+INFO:root:StatementType.WHILE
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.VAR
+INFO:root:StatementType.IF
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.BREAK
+INFO:root:StatementType.ENDIF
+INFO:root:StatementType.ENDWHILE
+INFO:root:------------------------
+INFO:root:------------------------
+INFO:root:hi
+INFO:root:------ Lexes ---------
+INFO:root:1 TokenType.ECHO
+INFO:root:1 TokenType.STRING
+INFO:root:1 TokenType.NEWLINE
+INFO:root:2 TokenType.IDENTIFICATION
+INFO:root:2 TokenType.EQUAL
+INFO:root:2 TokenType.NUMBER
+INFO:root:2 TokenType.NEWLINE
+INFO:root:3 TokenType.IF
+INFO:root:3 TokenType.STRING
+INFO:root:3 TokenType.NEWLINE
+INFO:root:4 TokenType.ECHO
+INFO:root:4 TokenType.STRING
+INFO:root:4 TokenType.NEWLINE
+INFO:root:5 TokenType.ELSE
+INFO:root:5 TokenType.NEWLINE
+INFO:root:6 TokenType.ECHO
+INFO:root:6 TokenType.STRING
+INFO:root:6 TokenType.NEWLINE
+INFO:root:7 TokenType.FI
+INFO:root:7 TokenType.NEWLINE
+INFO:root:8 TokenType.COMMENT
+INFO:root:8 TokenType.NEWLINE
+INFO:root:9 TokenType.COMMENT
+INFO:root:9 TokenType.NEWLINE
+INFO:root:10 TokenType.FOR
+INFO:root:10 TokenType.STRING
+INFO:root:10 TokenType.NEWLINE
+INFO:root:11 TokenType.ECHO
+INFO:root:11 TokenType.STRING
+INFO:root:11 TokenType.NEWLINE
+INFO:root:12 TokenType.ENDFOR
+INFO:root:12 TokenType.NEWLINE
+INFO:root:13 TokenType.NEWLINE
+INFO:root:14 TokenType.IDENTIFICATION
+INFO:root:14 TokenType.EQUAL
+INFO:root:14 TokenType.NUMBER
+INFO:root:14 TokenType.NEWLINE
+INFO:root:15 TokenType.WHILE
+INFO:root:15 TokenType.STRING
+INFO:root:15 TokenType.NEWLINE
+INFO:root:16 TokenType.ECHO
+INFO:root:16 TokenType.STRING
+INFO:root:16 TokenType.NEWLINE
+INFO:root:17 TokenType.IDENTIFICATION
+INFO:root:17 TokenType.EQUAL
+INFO:root:17 TokenType.IDENTIFICATION
+INFO:root:17 TokenType.SUB
+INFO:root:17 TokenType.NUMBER
+INFO:root:17 TokenType.NEWLINE
+INFO:root:18 TokenType.IF
+INFO:root:18 TokenType.IDENTIFICATION
+INFO:root:18 TokenType.EQUIVALENT
+INFO:root:18 TokenType.NUMBER
+INFO:root:18 TokenType.NEWLINE
+INFO:root:19 TokenType.ECHO
+INFO:root:19 TokenType.STRING
+INFO:root:19 TokenType.NEWLINE
+INFO:root:20 TokenType.BREAK
+INFO:root:20 TokenType.NEWLINE
+INFO:root:21 TokenType.FI
+INFO:root:21 TokenType.NEWLINE
+INFO:root:22 TokenType.ENDWHILE
+INFO:root:22 TokenType.NEWLINE
+INFO:root:------ Lexes ---------
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.VAR
+INFO:root:StatementType.IF
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ELSE
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ENDIF
+INFO:root:StatementType.FOR
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ENDFOR
+INFO:root:StatementType.VAR
+INFO:root:StatementType.WHILE
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.VAR
+INFO:root:StatementType.IF
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.BREAK
+INFO:root:StatementType.ENDIF
+INFO:root:StatementType.ENDWHILE
+INFO:root:------------------------
+INFO:root:hi
+INFO:root:------ Lexes ---------
+INFO:root:1 TokenType.ECHO
+INFO:root:1 TokenType.STRING
+INFO:root:1 TokenType.NEWLINE
+INFO:root:2 TokenType.IDENTIFICATION
+INFO:root:2 TokenType.EQUAL
+INFO:root:2 TokenType.NUMBER
+INFO:root:2 TokenType.NEWLINE
+INFO:root:3 TokenType.IF
+INFO:root:3 TokenType.STRING
+INFO:root:3 TokenType.NEWLINE
+INFO:root:4 TokenType.ECHO
+INFO:root:4 TokenType.STRING
+INFO:root:4 TokenType.NEWLINE
+INFO:root:5 TokenType.ELSE
+INFO:root:5 TokenType.NEWLINE
+INFO:root:6 TokenType.ECHO
+INFO:root:6 TokenType.STRING
+INFO:root:6 TokenType.NEWLINE
+INFO:root:7 TokenType.FI
+INFO:root:7 TokenType.NEWLINE
+INFO:root:8 TokenType.COMMENT
+INFO:root:8 TokenType.NEWLINE
+INFO:root:9 TokenType.COMMENT
+INFO:root:9 TokenType.NEWLINE
+INFO:root:10 TokenType.FOR
+INFO:root:10 TokenType.STRING
+INFO:root:10 TokenType.NEWLINE
+INFO:root:11 TokenType.ECHO
+INFO:root:11 TokenType.STRING
+INFO:root:11 TokenType.NEWLINE
+INFO:root:12 TokenType.ENDFOR
+INFO:root:12 TokenType.NEWLINE
+INFO:root:13 TokenType.NEWLINE
+INFO:root:14 TokenType.IDENTIFICATION
+INFO:root:14 TokenType.EQUAL
+INFO:root:14 TokenType.NUMBER
+INFO:root:14 TokenType.NEWLINE
+INFO:root:15 TokenType.WHILE
+INFO:root:15 TokenType.STRING
+INFO:root:15 TokenType.NEWLINE
+INFO:root:16 TokenType.ECHO
+INFO:root:16 TokenType.STRING
+INFO:root:16 TokenType.NEWLINE
+INFO:root:17 TokenType.IDENTIFICATION
+INFO:root:17 TokenType.EQUAL
+INFO:root:17 TokenType.IDENTIFICATION
+INFO:root:17 TokenType.SUB
+INFO:root:17 TokenType.NUMBER
+INFO:root:17 TokenType.NEWLINE
+INFO:root:18 TokenType.IF
+INFO:root:18 TokenType.IDENTIFICATION
+INFO:root:18 TokenType.EQUIVALENT
+INFO:root:18 TokenType.NUMBER
+INFO:root:18 TokenType.NEWLINE
+INFO:root:19 TokenType.ECHO
+INFO:root:19 TokenType.STRING
+INFO:root:19 TokenType.NEWLINE
+INFO:root:20 TokenType.BREAK
+INFO:root:20 TokenType.NEWLINE
+INFO:root:21 TokenType.FI
+INFO:root:21 TokenType.NEWLINE
+INFO:root:22 TokenType.ENDWHILE
+INFO:root:22 TokenType.NEWLINE
+INFO:root:------ Lexes ---------
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.VAR
+INFO:root:StatementType.IF
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ELSE
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ENDIF
+INFO:root:StatementType.FOR
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ENDFOR
+INFO:root:StatementType.VAR
+INFO:root:StatementType.WHILE
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.VAR
+INFO:root:StatementType.IF
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.BREAK
+INFO:root:StatementType.ENDIF
+INFO:root:StatementType.ENDWHILE
+INFO:root:------------------------
+INFO:root:hi
+INFO:root:------ Lexes ---------
+INFO:root:1 TokenType.ECHO
+INFO:root:1 TokenType.STRING
+INFO:root:1 TokenType.NEWLINE
+INFO:root:2 TokenType.IDENTIFICATION
+INFO:root:2 TokenType.EQUAL
+INFO:root:2 TokenType.NUMBER
+INFO:root:2 TokenType.NEWLINE
+INFO:root:3 TokenType.IF
+INFO:root:3 TokenType.STRING
+INFO:root:3 TokenType.NEWLINE
+INFO:root:4 TokenType.ECHO
+INFO:root:4 TokenType.STRING
+INFO:root:4 TokenType.NEWLINE
+INFO:root:5 TokenType.ELSE
+INFO:root:5 TokenType.NEWLINE
+INFO:root:6 TokenType.ECHO
+INFO:root:6 TokenType.STRING
+INFO:root:6 TokenType.NEWLINE
+INFO:root:7 TokenType.FI
+INFO:root:7 TokenType.NEWLINE
+INFO:root:8 TokenType.COMMENT
+INFO:root:8 TokenType.NEWLINE
+INFO:root:9 TokenType.COMMENT
+INFO:root:9 TokenType.NEWLINE
+INFO:root:10 TokenType.FOR
+INFO:root:10 TokenType.STRING
+INFO:root:10 TokenType.NEWLINE
+INFO:root:11 TokenType.ECHO
+INFO:root:11 TokenType.STRING
+INFO:root:11 TokenType.NEWLINE
+INFO:root:12 TokenType.ENDFOR
+INFO:root:12 TokenType.NEWLINE
+INFO:root:13 TokenType.NEWLINE
+INFO:root:14 TokenType.IDENTIFICATION
+INFO:root:14 TokenType.EQUAL
+INFO:root:14 TokenType.NUMBER
+INFO:root:14 TokenType.NEWLINE
+INFO:root:15 TokenType.WHILE
+INFO:root:15 TokenType.STRING
+INFO:root:15 TokenType.NEWLINE
+INFO:root:16 TokenType.ECHO
+INFO:root:16 TokenType.STRING
+INFO:root:16 TokenType.NEWLINE
+INFO:root:17 TokenType.IDENTIFICATION
+INFO:root:17 TokenType.EQUAL
+INFO:root:17 TokenType.IDENTIFICATION
+INFO:root:17 TokenType.SUB
+INFO:root:17 TokenType.NUMBER
+INFO:root:17 TokenType.NEWLINE
+INFO:root:18 TokenType.IF
+INFO:root:18 TokenType.IDENTIFICATION
+INFO:root:18 TokenType.EQUIVALENT
+INFO:root:18 TokenType.NUMBER
+INFO:root:18 TokenType.NEWLINE
+INFO:root:19 TokenType.ECHO
+INFO:root:19 TokenType.STRING
+INFO:root:19 TokenType.NEWLINE
+INFO:root:20 TokenType.BREAK
+INFO:root:20 TokenType.NEWLINE
+INFO:root:21 TokenType.FI
+INFO:root:21 TokenType.NEWLINE
+INFO:root:22 TokenType.ENDWHILE
+INFO:root:22 TokenType.NEWLINE
+INFO:root:------ Lexes ---------
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.VAR
+INFO:root:StatementType.IF
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ELSE
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ENDIF
+INFO:root:StatementType.FOR
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ENDFOR
+INFO:root:StatementType.VAR
+INFO:root:StatementType.WHILE
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.VAR
+INFO:root:StatementType.IF
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.BREAK
+INFO:root:StatementType.ENDIF
+INFO:root:StatementType.ENDWHILE
+INFO:root:------------------------
+INFO:root:------------------------
+INFO:root:hi
+INFO:root:------ Lexes ---------
+INFO:root:1 TokenType.ECHO
+INFO:root:1 TokenType.STRING
+INFO:root:1 TokenType.NEWLINE
+INFO:root:2 TokenType.IDENTIFICATION
+INFO:root:2 TokenType.EQUAL
+INFO:root:2 TokenType.NUMBER
+INFO:root:2 TokenType.NEWLINE
+INFO:root:3 TokenType.IF
+INFO:root:3 TokenType.STRING
+INFO:root:3 TokenType.NEWLINE
+INFO:root:4 TokenType.ECHO
+INFO:root:4 TokenType.STRING
+INFO:root:4 TokenType.NEWLINE
+INFO:root:5 TokenType.ELSE
+INFO:root:5 TokenType.NEWLINE
+INFO:root:6 TokenType.ECHO
+INFO:root:6 TokenType.STRING
+INFO:root:6 TokenType.NEWLINE
+INFO:root:7 TokenType.FI
+INFO:root:7 TokenType.NEWLINE
+INFO:root:8 TokenType.COMMENT
+INFO:root:8 TokenType.NEWLINE
+INFO:root:9 TokenType.COMMENT
+INFO:root:9 TokenType.NEWLINE
+INFO:root:10 TokenType.FOR
+INFO:root:10 TokenType.STRING
+INFO:root:10 TokenType.NEWLINE
+INFO:root:11 TokenType.ECHO
+INFO:root:11 TokenType.STRING
+INFO:root:11 TokenType.NEWLINE
+INFO:root:12 TokenType.ENDFOR
+INFO:root:12 TokenType.NEWLINE
+INFO:root:13 TokenType.NEWLINE
+INFO:root:14 TokenType.IDENTIFICATION
+INFO:root:14 TokenType.EQUAL
+INFO:root:14 TokenType.NUMBER
+INFO:root:14 TokenType.NEWLINE
+INFO:root:15 TokenType.WHILE
+INFO:root:15 TokenType.STRING
+INFO:root:15 TokenType.NEWLINE
+INFO:root:16 TokenType.ECHO
+INFO:root:16 TokenType.STRING
+INFO:root:16 TokenType.NEWLINE
+INFO:root:17 TokenType.IDENTIFICATION
+INFO:root:17 TokenType.EQUAL
+INFO:root:17 TokenType.IDENTIFICATION
+INFO:root:17 TokenType.SUB
+INFO:root:17 TokenType.NUMBER
+INFO:root:17 TokenType.NEWLINE
+INFO:root:18 TokenType.IF
+INFO:root:18 TokenType.IDENTIFICATION
+INFO:root:18 TokenType.EQUIVALENT
+INFO:root:18 TokenType.NUMBER
+INFO:root:18 TokenType.NEWLINE
+INFO:root:19 TokenType.ECHO
+INFO:root:19 TokenType.STRING
+INFO:root:19 TokenType.NEWLINE
+INFO:root:20 TokenType.BREAK
+INFO:root:20 TokenType.NEWLINE
+INFO:root:21 TokenType.FI
+INFO:root:21 TokenType.NEWLINE
+INFO:root:22 TokenType.ENDWHILE
+INFO:root:22 TokenType.NEWLINE
+INFO:root:------ Lexes ---------
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.VAR
+INFO:root:StatementType.IF
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ELSE
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ENDIF
+INFO:root:StatementType.FOR
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ENDFOR
+INFO:root:StatementType.VAR
+INFO:root:StatementType.WHILE
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.VAR
+INFO:root:StatementType.IF
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.BREAK
+INFO:root:StatementType.ENDIF
+INFO:root:StatementType.ENDWHILE
+INFO:root:------------------------
+INFO:root:------------------------
+INFO:root:hi
+INFO:root:------ Lexes ---------
+INFO:root:1 TokenType.ECHO
+INFO:root:1 TokenType.STRING
+INFO:root:1 TokenType.NEWLINE
+INFO:root:2 TokenType.IDENTIFICATION
+INFO:root:2 TokenType.EQUAL
+INFO:root:2 TokenType.NUMBER
+INFO:root:2 TokenType.NEWLINE
+INFO:root:3 TokenType.IF
+INFO:root:3 TokenType.STRING
+INFO:root:3 TokenType.NEWLINE
+INFO:root:4 TokenType.ECHO
+INFO:root:4 TokenType.STRING
+INFO:root:4 TokenType.NEWLINE
+INFO:root:5 TokenType.ELSE
+INFO:root:5 TokenType.NEWLINE
+INFO:root:6 TokenType.ECHO
+INFO:root:6 TokenType.STRING
+INFO:root:6 TokenType.NEWLINE
+INFO:root:7 TokenType.FI
+INFO:root:7 TokenType.NEWLINE
+INFO:root:8 TokenType.COMMENT
+INFO:root:8 TokenType.NEWLINE
+INFO:root:9 TokenType.COMMENT
+INFO:root:9 TokenType.NEWLINE
+INFO:root:10 TokenType.FOR
+INFO:root:10 TokenType.STRING
+INFO:root:10 TokenType.NEWLINE
+INFO:root:11 TokenType.ECHO
+INFO:root:11 TokenType.STRING
+INFO:root:11 TokenType.NEWLINE
+INFO:root:12 TokenType.ENDFOR
+INFO:root:12 TokenType.NEWLINE
+INFO:root:13 TokenType.NEWLINE
+INFO:root:14 TokenType.IDENTIFICATION
+INFO:root:14 TokenType.EQUAL
+INFO:root:14 TokenType.NUMBER
+INFO:root:14 TokenType.NEWLINE
+INFO:root:15 TokenType.WHILE
+INFO:root:15 TokenType.STRING
+INFO:root:15 TokenType.NEWLINE
+INFO:root:16 TokenType.ECHO
+INFO:root:16 TokenType.STRING
+INFO:root:16 TokenType.NEWLINE
+INFO:root:17 TokenType.IDENTIFICATION
+INFO:root:17 TokenType.EQUAL
+INFO:root:17 TokenType.IDENTIFICATION
+INFO:root:17 TokenType.SUB
+INFO:root:17 TokenType.NUMBER
+INFO:root:17 TokenType.NEWLINE
+INFO:root:18 TokenType.IF
+INFO:root:18 TokenType.IDENTIFICATION
+INFO:root:18 TokenType.EQUIVALENT
+INFO:root:18 TokenType.NUMBER
+INFO:root:18 TokenType.NEWLINE
+INFO:root:19 TokenType.ECHO
+INFO:root:19 TokenType.STRING
+INFO:root:19 TokenType.NEWLINE
+INFO:root:20 TokenType.BREAK
+INFO:root:20 TokenType.NEWLINE
+INFO:root:21 TokenType.FI
+INFO:root:21 TokenType.NEWLINE
+INFO:root:22 TokenType.ENDWHILE
+INFO:root:22 TokenType.NEWLINE
+INFO:root:------ Lexes ---------
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.VAR
+INFO:root:StatementType.IF
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ELSE
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ENDIF
+INFO:root:StatementType.FOR
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.ENDFOR
+INFO:root:StatementType.VAR
+INFO:root:StatementType.WHILE
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.VAR
+INFO:root:StatementType.IF
+INFO:root:StatementType.ECHO
+INFO:root:StatementType.BREAK
+INFO:root:StatementType.ENDIF
+INFO:root:StatementType.ENDWHILE
+INFO:root:------------------------
+INFO:root:------------------------

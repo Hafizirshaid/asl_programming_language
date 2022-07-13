@@ -4,17 +4,17 @@
 Expression Evaluator Module
 """
 
-from lexer import Lexer
+from lexer import Lexer, TokenType
 
 
 class Evaluator:
     """ Expression Evaluator Class """
 
     def calculate(self, v1, v2, op):
-        """ Calcuate the result value 
+        """ Calcuate the result value
             of v1 and v2 by op
         Args:
-            v1: first value 
+            v1: first value
             v2: second value
             op: operation
         Returns:
@@ -51,12 +51,35 @@ class Evaluator:
             result = v1 != v2
         return result
 
-    def evaluate(self, expression):
-        """ 
+    def _is_operator(self, token_type: TokenType) -> bool:
+        """ This function checks if token type is an operator
+        Args:
+            token_type: type of token
+        Returns:
+            True token is operator, False if token is not operator
+        """
+        return (token_type == TokenType.EQUIVALENT or 
+                token_type == TokenType.EQUAL or
+                token_type == TokenType.NOTEQUIVALENT or
+                token_type == TokenType.GRATERTHAN or
+                token_type == TokenType.LESSTHAN or
+                token_type == TokenType.GRATERTHANOREQUAL or
+                token_type == TokenType.LESSTHANOREQUAL or
+                token_type == TokenType.ADD or
+                token_type == TokenType.SUB or
+                token_type == TokenType.MULT or
+                token_type == TokenType.DIV or
+                token_type == TokenType.MOD or
+                token_type == TokenType.AND or
+                token_type == TokenType.OR or
+                token_type == TokenType.NOT)
+
+    def evaluate(self, expression: str):
+        """
         Desc:
-            evaluate expression like (10 * 30 > 5), 
-            this should work for both logical and 
-            mathimatical expressions 
+            evaluate expression like (10 * 30 > 5),
+            this should work for both logical and
+            mathimatical expressions
         Args:
             expression: expression to be evaluated
         Returns:
@@ -66,40 +89,37 @@ class Evaluator:
         if not expression:
             return False
 
+        "strip double and single quotes "
+        expression = expression.strip("'")
+        expression = expression.strip('"')
+
+        lexer = Lexer()
+        tokens = lexer.tokenize(expression)
         result = False
+
+        # if only one token, return the same expression
+        if len(tokens) == 1:
+            result = expression
+        else:
+            result = self.evaluate_tokens(tokens)
+        return result
+
+    def evaluate_tokens(self, tokens: list):
+
         values_stack = []
         operators_stack = []
-        lexer = Lexer()
-        lexes = lexer.tokenize(expression)
 
-        for lex in lexes:
-
-            lex_type = lex['token_type']['type']
-            value = lex['match'].group()
-
-            if  lex_type == 'equivalent' or \
-                lex_type == 'equal' or \
-                lex_type == 'notequivalent' or \
-                lex_type == 'graterthan' or \
-                lex_type == 'lessthan' or \
-                lex_type == 'graterthanorequal' or \
-                lex_type == 'lessthanorequal' or \
-                lex_type == 'add' or \
-                lex_type == 'sub' or \
-                lex_type == 'mult' or \
-                lex_type == 'div' or \
-                lex_type == 'mod' or \
-                lex_type == 'and' or \
-                lex_type == 'or' or \
-                lex_type == 'not':
-
+        for token in tokens:
+            token_type = token.token_type
+            value = token.match
+            if self._is_operator(token_type):
                 operators_stack.append(value)
+
+            if token_type == TokenType.SPACE or token_type == TokenType.OPENPARANTHESIS:
+                # Do Nothing
                 pass
 
-            if lex_type == "space" or lex_type == "openparanthesis":
-                pass
-
-            if lex_type == "closingparanthesis":
+            if token_type == TokenType.CLOSINGPARANTHESIS:
                 value1 = float(values_stack.pop())
                 value2 = float(values_stack.pop())
                 operator = operators_stack.pop()
@@ -107,7 +127,7 @@ class Evaluator:
                 values_stack.append(result)
                 pass
 
-            if lex_type == "number":
+            if token_type == TokenType.NUMBER or token_type == TokenType.REAL:
                 values_stack.append(float(value))
             pass
 

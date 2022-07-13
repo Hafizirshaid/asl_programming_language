@@ -31,3 +31,14 @@ while (y > 50)
 endwhile
 ---------------------------------
 
+
+
+TODO:
+    - Variable types(number, string)
+    - functions (methods) calls
+    - break
+    - continue
+    - Arrays
+    - Lists
+    - Signed number comparisons - sign minus
+    - x = y is not supported

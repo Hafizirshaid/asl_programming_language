@@ -1,20 +1,16 @@
 # Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+"""
+Parser Library
 
-from statements.break_statement import Break
-from statements.echo_statement import Echo
-from statements.else_statement import Else
-from statements.end_for_loop import EndFor
-from statements.endif_statement import Fi
-from statements.end_while_statement import EndWhile
-from statements.for_loop_statement import For
-from statements.if_statement import If
-from statements.variable_statement import Variable
-from statements.while_statement import While
-
+"""
+from lexer import TokenType
+from statements.statement import *
 
 class Parser:
     """
+
     Parser Class
+
     """
 
     def __init__(self) -> None:
@@ -35,142 +31,157 @@ class Parser:
         while index <= len(lexes) - 1:
 
             lex = lexes[index]
-            lex_type = lex['token_type']['type']
+            lex_type = lex.token_type
 
-            if lex_type == 'echo':
+            if lex_type == TokenType.ECHO:
                 echoString = ""
 
                 # ignore spaces
                 next_lex = lexes[index + 1]
-                while next_lex['token_type']['type'] == 'space':
+                while next_lex.token_type == TokenType.SPACE:
                     index += 1
                     next_lex = lexes[index]
-                if next_lex['token_type']['type'] == 'string':
-                    echoString = next_lex['match'].group()
+                if next_lex.token_type == TokenType.STRING:
+                    echoString = next_lex.match
                     pass
 
                 echo_statement = Echo(echoString)
                 statements.append(echo_statement)
 
-            if lex_type == 'call':
+            if lex_type == TokenType.CALL:
                 pass
 
-            if lex_type == 'method':
+            if lex_type == TokenType.METHOD:
                 pass
 
-            if lex_type == 'if':
+            if lex_type == TokenType.IF:
                 # find if statement condition
                 condition = ""
                 next_lex = lexes[index + 1]
-                while next_lex['token_type']['type'] != 'newline':
-                    condition += next_lex['match'].group()
+                index += 1
+                while next_lex.token_type != TokenType.NEWLINE:
+                    condition += next_lex.match
                     index += 1
                     next_lex = lexes[index]
 
                 ifstatement = If(condition, [])
                 statements.append(ifstatement)
 
-            if lex_type == 'else':
+            if lex_type == TokenType.ELSE:
                 else_statement = Else([])
                 statements.append(else_statement)
                 pass
-
-            if lex_type == 'fi':
+            if lex_type == TokenType.ELIF:
+                condition = ""
+                next_lex = lexes[index + 1]
+                index += 1
+                while next_lex.token_type != TokenType.NEWLINE:
+                    condition += next_lex.match
+                    index += 1
+                    next_lex = lexes[index]
+                elif_Statement = ElseIf(condition, [])
+                statements.append(elif_Statement)
+                pass
+            if lex_type == TokenType.FI:
                 endif = Fi()
                 statements.append(endif)
 
-            if lex_type == 'endfor':
+            if lex_type == TokenType.ENDFOR:
                 endfor = EndFor()
                 statements.append(endfor)
-            if lex_type == 'endwhile':
+            if lex_type == TokenType.ENDWHILE:
                 endwhile = EndWhile()
                 statements.append(endwhile)
-            if lex_type == 'break':
+            if lex_type == TokenType.BREAK:
                 break_statement = Break()
                 statements.append(break_statement)
                 pass
 
-            if lex_type == 'cont':
+            if lex_type == TokenType.CONT:
                 pass
 
-            if lex_type == 'for':
+            if lex_type == TokenType.FOR:
                 condition = ""
                 next_lex = lexes[index + 1]
-                while next_lex['token_type']['type'] != 'newline':
-                    condition += next_lex['match'].group()
+                index += 1
+                while next_lex.token_type != TokenType.NEWLINE:
+                    condition += next_lex.match
                     index += 1
                     next_lex = lexes[index]
                 forloop = For(condition, [])
                 statements.append(forloop)
 
-            if lex_type == 'to':
+            if lex_type == TokenType.TO:
                 pass
-            
-            if lex_type == 'while':
+
+            if lex_type == TokenType.WHILE:
                 condition = ""
                 next_lex = lexes[index + 1]
-                while next_lex['token_type']['type'] != 'newline':
-                    condition += next_lex['match'].group()
+                index += 1
+                while next_lex.token_type != TokenType.NEWLINE:
+                    condition += next_lex.match
                     index += 1
                     next_lex = lexes[index]
                 whileloop = While(condition, [])
                 statements.append(whileloop)
                 pass
-            if lex_type == 'do':
+            if lex_type == TokenType.DO:
                 pass
-            if lex_type == 'identification':
 
-                identification = lexes[index]['match'].group()
-                next_lex = lexes[index + 1]
+            if lex_type == TokenType.IDENTIFICATION:
 
-                while next_lex['token_type']['type'] != 'newline':
-                    identification += next_lex['match'].group()
+                identification = lexes[index].match
+
+                index += 1
+                next_lex = lexes[index]
+                while next_lex.token_type != TokenType.NEWLINE:
+                    identification += next_lex.match
                     index += 1
                     next_lex = lexes[index]
                 variablestatement = Variable(identification)
                 statements.append(variablestatement)
 
-            if lex_type == 'string':
+            if lex_type == TokenType.STRING:
                 pass
-            if lex_type == 'number':
+            if lex_type == TokenType.NUMBER:
                 pass
-            if lex_type == 'equivalent':
+            if lex_type == TokenType.EQUIVALENT:
                 pass
-            if lex_type == 'equal':
+            if lex_type == TokenType.EQUAL:
                 pass
-            if lex_type == 'notequivalent':
+            if lex_type == TokenType.NOTEQUIVALENT:
                 pass
-            if lex_type == 'graterthan':
+            if lex_type == TokenType.GRATERTHAN:
                 pass
-            if lex_type == 'lessthan':
+            if lex_type == TokenType.LESSTHAN:
                 pass
-            if lex_type == 'graterthanorequal':
+            if lex_type == TokenType.GRATERTHANOREQUAL:
                 pass
-            if lex_type == 'lessthanorequal':
+            if lex_type == TokenType.LESSTHANOREQUAL:
                 pass
-            if lex_type == 'add':
+            if lex_type == TokenType.ADD:
                 pass
-            if lex_type == 'sub':
+            if lex_type == TokenType.SUB:
                 pass
-            if lex_type == 'mult':
+            if lex_type == TokenType.MULT:
                 pass
-            if lex_type == 'div':
+            if lex_type == TokenType.DIV:
                 pass
-            if lex_type == 'mod':
+            if lex_type == TokenType.MOD:
                 pass
-            if lex_type == 'and':
+            if lex_type == TokenType.AND:
                 pass
-            if lex_type == 'false':
+            if lex_type == TokenType.FALSE:
                 pass
-            if lex_type == 'newline':
+            if lex_type == TokenType.NEWLINE:
                 pass
-            if lex_type == 'space':
+            if lex_type == TokenType.SPACE:
                 pass
-            if lex_type == 'openparanthesis':
+            if lex_type == TokenType.OPENPARANTHESIS:
                 pass
-            if lex_type == 'closingparanthesis':
+            if lex_type == TokenType.CLOSINGPARANTHESIS:
                 pass
-            if lex_type == 'comment':
+            if lex_type == TokenType.COMMENT:
                 pass
 
             index += 1
