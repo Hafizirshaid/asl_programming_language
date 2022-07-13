@@ -42,20 +42,21 @@ class Compiler(object):
         for statement in statements:
             if (isinstance(statement, ElseIf) or
                 isinstance(statement, Else) or
-                isinstance(statement, While)):
+                    isinstance(statement, While)):
                 stack.append(statement)
 
             if isinstance(statement, For):
                 # add for loop variable
                 if statement.loop_initial_variable:
-                    loop_initial_variable = Variable(statement.loop_initial_variable)
-                    self._handle_one_line_statement(execution_tree, stack, loop_initial_variable)
+                    loop_initial_variable = Variable(
+                        statement.loop_initial_variable)
+                    self._handle_one_line_statement(
+                        execution_tree, stack, loop_initial_variable)
 
                 stack.append(statement)
-                #print(statement)
                 pass
             if (isinstance(statement, Echo) or
-                isinstance(statement, Break)):
+                    isinstance(statement, Break)):
 
                 self._handle_one_line_statement(
                     execution_tree, stack, statement)
@@ -79,12 +80,11 @@ class Compiler(object):
             if isinstance(statement, EndWhile):
                 self._handle_end_statement(execution_tree, stack)
 
-
-        # TODO remove this function, try to set parents when looping thru 
+        # TODO remove this function, try to set parents when looping thru
         # list of statements and adding elements to stack
         self.set_parents(execution_tree)
 
-        # TODO store variable names in symbol table without value, just 
+        # TODO store variable names in symbol table without value, just
         # store the right location for each varaible
         self.store_variables_in_symbols_table(execution_tree)
 
@@ -103,43 +103,49 @@ class Compiler(object):
                 isinstance(i, While) or
                 isinstance(i, If) or
                 isinstance(i, ElseIf) or
-                isinstance(i, Else)):
-                self.store_variables_in_symbols_table_for_statements(i.statements)
+                    isinstance(i, Else)):
+                self.store_variables_in_symbols_table_for_statements(
+                    i.statements)
                 pass
 
             if isinstance(i, ConditionStatement):
-                self.store_variables_in_symbols_table_for_statements(i.if_statmenet.statements)
+                self.store_variables_in_symbols_table_for_statements(
+                    i.if_statmenet.statements)
 
                 for elifs in i.elseif_statements:
-                    self.store_variables_in_symbols_table_for_statements(elifs.statements)
+                    self.store_variables_in_symbols_table_for_statements(
+                        elifs.statements)
 
                 if i.else_statement:
-                    self.store_variables_in_symbols_table_for_statements(i.else_statement.statements)
+                    self.store_variables_in_symbols_table_for_statements(
+                        i.else_statement.statements)
 
         pass
 
-    def find_symbol(self, i:Variable):
+    def find_symbol(self, statement: Variable):
 
-        ptr = i.parent
-        symbol = None
-        while ptr:
-            if (isinstance(ptr, For) or
-                isinstance(ptr, While) or
-                isinstance(ptr, If) or
-                isinstance(ptr, ElseIf) or
-                isinstance(ptr, Else) or 
-                isinstance(ptr, ExecutionTree)):
+        statement_pointer = statement.parent
+        symbols_table = None
 
-                if ptr.symbols_table.get_entry_value(i.variable_name):
-                    symbol = ptr.symbols_table
+        while statement_pointer:
+            if (isinstance(statement_pointer, For) or
+                isinstance(statement_pointer, While) or
+                isinstance(statement_pointer, If) or
+                isinstance(statement_pointer, ElseIf) or
+                isinstance(statement_pointer, Else) or
+                isinstance(statement_pointer, ExecutionTree)):
+
+                if statement_pointer.symbols_table.get_entry_value(statement.variable_name):
+                    symbols_table = statement_pointer.symbols_table
                     break
 
-            if isinstance(ptr, ConditionStatement):
-                ptr = ptr.parent
+            if isinstance(statement_pointer, ConditionStatement):
+                # condition statement doesn't have scope
+                statement_pointer = statement_pointer.parent
                 continue
+
             # Go Up
-            ptr = ptr.parent
-            pass
+            statement_pointer = statement_pointer.parent
 
         # symbol = None
         # if isinstance(ptr, ExecutionTree):
@@ -161,97 +167,101 @@ class Compiler(object):
         # if symbol is None:
         #     if ptr.symbols_table.get_entry_value(i.variable_name):
         #         symbol = ptr.symbols_table
-        return symbol
+        return symbols_table
 
-    def store_variables_in_symbols_table_for_statements(self, statements:list[Statement]):
-        for i in statements:
-            if isinstance(i, Variable):
-                # find in all parents if symbol exists in any symbol tables, 
+    def store_variables_in_symbols_table_for_statements(self, statements: list[Statement]):
+        for statement in statements:
+            if isinstance(statement, Variable):
+                # find in all parents if symbol exists in any symbol tables,
                 # if found do nohting
-                symbol = self.find_symbol(i)
+                symbol = self.find_symbol(statement)
                 # if not found, store it in parents symbol table
                 if not symbol:
-                    i.parent.symbols_table.add_entry(i.variable_name, "")
-                    i.symbols_table = i.parent.symbols_table
+                    statement.parent.symbols_table.add_entry(statement.variable_name, "")
+                    statement.symbols_table = statement.parent.symbols_table
                 pass
-            if (isinstance(i, For) or
-                isinstance(i, While) or
-                isinstance(i, If) or
-                isinstance(i, ElseIf) or
-                isinstance(i, Else)):
-                self.store_variables_in_symbols_table_for_statements(i.statements)
+            if (isinstance(statement, For) or
+                isinstance(statement, While) or
+                isinstance(statement, If) or
+                isinstance(statement, ElseIf) or
+                    isinstance(statement, Else)):
+                self.store_variables_in_symbols_table_for_statements(
+                    statement.statements)
                 pass
 
-            if isinstance(i, ConditionStatement):
-                self.store_variables_in_symbols_table_for_statements(i.if_statmenet.statements)
-                for i in i.elseif_statements:
-                    self.store_variables_in_symbols_table_for_statements(i.statements)
-                if i.else_statement:
-                    self.store_variables_in_symbols_table_for_statements(i.else_statement.statements)
+            if isinstance(statement, ConditionStatement):
+                self.store_variables_in_symbols_table_for_statements(
+                    statement.if_statmenet.statements)
+                for statement in statement.elseif_statements:
+                    self.store_variables_in_symbols_table_for_statements(
+                        statement.statements)
+                if statement.else_statement:
+                    self.store_variables_in_symbols_table_for_statements(
+                        statement.else_statement.statements)
 
             pass
 
     def set_parents(self, execution_tree: ExecutionTree):
 
-        for stmt in execution_tree.tree:
+        for statement in execution_tree.tree:
 
-            stmt.parent = execution_tree
+            statement.parent = execution_tree
 
-            if (isinstance(stmt, For) or
-                isinstance(stmt, While) or
-                isinstance(stmt, If) or
-                isinstance(stmt, ElseIf) or
-                isinstance(stmt, Else)):
-                #for i in stmt.statements:
-                self.set_parent_for_statements(stmt, stmt.statements)
+            if (isinstance(statement, For) or
+                isinstance(statement, While) or
+                isinstance(statement, If) or
+                isinstance(statement, ElseIf) or
+                    isinstance(statement, Else)):
+                # for i in stmt.statements:
+                self.set_parent_for_statements(statement, statement.statements)
 
-            if isinstance(stmt, ConditionStatement):
-                stmt.if_statmenet.parent = stmt
+            if isinstance(statement, ConditionStatement):
+                statement.if_statmenet.parent = statement
                 self.set_parent_for_statements(
-                    stmt.if_statmenet,
-                    stmt.if_statmenet.statements)
-                for i in stmt.elseif_statements:
-                    i.parent = stmt
+                    statement.if_statmenet,
+                    statement.if_statmenet.statements)
+                for i in statement.elseif_statements:
+                    i.parent = statement
                     self.set_parent_for_statements(i, i.statements)
 
-                if stmt.else_statement:
-                    stmt.else_statement.parent = stmt
+                if statement.else_statement:
+                    statement.else_statement.parent = statement
                     self.set_parent_for_statements(
-                        stmt.else_statement,
-                        stmt.else_statement.statements)
+                        statement.else_statement,
+                        statement.else_statement.statements)
                 pass
         pass
 
     def set_parent_for_statements(self, parent, statements):
 
-        for stmt in statements:
-            stmt.parent = parent
-            if (isinstance(stmt, For) or
-                isinstance(stmt, While) or
-                isinstance(stmt, If) or
-                isinstance(stmt, ElseIf) or
-                isinstance(stmt, Else)):
-                self.set_parent_for_statements(stmt, stmt.statements)
+        for statement in statements:
+            statement.parent = parent
+            if (isinstance(statement, For) or
+                isinstance(statement, While) or
+                isinstance(statement, If) or
+                isinstance(statement, ElseIf) or
+                    isinstance(statement, Else)):
+                self.set_parent_for_statements(statement, statement.statements)
 
-            if isinstance(stmt, ConditionStatement):
-                stmt.if_statmenet.parent = stmt
+            if isinstance(statement, ConditionStatement):
+                statement.if_statmenet.parent = statement
                 self.set_parent_for_statements(
-                    stmt.if_statmenet,
-                    stmt.if_statmenet.statements)
+                    statement.if_statmenet,
+                    statement.if_statmenet.statements)
 
-                for elif_statements in stmt.elseif_statements:
-                    elif_statements.parent = stmt
+                for elif_statements in statement.elseif_statements:
+                    elif_statements.parent = statement
 
                     self.set_parent_for_statements(
                         elif_statements,
                         elif_statements.statements)
 
-                if stmt.else_statement:
-                    stmt.else_statement.parent = stmt
+                if statement.else_statement:
+                    statement.else_statement.parent = statement
 
                     self.set_parent_for_statements(
-                            stmt.else_statement,
-                            stmt.else_statement.statements)
+                        statement.else_statement,
+                        statement.else_statement.statements)
 
                 pass
         pass
@@ -302,11 +312,10 @@ class Compiler(object):
 
     def _handle_end_forloop_statement(self, execution_tree, stack):
         end = stack.pop()
+        # create increment variable at the end of for loop
         increment_variable = Variable(end.loop_increment)
         end.statements.append(increment_variable)
         if stack:
             stack[-1].statements.append(end)
         else:
             execution_tree.append(end)
-
-

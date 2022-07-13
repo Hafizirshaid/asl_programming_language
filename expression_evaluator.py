@@ -10,7 +10,7 @@ from lexer import Lexer, TokenType
 class Evaluator:
     """ Expression Evaluator Class """
 
-    def calculate(self, v1, v2, op):
+    def calculate(self, value1, value2, operator):
         """ Calcuate the result value
             of v1 and v2 by op
         Args:
@@ -21,34 +21,34 @@ class Evaluator:
             result of v1 op v2
         """
 
-        if op == "+":
-            result = v1 + v2
-        elif op == "-":
-            result = v1 - v2
-        elif op == "*":
-            result = v1 * v2
-        elif op == "/":
-            result = v1 / v2
-        elif op == "%":
-            result = v1 % v2
-        elif op == "^":
-            result = v1 ^ v2
-        elif op == "&":
-            result = v1 and v2
-        elif op == "|":
-            result = v1 or v2
-        elif op == ">":
-            result = v1 > v2
-        elif op == "<":
-            result = v1 < v2
-        elif op == ">=":
-            result = v1 >= v2
-        elif op == "<=":
-            result = v1 <= v2
-        elif op == "==":
-            result = v1 == v2
-        elif op == "!=":
-            result = v1 != v2
+        if operator == "+":
+            result = value1 + value2
+        elif operator == "-":
+            result = value1 - value2
+        elif operator == "*":
+            result = value1 * value2
+        elif operator == "/":
+            result = value1 / value2
+        elif operator == "%":
+            result = value1 % value2
+        elif operator == "^":
+            result = value1 ^ value2
+        elif operator == "&":
+            result = value1 and value2
+        elif operator == "|":
+            result = value1 or value2
+        elif operator == ">":
+            result = value1 > value2
+        elif operator == "<":
+            result = value1 < value2
+        elif operator == ">=":
+            result = value1 >= value2
+        elif operator == "<=":
+            result = value1 <= value2
+        elif operator == "==":
+            result = value1 == value2
+        elif operator == "!=":
+            result = value1 != value2
         return result
 
     def _is_operator(self, token_type: TokenType) -> bool:
@@ -58,7 +58,7 @@ class Evaluator:
         Returns:
             True token is operator, False if token is not operator
         """
-        return (token_type == TokenType.EQUIVALENT or 
+        return (token_type == TokenType.EQUIVALENT or
                 token_type == TokenType.EQUAL or
                 token_type == TokenType.NOTEQUIVALENT or
                 token_type == TokenType.GRATERTHAN or
@@ -89,7 +89,7 @@ class Evaluator:
         if not expression:
             return False
 
-        "strip double and single quotes "
+        # "strip double and single quotes "
         expression = expression.strip("'")
         expression = expression.strip('"')
 
@@ -115,7 +115,8 @@ class Evaluator:
             if self._is_operator(token_type):
                 operators_stack.append(value)
 
-            if token_type == TokenType.SPACE or token_type == TokenType.OPENPARANTHESIS:
+            if (token_type == TokenType.SPACE or
+                token_type == TokenType.OPENPARANTHESIS):
                 # Do Nothing
                 pass
 

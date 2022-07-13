@@ -216,7 +216,7 @@ class Executor(object):
         """
         tokens = Lexer().tokenize(
             instruction.echo_string.strip('"'), 
-            ignore_unknown=True, 
+            keep_unknown=True, 
             keep_spaces=True)
 
         final_echo_string = ""

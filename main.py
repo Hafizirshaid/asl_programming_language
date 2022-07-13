@@ -15,7 +15,7 @@ def main():
     parser = argparse.ArgumentParser("Asl Programming Language Command Line")
 
     parser.add_argument('-f', '--filename',
-                        default='asl_files/while_for.asl',
+                        default='asl_files/prime.asl',
                         help='name of source file',
                         nargs=argparse.OPTIONAL,
                         )
@@ -52,9 +52,7 @@ def main():
 
     """ Execute List of Instructions """
     executor = Executor()
-    #print("------------------------ Execution Starts ------------------------")
     executor.execute(instructions, execution_tree)
-    #qprint("------------------------  Execution Ends  ------------------------")
 
 
 if __name__ == "__main__":

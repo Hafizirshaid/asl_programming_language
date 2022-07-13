@@ -137,10 +137,12 @@ class Lexer(object):
             {'type': TokenType.CLOSINGPARANTHESIS, 'regex': '^\)'}
         ]
 
-    def tokenize(self, text: str, ignore_unknown=False, keep_spaces=False) -> list:
+    def tokenize(self, text: str, keep_unknown=False, keep_spaces=False) -> list:
         """ Tokenize source file text
         Args:
             text: text file string
+            keep_unknown:
+            keep_spaces:
 
         Returns:
             list of tokens
@@ -157,14 +159,14 @@ class Lexer(object):
             # Find Matching token in regex_list
             for regex in self.regex_list:
                 current_match = re.match(regex['regex'], text)
-                if current_match is not None:
+                if current_match:
                     # match found
                     token_type = regex
                     match = current_match
                     break
                 pass
 
-            if match is not None:
+            if match:
 
                 # New Token Found, remove token from text.
                 text = text.removeprefix(match.group())
@@ -181,7 +183,7 @@ class Lexer(object):
                 if token_type['type'] == TokenType.NEWLINE:
                     line_number += 1
             else:
-                if ignore_unknown:
+                if keep_unknown:
                     token = Token(TokenType.UNKNOWN, text[0], line_number)
                     tokens.append(token)
                     text = text[1:]
@@ -192,4 +194,3 @@ class Lexer(object):
                         f"Syntax Error at line {line_number} \n {text}")
 
         return tokens
-
