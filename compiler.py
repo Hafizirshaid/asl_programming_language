@@ -15,6 +15,7 @@ class ExecutionTree:
     def __init__(self) -> None:
         self.tree = []
         self.symbols_table = SymbolTable()
+        self.parent = None
 
     def append(self, item):
         self.tree.append(item)
@@ -41,11 +42,18 @@ class Compiler(object):
         for statement in statements:
             if (isinstance(statement, ElseIf) or
                 isinstance(statement, Else) or
-                isinstance(statement, For) or
                 isinstance(statement, While)):
-
                 stack.append(statement)
 
+            if isinstance(statement, For):
+                # add for loop variable
+                if statement.loop_initial_variable:
+                    loop_initial_variable = Variable(statement.loop_initial_variable)
+                    self._handle_one_line_statement(execution_tree, stack, loop_initial_variable)
+
+                stack.append(statement)
+                #print(statement)
+                pass
             if (isinstance(statement, Echo) or
                 isinstance(statement, Break)):
 
@@ -65,8 +73,12 @@ class Compiler(object):
             if isinstance(statement, Fi):
                 self._handle_endif(execution_tree, stack)
 
-            if isinstance(statement, EndFor) or isinstance(statement, EndWhile):
+            if isinstance(statement, EndFor):
+                self._handle_end_forloop_statement(execution_tree, stack)
+
+            if isinstance(statement, EndWhile):
                 self._handle_end_statement(execution_tree, stack)
+
 
         # TODO remove this function, try to set parents when looping thru 
         # list of statements and adding elements to stack
@@ -94,6 +106,7 @@ class Compiler(object):
                 isinstance(i, Else)):
                 self.store_variables_in_symbols_table_for_statements(i.statements)
                 pass
+
             if isinstance(i, ConditionStatement):
                 self.store_variables_in_symbols_table_for_statements(i.if_statmenet.statements)
 
@@ -106,27 +119,48 @@ class Compiler(object):
         pass
 
     def find_symbol(self, i:Variable):
-        symbol = None
-        ptr = i.parent
-        if isinstance(ptr, ExecutionTree):
-            return ptr.symbols_table
 
-        while not isinstance(ptr, ExecutionTree):
+        ptr = i.parent
+        symbol = None
+        while ptr:
             if (isinstance(ptr, For) or
                 isinstance(ptr, While) or
                 isinstance(ptr, If) or
                 isinstance(ptr, ElseIf) or
-                isinstance(ptr, Else)):
+                isinstance(ptr, Else) or 
+                isinstance(ptr, ExecutionTree)):
+
                 if ptr.symbols_table.get_entry_value(i.variable_name):
                     symbol = ptr.symbols_table
                     break
 
-            ptr = ptr.parent
             if isinstance(ptr, ConditionStatement):
                 ptr = ptr.parent
-        if symbol is None:
-            if ptr.symbols_table.get_entry_value(i.variable_name):
-                symbol = ptr.symbols_table
+                continue
+            # Go Up
+            ptr = ptr.parent
+            pass
+
+        # symbol = None
+        # if isinstance(ptr, ExecutionTree):
+        #     return ptr.symbols_table
+
+        # while not isinstance(ptr, ExecutionTree):
+        #     if (isinstance(ptr, For) or
+        #         isinstance(ptr, While) or
+        #         isinstance(ptr, If) or
+        #         isinstance(ptr, ElseIf) or
+        #         isinstance(ptr, Else)):
+        #         if ptr.symbols_table.get_entry_value(i.variable_name):
+        #             symbol = ptr.symbols_table
+        #             break
+
+        #     ptr = ptr.parent
+        #     if isinstance(ptr, ConditionStatement):
+        #         ptr = ptr.parent
+        # if symbol is None:
+        #     if ptr.symbols_table.get_entry_value(i.variable_name):
+        #         symbol = ptr.symbols_table
         return symbol
 
     def store_variables_in_symbols_table_for_statements(self, statements:list[Statement]):
@@ -261,6 +295,15 @@ class Compiler(object):
 
     def _handle_end_statement(self, execution_tree, stack):
         end = stack.pop()
+        if stack:
+            stack[-1].statements.append(end)
+        else:
+            execution_tree.append(end)
+
+    def _handle_end_forloop_statement(self, execution_tree, stack):
+        end = stack.pop()
+        increment_variable = Variable(end.loop_increment)
+        end.statements.append(increment_variable)
         if stack:
             stack[-1].statements.append(end)
         else:

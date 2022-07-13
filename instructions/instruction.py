@@ -92,7 +92,7 @@ class VariableInstruction(Instruction):
     def __init__(self, variable_expression: str, variable_name="", symbols_table=None) -> None:
         super().__init__(InstructionType.VARIABLE)
         self.variable_expression = variable_expression
-        self.variable_name = self.variable_expression.split("=")[0]
+        self.variable_name = self.variable_expression.split("=")[0].strip(" ")
         self.symbols_table = symbols_table
         self.variable_statement = None
 

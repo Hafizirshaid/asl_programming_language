@@ -109,6 +109,9 @@ class Parser:
                     index += 1
                     next_lex = lexes[index]
                 forloop = For(condition, [])
+                #append variable statement for for loop variable
+                # for_loop_variable = Variable(forloop.loop_initial_variable)
+                # statements.append(for_loop_variable)
                 statements.append(forloop)
 
             if lex_type == TokenType.TO:

@@ -113,22 +113,23 @@ class InstructionsGenerator:
                     Label_2:
                     after statments
                 """
-        loop_initial_variable = VariableInstruction(
-            statement.loop_initial_variable)
-        self.add_instruction(loop_initial_variable)
+        # loop_initial_variable = VariableInstruction(
+        #     statement.loop_initial_variable)
+
+        # self.add_instruction(loop_initial_variable)
 
         label_1 = self.generate_label()
         self.add_instruction(label_1)
 
         label2 = self.generate_label()
-        jump_for = JumpIfInstruction(label2, statement.loop_condition, statement)
+        jump_for = JumpIfNotInstruction(label2.lable_name, statement.loop_condition, statement)
         self.add_instruction(jump_for)
         # generate insts for loop statements
         self.build_instructions_list(statement.statements)
 
-        incremnt_var = VariableInstruction(statement.loop_increment)
+        # incremnt_var = VariableInstruction(statement.loop_increment)
 
-        self.add_instruction(incremnt_var)
+        # self.add_instruction(incremnt_var)
 
         goto_l1 = GotoInstruction(label_1.lable_name)
         self.add_instruction(goto_l1)

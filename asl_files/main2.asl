@@ -1,7 +1,7 @@
 echo "------ start ------"
 echo "helllo"
 
-x = 10
+x = 10.1
 y = 20
 x = x + 10
 y = y + 50
@@ -52,6 +52,7 @@ elif "x<9"
         x = 80
     else
         echo "else 1"
+        hh = 33
     fi
 else
     echo "else"
@@ -59,6 +60,7 @@ else
     if "x == 29"
         echo "inside second x"
         x = 80
+        hh = 2
     else
         echo "else 1"
     fi

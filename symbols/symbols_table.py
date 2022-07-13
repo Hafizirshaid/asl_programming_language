@@ -1,5 +1,4 @@
-
-
+# Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
 class SymbolTableEntry:
     def __init__(self, name: str, value: str, type = None) -> None:

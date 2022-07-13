@@ -1,13 +1,10 @@
 # Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
-from lib2to3.pgen2 import token
-from tokenize import Token
 from compiler import ExecutionTree
 from expression_evaluator import Evaluator
 from instructions.instruction import EchoInstruction, InstructionType
 from lexer import Lexer, TokenType
 from statements.statement import ConditionStatement, Else, ElseIf, For, If, While
-from symbols.symbols_table import SymbolTable
 
 
 class Executor(object):
@@ -57,7 +54,7 @@ class Executor(object):
              # Jump If Instruction
             elif current_instruction.type == InstructionType.JUMP_IF:
                 result = self.evaluate_condition(
-                    current_instruction.condition, instruction)
+                    current_instruction.condition, current_instruction)
                 if result:
                     self.instruction_pointer = self.label_index_table[current_instruction.goto_label]
                 else:
@@ -77,13 +74,28 @@ class Executor(object):
                 self.increment_instruction_pointer()
 
     def build_label_index_table(self, instructions):
+        """
+        Desc:
+
+        Args:
+
+        Returns:
+
+        """
         for index, instruction in enumerate(instructions):
             if instruction.type == InstructionType.LABEL:
                 self.label_index_table[instruction.lable_name] = index
         return instruction
 
     def evaluate_condition(self, condition, instruction):
-        #print(f"eval {condition}")
+        """
+        Desc:
+
+        Args:
+
+        Returns:
+
+        """
         tokens = Lexer().tokenize(condition.strip('"'))
         final_condition = ""
         for token in tokens:
@@ -98,12 +110,25 @@ class Executor(object):
         return result
 
     def execute_goto_instruction(self, current_instruction):
+        """
+        Desc:
+
+        Args:
+
+        Returns:
+
+        """
         self.instruction_pointer = self.label_index_table[current_instruction.goto_label]
 
     def handle_variable(self, instruction):
-        """ handle variable instruction """
+        """
+        Desc:
 
-        #print(f"handling variable {instruction}")
+        Args:
+
+        Returns:
+
+        """
 
         variable_expression = instruction.variable_expression
         variable_value = variable_expression.split("=")[1]
@@ -141,26 +166,39 @@ class Executor(object):
             symbol_table.modify_entry(name, value)
 
     def find_symbol_table(self, name: str, statement):
-        stmt = statement
-        # pointer that keeps going up.
-        if (isinstance(stmt, For)
-            or isinstance(stmt, While)
-            or isinstance(stmt, If)
-            or isinstance(stmt, ElseIf)
-            or isinstance(stmt, Else)
-            or isinstance(stmt, ExecutionTree)):
-            if statement.symbols_table and statement.symbols_table.get_entry_value(name):
+        """
+        Desc:
+
+        Args:
+
+        Returns:
+
+        """
+
+        if (isinstance(statement, For)
+            or isinstance(statement, While)
+            or isinstance(statement, If)
+            or isinstance(statement, ElseIf)
+            or isinstance(statement, Else)
+            or isinstance(statement, ExecutionTree)):
+
+            if (statement.symbols_table
+                and statement.symbols_table.get_entry_value(name)):
                 return statement.symbols_table
 
+        # pointer that keeps going up.
         ptr = statement.parent
+
         while True:
 
             if isinstance(ptr, ConditionStatement):
                 ptr = ptr.parent
+
             if ptr.symbols_table.get_entry_value(name):
                 return ptr.symbols_table
 
             if isinstance(ptr, ExecutionTree):
+
                 break
             ptr = ptr.parent
         pass
@@ -176,7 +214,11 @@ class Executor(object):
         Args:
             instruction:
         """
-        tokens = Lexer().tokenize(instruction.echo_string.strip('"'), ignore_unknown=True, keep_spaces=True)
+        tokens = Lexer().tokenize(
+            instruction.echo_string.strip('"'), 
+            ignore_unknown=True, 
+            keep_spaces=True)
+
         final_echo_string = ""
         for token in tokens:
             if token.token_type == TokenType.IDENTIFICATIONBETWEENBRSCKETS:

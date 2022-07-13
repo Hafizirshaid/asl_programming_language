@@ -35,7 +35,9 @@ class Variable(Statement):
         super().__init__(StatementType.VAR)
         self.variable_expression = variable_expression
         chunks = self.variable_expression.split("=")
-        self.variable_name = chunks[0]
+        # remove empty space from variable name
+        self.variable_name = chunks[0].strip(" ")
+        self.variable_name = self.variable_name.strip('"')
         self.variable_value = chunks[1]
         self.symbols_table = None
 
@@ -69,7 +71,7 @@ class For(Statement):
     def __init__(self, condition: str, statements: list) -> None:
         super().__init__(StatementType.FOR)
         self.statements = statements
-        self.conditon = condition
+        self.conditon = condition.strip('"')
 
         chunks = self.conditon.split(';')
         # Dirty way to split things, TODO find a better solution
@@ -156,3 +158,4 @@ class Break(Statement):
 
     def __init__(self) -> None:
         super().__init__(StatementType.BREAK)
+
