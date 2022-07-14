@@ -1,27 +1,19 @@
 x = 10
-y = 20
-z = 11
 
-echo  "{x} y {y} z {z}"
-w = x
-echo "w is {w}"
-
-if "x == 10"
-    zz = w
-    echo "{zz}"
-    x = w + 1
-    zz = w + 1
-    echo "zz {zz} x {x}"
-    if "x == 11"
-        old = 1222
-        echo "old {old}"
-        xx = w
-        y = w + 1
-        xx = w + 1
-        echo "zz {xx} x {y} x {x}"
+for "i=0;i<10;i=i+1"
+    if "i==0"
+        echo "stmt says i is 0"
+    elif "i==1"
+        echo "stmt says i is 1"
+    elif "i==2"
+        echo "stmt says i is 2"
+    elif "i==3"
+        echo "stmt says i is 3"
+    elif "i==4"
+        echo "stmt says i is 4"
+    elif "i==5"
+        echo "stmt says i is 5"
+    else
+        echo "not checked i is {i}"
     fi
-echo "hi"
-
-fi
-
-echo "hi2"
+endfor

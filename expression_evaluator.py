@@ -95,17 +95,28 @@ class Evaluator:
         expression = expression.strip('"')
 
         lexer = Lexer()
-        tokens = lexer.tokenize(expression)
+        tokens = lexer.tokenize_text(expression)
         result = False
 
         # if only one token, return the same expression
         if len(tokens) == 1:
             result = expression
         else:
-            result = self.evaluate_tokens(tokens)
+            try:
+                result = self.evaluate_tokens(tokens)
+            except:
+                raise Exception(f"Unable to evaluate expression {expression}")
         return result
 
     def evaluate_tokens(self, tokens: list):
+        """
+        Desc:
+           Evaluate list of tokens and returns result
+        Args:
+            tokens: list of tokens
+        Returns:
+            result of evaluating tokens
+        """
 
         values_stack = []
         operators_stack = []

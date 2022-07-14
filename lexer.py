@@ -16,6 +16,7 @@ from exceptions.syntax_error_exception import SyntaxError
 
 class TokenType(Enum):
     """ Enum Representing Token type """
+
     COMMENT = 1
     CALL = 2
     METHOD = 3
@@ -63,6 +64,7 @@ class TokenType(Enum):
     UNKNOWN = 45
     CONDITION = 46
     SEMICOLON = 47
+    PRINT = 48
 
 
 class Token:
@@ -75,6 +77,7 @@ class Token:
             match: the match string
             line_number: line number
         """
+
         self.token_type = token_type
         self.match = match
         self.line_number = line_number
@@ -110,6 +113,7 @@ class Lexer(object):
             {'type': TokenType.WHILE, 'regex': '^while'},
             {'type': TokenType.DO, 'regex': '^do'},
             {'type': TokenType.ECHO, 'regex': '^echo'},
+            {'type': TokenType.PRINT, 'regex': '^print'},
             {'type': TokenType.INPUT, 'regex': '^input'},
             #{'type': TokenType.CONDITION, 'regex': "\(([^)]+)\)"},
             {'type': TokenType.IDENTIFICATIONBETWEENBRSCKETS, 'regex': "\{.*?\}"},
@@ -142,7 +146,7 @@ class Lexer(object):
             {'type': TokenType.CLOSINGPARANTHESIS, 'regex': '^\)'}
         ]
 
-    def tokenize(self, text: str, keep_unknown=False, keep_spaces=False) -> list:
+    def tokenize_text(self, text: str, keep_unknown=False, keep_spaces=False) -> list:
         """ Tokenize source file text
         Args:
             text: text file string

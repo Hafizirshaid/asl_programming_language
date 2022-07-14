@@ -9,7 +9,7 @@ from statements.statement import ConditionStatement, Else, ElseIf, For, If, Whil
 
 class Executor(object):
     """
-    Executor Class 
+    Executor Class
     """
 
     def __init__(self) -> None:
@@ -31,47 +31,54 @@ class Executor(object):
             return ""
 
         self.execution_tree = execution_tree
-        instruction = self.build_label_index_table(instructions)
+        self.build_label_index_table(instructions)
 
         while self.instruction_pointer < len(instructions):
 
             current_instruction = instructions[self.instruction_pointer]
 
-            # Echo Instruction
-            if current_instruction.type == InstructionType.ECHO:
-                self.execute_echo_instruction(current_instruction)
-                self.increment_instruction_pointer()
+            self.execute_instruction(current_instruction)
+
+        return
+
+    def execute_instruction(self, current_instruction):
+        # Echo Instruction
+        if current_instruction.type == InstructionType.ECHO:
+            self.execute_echo_instruction(current_instruction)
+            self.increment_instruction_pointer()
 
             # Variable Instruction
-            elif current_instruction.type == InstructionType.VARIABLE:
-                self.handle_variable(current_instruction)
-                self.increment_instruction_pointer()
+        elif current_instruction.type == InstructionType.VARIABLE:
+            self.handle_variable(current_instruction)
+            self.increment_instruction_pointer()
 
              # Goto Instruction
-            elif current_instruction.type == InstructionType.GOTO:
-                self.execute_goto_instruction(current_instruction)
+        elif current_instruction.type == InstructionType.GOTO:
+            self.execute_goto_instruction(current_instruction)
 
              # Jump If Instruction
-            elif current_instruction.type == InstructionType.JUMP_IF:
-                result = self.evaluate_condition(
+        elif current_instruction.type == InstructionType.JUMP_IF:
+            result = self.evaluate_condition(
                     current_instruction.condition, current_instruction)
-                if result:
-                    self.instruction_pointer = self.label_index_table[current_instruction.goto_label]
-                else:
-                    self.increment_instruction_pointer()
+            if result:
+                self.instruction_pointer = self.label_index_table[current_instruction.goto_label]
+            else:
+                self.increment_instruction_pointer()
 
             # Jump if not Instruction
-            elif current_instruction.type == InstructionType.JUMP_IF_NOT:
-                result = self.evaluate_condition(
+        elif current_instruction.type == InstructionType.JUMP_IF_NOT:
+            result = self.evaluate_condition(
                     current_instruction.condition, current_instruction)
-                if not result:
-                    self.instruction_pointer = self.label_index_table[current_instruction.goto_label]
-                else:
-                    self.increment_instruction_pointer()
+            if not result:
+                self.instruction_pointer = self.label_index_table[current_instruction.goto_label]
+            else:
+                self.increment_instruction_pointer()
 
             # Label Instruction
-            elif current_instruction.type == InstructionType.LABEL:
-                self.increment_instruction_pointer()
+        elif current_instruction.type == InstructionType.LABEL:
+            self.increment_instruction_pointer()
+
+        return
 
     def build_label_index_table(self, instructions):
         """
@@ -85,7 +92,8 @@ class Executor(object):
         for index, instruction in enumerate(instructions):
             if instruction.type == InstructionType.LABEL:
                 self.label_index_table[instruction.lable_name] = index
-        return instruction
+
+        return
 
     def evaluate_condition(self, condition, instruction):
         """
@@ -96,7 +104,7 @@ class Executor(object):
         Returns:
 
         """
-        tokens = Lexer().tokenize(condition.strip('"'))
+        tokens = Lexer().tokenize_text(condition.strip('"'))
         final_condition = ""
         for token in tokens:
             if token.token_type == TokenType.IDENTIFICATION:
@@ -134,7 +142,7 @@ class Executor(object):
         variable_name = variable_expression.split("=")[0].strip(" ")
         variable_value = variable_expression.split("=")[1].strip(" ")
 
-        tokens = Lexer().tokenize(variable_value)
+        tokens = Lexer().tokenize_text(variable_value)
 
         if len(tokens) == 1:
             if tokens[0].token_type == TokenType.IDENTIFICATION:
@@ -170,6 +178,8 @@ class Executor(object):
                 name, instruction.variable_statement)
             symbol_table.modify_entry(name, value)
 
+        return
+
     def find_symbol_table(self, name: str, statement):
         """
         Desc:
@@ -185,7 +195,7 @@ class Executor(object):
             or isinstance(statement, If)
             or isinstance(statement, ElseIf)
             or isinstance(statement, Else)
-                or isinstance(statement, ExecutionTree)):
+            or isinstance(statement, ExecutionTree)):
 
             if (statement.symbols_table
                     and statement.symbols_table.get_entry_value(name)):
@@ -219,7 +229,7 @@ class Executor(object):
         Args:
             instruction:
         """
-        tokens = Lexer().tokenize(
+        tokens = Lexer().tokenize_text(
             instruction.echo_string.strip('"'),
             keep_unknown=True,
             keep_spaces=True)

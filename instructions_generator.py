@@ -174,7 +174,7 @@ class InstructionsGenerator:
         """handle_condition_statement"""
         end_label = self.generate_label()
         self.handle_if_condition(statement, end_label)
-        self.handle_if_else_statements(statement)
+        self.handle_if_else_statements(statement, end_label)
         self.handle_else_statement(statement)
         self.add_instruction(end_label)
 
@@ -189,7 +189,7 @@ class InstructionsGenerator:
             self.build_instructions_list(statement.else_statement.statements)
             pass
 
-    def handle_if_else_statements(self, statement):
+    def handle_if_else_statements(self, statement, end_label):
         """ handle_if_else_statements """
         if statement.elseif_statements:
             for else_if in statement.elseif_statements:
@@ -198,6 +198,10 @@ class InstructionsGenerator:
                     label_3.lable_name, else_if.condition, else_if)
                 self.add_instruction(jump2)
                 self.build_instructions_list(else_if.statements)
+
+                goto_end = GotoInstruction(end_label.lable_name)
+                self.add_instruction(goto_end)
+
                 self.add_instruction(label_3)
 
     def handle_if_condition(self, statement, end_label):
@@ -220,6 +224,7 @@ class InstructionsGenerator:
                 Label_2
                 end_label
         """
+
         if not statement.if_statmenet:
             raise Exception(
                 "Unexprected state, if statement should not be none inside conditon")

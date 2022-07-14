@@ -1,7 +1,6 @@
 # Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
 from enum import Enum
-from symbols import symbols_table
 from symbols.symbols_table import SymbolTable
 
 
