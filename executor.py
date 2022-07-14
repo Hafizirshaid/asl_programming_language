@@ -42,6 +42,12 @@ class Executor(object):
         return
 
     def execute_instruction(self, current_instruction):
+        """
+        Args:
+
+        Returns:
+
+        """
         # Echo Instruction
         if current_instruction.type == InstructionType.ECHO:
             self.execute_echo_instruction(current_instruction)
@@ -139,8 +145,8 @@ class Executor(object):
         """
 
         variable_expression = instruction.variable_expression
-        variable_name = variable_expression.split("=")[0].strip(" ")
-        variable_value = variable_expression.split("=")[1].strip(" ")
+        variable_name = variable_expression.split("=")[0].strip()
+        variable_value = variable_expression.split("=")[1].strip()
 
         tokens = Lexer().tokenize_text(variable_value)
 
@@ -221,6 +227,10 @@ class Executor(object):
     def increment_instruction_pointer(self):
         """
         Increment Instruction Pointer by 1
+        Args:
+            None
+        Returns:
+            None
         """
         self.instruction_pointer += 1
 
@@ -238,8 +248,8 @@ class Executor(object):
         for token in tokens:
             if token.token_type == TokenType.IDENTIFICATIONBETWEENBRSCKETS:
                 var_name = token.match
-                var_name = var_name.strip("{")
-                var_name = var_name.strip("}")
+                var_name = var_name.strip("{}")
+                #var_name = var_name.strip("}")
                 symbol_table = self.find_symbol_table(
                     var_name, instruction.statement)
                 if not symbol_table:
@@ -249,3 +259,4 @@ class Executor(object):
             else:
                 final_echo_string += token.match
         print(final_echo_string)
+        return

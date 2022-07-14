@@ -3,7 +3,7 @@
 PYTHON=/usr/local/bin/python3
 
 for i in `ls asl_files`;do
-    echo "------running $i `date`------"
+    echo "------ Running $i `date` ------"
     $PYTHON main.py -f asl_files/$i
-    echo "------done $i------"
+    echo "------ Done $i    `date` ------"
 done

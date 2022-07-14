@@ -98,7 +98,9 @@ class Parser:
                 statements.append(break_statement)
                 pass
 
-            elif lex_type == TokenType.CONT:
+            elif lex_type == TokenType.CONTINUE:
+                continue_statement = Continue()
+                statements.append(continue_statement)
                 pass
 
             elif lex_type == TokenType.FOR:

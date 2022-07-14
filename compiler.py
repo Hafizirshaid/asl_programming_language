@@ -11,6 +11,7 @@ from symbols.symbols_table import SymbolTable
 
 
 class ExecutionTree:
+    """ Execution Tree Class """
 
     def __init__(self) -> None:
         """ Execution Tree Constructor """
@@ -85,9 +86,16 @@ class Compiler(object):
             self.handle_for_loop(execution_tree, stack, statement)
 
         elif (isinstance(statement, Echo) or
-              isinstance(statement, Break) or
+              isinstance(statement, Continue) or
               isinstance(statement, Variable)):
             self._handle_one_line_statement(execution_tree, stack, statement)
+
+        elif isinstance(statement, Break):
+            self._handle_break_statement(execution_tree, stack, statement)
+
+
+
+            pass
 
         elif isinstance(statement, If):
             self._handle_if(stack, statement)
@@ -100,6 +108,21 @@ class Compiler(object):
 
         elif isinstance(statement, EndWhile):
             self._handle_end_statement(execution_tree, stack)
+
+    def _handle_break_statement(self, execution_tree: ExecutionTree, stack, statement: Break):
+        """ Store variables in symbols table
+        Args:
+            execution_tree:
+        Returns:
+            None
+        """
+        if stack:
+            for stack_item in stack[::-1]:
+                if isinstance(stack_item, While) or isinstance(stack_item, For):
+                     self._handle_one_line_statement(execution_tree, stack, statement)
+                     break
+        else:
+            raise Exception("No Loop Found")
 
     def store_variables_in_symbols_table(self, execution_tree: ExecutionTree):
         """ Store variables in symbols table
@@ -249,6 +272,7 @@ class Compiler(object):
         Returns:
             None
         """
+
         for statement in statements:
             statement.parent = parent
             if (self.is_scope_statement(statement)):

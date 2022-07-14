@@ -5,6 +5,7 @@ from symbols.symbols_table import SymbolTable
 
 
 class StatementType(Enum):
+    """ Statement Type Enum"""
 
     ECHO = 1
     VAR = 2
@@ -22,32 +23,65 @@ class StatementType(Enum):
 
 
 class Statement(object):
+    """ Statement Class """
 
     def __init__(self, type: StatementType) -> None:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
         self.type = type
         self.parent = None
         pass
 
 
 class Variable(Statement):
+    """ Variable Statement Class """
 
     def __init__(self, variable_expression: str) -> None:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         super().__init__(StatementType.VAR)
         self.variable_expression = variable_expression
         chunks = self.variable_expression.split("=")
         # remove empty space from variable name
-        self.variable_name = chunks[0].strip(" ")
+        self.variable_name = chunks[0].strip()
         self.variable_name = self.variable_name.strip('"')
         self.variable_value = chunks[1]
         self.symbols_table = None
 
     def __str__(self) -> str:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
         return "var " + str(self.variable_expression)
 
 
 class While(Statement):
+    """ While Statement Class """
 
     def __init__(self, condition: str, statements: list) -> None:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         super().__init__(StatementType.WHILE)
         self.condition = condition
         self.statements = statements
@@ -55,20 +89,46 @@ class While(Statement):
 
 
 class If(Statement):
+    """ If Statement Class """
 
     def __init__(self, condition: str, statements: list) -> None:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         super().__init__(StatementType.IF)
         self.statements = statements
         self.condition = condition
         self.symbols_table = SymbolTable()
 
     def __str__(self) -> str:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         return str(self.condition)
 
 
 class For(Statement):
+    """ For Statement Class """
 
     def __init__(self, condition: str, statements: list) -> None:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         super().__init__(StatementType.FOR)
         self.statements = statements
         self.conditon = condition.strip('"')
@@ -81,35 +141,95 @@ class For(Statement):
         self.symbols_table = SymbolTable()
 
     def __str__(self) -> str:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
         return f"For Loop {self.conditon}"
 
 
 class Fi(Statement):
+    """ Fi Statement Class (EndIf)"""
 
     def __init__(self) -> None:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         super().__init__(StatementType.ENDIF)
 
     def __str__(self) -> str:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         return "End If"
 
 
 class EndWhile(Statement):
+    """ EndWhile Statement Class """
 
     def __init__(self) -> None:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         super().__init__(StatementType.ENDWHILE)
 
 
 class EndFor(Statement):
+    """ EndFor Statement Class """
 
     def __init__(self) -> None:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         super().__init__(StatementType.ENDFOR)
 
     def __str__(self) -> str:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         return "End For Loop"
 
 
 class ElseIf(Statement):
+    """ ElseIf Statement Class """
+
     def __init__(self, condition: str, statements: list) -> None:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         super().__init__(StatementType.ELSEIF)
         self.statements = statements
         self.condition = condition
@@ -117,32 +237,74 @@ class ElseIf(Statement):
 
 
 class Else(Statement):
+    """ Else Statement Class """
 
     def __init__(self, statements) -> None:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         super().__init__(StatementType.ELSE)
         self.statements = statements
         self.symbols_table = SymbolTable()
 
     def __str__(self) -> str:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         return "Else Statement"
 
 
 class Echo(Statement):
+    """ Echo Statement Class """
 
     def __init__(self, echo_string: str) -> None:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         super().__init__(StatementType.ECHO)
         self.echo_string = echo_string
 
     def __str__(self) -> str:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
+
         return str(self.echo_string)
 
 
 class ConditionStatement(Statement):
+    """ Condition Statement Class """
 
     def __init__(self,
                  if_statmenet: If,
                  elseif_statements: list,
                  else_statement: Else) -> None:
+        """
+
+        Args:
+            None
+        Returns:
+            None
+        """
 
         super().__init__(StatementType.CONDITION)
 
@@ -155,11 +317,28 @@ class ConditionStatement(Statement):
 
 
 class Break(Statement):
+    """ Break Statement Class """
 
     def __init__(self) -> None:
+        """ Break Statement Class Constructor
+        Args:
+            None
+        Returns:
+            None
+        """
         super().__init__(StatementType.BREAK)
+        #self.loop_statement = loop_statement
 
 class Continue(Statement):
+    """ Continue Statement Class """
 
     def __init__(self) -> None:
+        """
+            Continue Statement Class Constructor
+        Args:
+            None
+        Returns:
+            None
+        """
+
         super().__init__(StatementType.CONTINUE)

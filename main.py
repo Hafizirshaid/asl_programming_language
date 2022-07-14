@@ -1,6 +1,7 @@
 # Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
 """
+
 The MIT License (MIT)
 
 Copyright (c) 2022 Hafez Irshaid
@@ -25,7 +26,6 @@ SOFTWARE.
 """
 
 import argparse
-import logging
 from parser import Parser
 
 from compiler import Compiler
@@ -40,7 +40,7 @@ def main():
     parser = argparse.ArgumentParser("Asl Programming Language Command Line")
 
     parser.add_argument('-f', '--filename',
-                        default='asl_files/variable.asl',
+                        default='asl_files/continue_statement.asl',
                         help='name of source file',
                         nargs=argparse.OPTIONAL,
                         )

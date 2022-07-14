@@ -12,13 +12,14 @@ from instructions.instruction import (EchoInstruction, GotoInstruction,
 from statements.statement import *
 
 
-
 class InstructionsGenerator:
 
     def __init__(self) -> None:
         self.instruction_list = []
         self.label_counter = 0
         self.execution_tree = None
+        self.start_label_loop_stack = []
+        self.end_label_loop_stack = []
         pass
 
     def create_label_tag(self):
@@ -79,11 +80,17 @@ class InstructionsGenerator:
                 # TODO implement this
                 # find parent for or while. create goto instruction to end of for
                 # and while
+                loop_end_label = self.end_label_loop_stack[-1]
+                goto = GotoInstruction(loop_end_label.lable_name)
+                self.add_instruction(goto)
                 pass
             elif isinstance(statement, Continue):
                 # TODO implement this
                 # find parent for or while. create goto instruction to end of for
                 # and while
+                loop_start_label = self.start_label_loop_stack[-1]
+                goto = GotoInstruction(loop_start_label.lable_name)
+                self.add_instruction(goto)
                 pass
         return self.instruction_list
 
@@ -118,6 +125,7 @@ class InstructionsGenerator:
                     Label_1:
                         Jump If $condition to Label_2
                         statements inside for
+                    loop_increment_label:
                         increment
                         goto Label_1
                     Label_2:
@@ -126,12 +134,22 @@ class InstructionsGenerator:
 
         label_1 = self.generate_label()
         self.add_instruction(label_1)
+        before_increment_label = self.generate_label()
 
+        self.start_label_loop_stack.append(before_increment_label)
         label2 = self.generate_label()
         jump_for = JumpIfNotInstruction(label2.lable_name, statement.loop_condition, statement)
         self.add_instruction(jump_for)
         # generate instruction for loop statements
+        self.end_label_loop_stack.append(label2)
+
+
         self.build_instructions_list(statement.statements)
+
+        self.instruction_list.insert(len(self.instruction_list) - 1, before_increment_label)
+        
+        self.start_label_loop_stack.pop()
+        self.end_label_loop_stack.pop()
 
         goto_l1 = GotoInstruction(label_1.lable_name)
         self.add_instruction(goto_l1)
@@ -159,16 +177,24 @@ class InstructionsGenerator:
                 """
         label_1 = self.generate_label()
         self.instruction_list.append(label_1)
+        self.start_label_loop_stack.append(label_1)
 
         label2 = self.generate_label()
         jump = JumpIfNotInstruction(label2.lable_name, statement.condition, statement)
         self.instruction_list.append(jump)
+        self.end_label_loop_stack.append(label2)
+
         # call for children
         self.build_instructions_list(statement.statements)
 
         goto = GotoInstruction(label_1.lable_name)
         self.instruction_list.append(goto)
         self.instruction_list.append(label2)
+
+        self.start_label_loop_stack.pop()
+        self.end_label_loop_stack.pop()
+
+
 
     def handle_condition_statement(self, statement):
         """handle_condition_statement"""

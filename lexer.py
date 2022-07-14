@@ -27,7 +27,7 @@ class TokenType(Enum):
     ENDFOR = 8
     ENDWHILE = 9
     BREAK = 10
-    CONT = 11
+    CONTINUE = 11
     FOR = 12
     TO = 13
     INCR = 14
@@ -106,7 +106,7 @@ class Lexer(object):
             {'type': TokenType.ENDFOR, 'regex': '^endfor'},
             {'type': TokenType.ENDWHILE, 'regex': '^endwhile'},
             {'type': TokenType.BREAK, 'regex': '^break'},
-            {'type': TokenType.CONT, 'regex': '^cont'},
+            {'type': TokenType.CONTINUE, 'regex': '^continue'},
             {'type': TokenType.FOR, 'regex': '^for'},
             {'type': TokenType.TO, 'regex': '^to'},
             {'type': TokenType.INCR, 'regex': '^incr'},
