@@ -15,7 +15,7 @@ def main():
     parser = argparse.ArgumentParser("Asl Programming Language Command Line")
 
     parser.add_argument('-f', '--filename',
-                        default='asl_files/prime.asl',
+                        default='asl_files/variable.asl',
                         help='name of source file',
                         nargs=argparse.OPTIONAL,
                         )
@@ -56,4 +56,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print("Unhandled Exception ", e)

@@ -19,6 +19,7 @@ class StatementType(Enum):
     WHILE = 10
     ENDWHILE = 11
     BREAK = 12
+    CONTINUE = 13
 
 
 class Statement(object):
@@ -159,3 +160,7 @@ class Break(Statement):
     def __init__(self) -> None:
         super().__init__(StatementType.BREAK)
 
+class Continue(Statement):
+
+    def __init__(self) -> None:
+        super().__init__(StatementType.CONTINUE)

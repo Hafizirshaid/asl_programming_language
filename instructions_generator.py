@@ -75,6 +75,16 @@ class InstructionsGenerator:
                 self.handle_echo_statement(statement)
             elif isinstance(statement, Variable):
                 self.handle_variable_statement(statement)
+            elif isinstance(statement, Break):
+                # TODO implement this
+                # find parent for or while. create goto instruction to end of for
+                # and while
+                pass
+            elif isinstance(statement, Continue):
+                # TODO implement this
+                # find parent for or while. create goto instruction to end of for
+                # and while
+                pass
         return self.instruction_list
 
     def handle_variable_statement(self, statement):
@@ -120,7 +130,7 @@ class InstructionsGenerator:
         label2 = self.generate_label()
         jump_for = JumpIfNotInstruction(label2.lable_name, statement.loop_condition, statement)
         self.add_instruction(jump_for)
-        # generate insts for loop statements
+        # generate instruction for loop statements
         self.build_instructions_list(statement.statements)
 
         goto_l1 = GotoInstruction(label_1.lable_name)

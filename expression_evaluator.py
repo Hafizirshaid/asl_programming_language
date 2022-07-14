@@ -11,7 +11,7 @@ class Evaluator:
     """ Expression Evaluator Class """
 
     def calculate(self, value1, value2, operator):
-        """ Calcuate the result value
+        """ Calcuates the result value
             of v1 and v2 by op
         Args:
             v1: first value
@@ -56,7 +56,8 @@ class Evaluator:
         Args:
             token_type: type of token
         Returns:
-            True token is operator, False if token is not operator
+            True token is an operator
+            False if token is not an operator
         """
         return (token_type == TokenType.EQUIVALENT or
                 token_type == TokenType.EQUAL or

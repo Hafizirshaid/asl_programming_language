@@ -1,6 +1,6 @@
 Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
-Asil Programming Language
+Asl Programming Language
 
 keywords:
     if, elseif, else, fi, for, while, endfor, endwhile, echo, break
@@ -39,7 +39,6 @@ TODO:
     - break
     - continue
     - Arrays
-    - Lists
     - Signed number comparisons - sign minus
-    - x = y is not supported
     - handle ++ and --
+    - Syntax Error Checking

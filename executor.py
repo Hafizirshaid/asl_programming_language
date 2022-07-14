@@ -131,16 +131,21 @@ class Executor(object):
         """
 
         variable_expression = instruction.variable_expression
-        variable_value = variable_expression.split("=")[1]
+        variable_name = variable_expression.split("=")[0].strip(" ")
+        variable_value = variable_expression.split("=")[1].strip(" ")
 
         tokens = Lexer().tokenize(variable_value)
 
         if len(tokens) == 1:
-            # TODO handle case where x = y not only x = 10
             if tokens[0].token_type == TokenType.IDENTIFICATION:
                 symbol_table = self.find_symbol_table(
                     variable_value, instruction.variable_statement)
-
+                if not symbol_table:
+                    raise Exception(f"Variable not found {variable_value}")
+                new_value = symbol_table.get_entry_value(variable_value)
+                dest_symbol_table = self.find_symbol_table(
+                    variable_name, instruction.variable_statement)
+                dest_symbol_table.modify_entry(variable_name, new_value.value)
             else:
                 value = Evaluator().evaluate(variable_value)
                 name = instruction.variable_name
@@ -180,10 +185,10 @@ class Executor(object):
             or isinstance(statement, If)
             or isinstance(statement, ElseIf)
             or isinstance(statement, Else)
-            or isinstance(statement, ExecutionTree)):
+                or isinstance(statement, ExecutionTree)):
 
             if (statement.symbols_table
-                and statement.symbols_table.get_entry_value(name)):
+                    and statement.symbols_table.get_entry_value(name)):
                 return statement.symbols_table
 
         # pointer that keeps going up.
@@ -215,8 +220,8 @@ class Executor(object):
             instruction:
         """
         tokens = Lexer().tokenize(
-            instruction.echo_string.strip('"'), 
-            keep_unknown=True, 
+            instruction.echo_string.strip('"'),
+            keep_unknown=True,
             keep_spaces=True)
 
         final_echo_string = ""
@@ -227,6 +232,8 @@ class Executor(object):
                 var_name = var_name.strip("}")
                 symbol_table = self.find_symbol_table(
                     var_name, instruction.statement)
+                if not symbol_table:
+                    raise Exception(f"Variable Not Found {var_name}")
                 value = symbol_table.get_entry_value(var_name)
                 final_echo_string += str(value.value)
             else:

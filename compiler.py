@@ -29,7 +29,7 @@ class Compiler(object):
         pass
 
     def compile(self, statements: list) -> list:
-        """ Compile statements into execution tree
+        """ Compiles statements into execution tree
         Args:
             statements: list of statements
         Returns:
@@ -133,7 +133,7 @@ class Compiler(object):
                 isinstance(statement_pointer, If) or
                 isinstance(statement_pointer, ElseIf) or
                 isinstance(statement_pointer, Else) or
-                isinstance(statement_pointer, ExecutionTree)):
+                    isinstance(statement_pointer, ExecutionTree)):
 
                 if statement_pointer.symbols_table.get_entry_value(statement.variable_name):
                     symbols_table = statement_pointer.symbols_table
@@ -177,7 +177,8 @@ class Compiler(object):
                 symbol = self.find_symbol(statement)
                 # if not found, store it in parents symbol table
                 if not symbol:
-                    statement.parent.symbols_table.add_entry(statement.variable_name, "")
+                    statement.parent.symbols_table.add_entry(
+                        statement.variable_name, "")
                     statement.symbols_table = statement.parent.symbols_table
                 pass
             if (isinstance(statement, For) or
@@ -240,7 +241,7 @@ class Compiler(object):
                 isinstance(statement, While) or
                 isinstance(statement, If) or
                 isinstance(statement, ElseIf) or
-                    isinstance(statement, Else)):
+                isinstance(statement, Else)):
                 self.set_parent_for_statements(statement, statement.statements)
 
             if isinstance(statement, ConditionStatement):

@@ -2,7 +2,6 @@
 
 """
 Lexer Library
-
 """
 
 __version__ = '1.1'
@@ -62,6 +61,9 @@ class TokenType(Enum):
     REAL = 43
     IDENTIFICATIONBETWEENBRSCKETS = 44
     UNKNOWN = 45
+    CONDITION = 46
+    SEMICOLON = 47
+
 
 class Token:
     """ Token Class """
@@ -109,8 +111,10 @@ class Lexer(object):
             {'type': TokenType.DO, 'regex': '^do'},
             {'type': TokenType.ECHO, 'regex': '^echo'},
             {'type': TokenType.INPUT, 'regex': '^input'},
+            #{'type': TokenType.CONDITION, 'regex': "\(([^)]+)\)"},
             {'type': TokenType.IDENTIFICATIONBETWEENBRSCKETS, 'regex': "\{.*?\}"},
-            {'type': TokenType.IDENTIFICATION, 'regex': '^[a-zA-Z_$][a-zA-Z_$0-9]*'},
+            {'type': TokenType.IDENTIFICATION,
+                'regex': '^[a-zA-Z_$][a-zA-Z_$0-9]*'},
             {'type': TokenType.STRING, 'regex': '^"[^"]*"'},
             {'type': TokenType.REAL, 'regex': '[0-9]+\.[0-9]*'},
             {'type': TokenType.NUMBER, 'regex': '^\d+'},
@@ -129,6 +133,7 @@ class Lexer(object):
             {'type': TokenType.AND, 'regex': '^&'},
             {'type': TokenType.OR, 'regex': '^\|'},
             {'type': TokenType.NOT, 'regex': '^!'},
+            {'type': TokenType.SEMICOLON, 'regex': "^;"},
             {'type': TokenType.TRUE, 'regex': '^true'},
             {'type': TokenType.FALSE, 'regex': '^false'},
             {'type': TokenType.NEWLINE, 'regex': '^\n'},
@@ -172,11 +177,13 @@ class Lexer(object):
                 text = text.removeprefix(match.group())
 
                 if keep_spaces and token_type['type'] == TokenType.SPACE:
-                    token = Token(token_type['type'], match.group(), line_number)
+                    token = Token(token_type['type'],
+                                  match.group(), line_number)
                     tokens.append(token)
 
                 if token_type['type'] != TokenType.SPACE:
-                    token = Token(token_type['type'], match.group(), line_number)
+                    token = Token(token_type['type'],
+                                  match.group(), line_number)
                     tokens.append(token)
 
                 # Increase line number when finding new line.
