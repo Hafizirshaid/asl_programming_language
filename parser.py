@@ -3,7 +3,6 @@
 Parser Library
 
 """
-from lib2to3.pgen2.token import tok_name
 from lexer import TokenType
 from statements.statement import *
 
