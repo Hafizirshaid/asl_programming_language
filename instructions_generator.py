@@ -142,12 +142,8 @@ class InstructionsGenerator:
         self.add_instruction(jump_for)
         # generate instruction for loop statements
         self.end_label_loop_stack.append(label2)
-
-
         self.build_instructions_list(statement.statements)
-
         self.instruction_list.insert(len(self.instruction_list) - 1, before_increment_label)
-        
         self.start_label_loop_stack.pop()
         self.end_label_loop_stack.pop()
 
@@ -193,8 +189,6 @@ class InstructionsGenerator:
 
         self.start_label_loop_stack.pop()
         self.end_label_loop_stack.pop()
-
-
 
     def handle_condition_statement(self, statement):
         """handle_condition_statement"""
