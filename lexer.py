@@ -65,6 +65,8 @@ class TokenType(Enum):
     CONDITION = 46
     SEMICOLON = 47
     PRINT = 48
+    LEFTBRAKET = 49
+    RIGHTBRAKET = 50
 
 
 class Token:
@@ -95,8 +97,7 @@ class Lexer(object):
         # this list contains all regular expressions that are recognized by
         # the programming language.
         self.regex_list = [
-            {'type': TokenType.COMMENT,
-                'regex': '(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)'},
+            {'type': TokenType.COMMENT, 'regex': '(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)'},
             {'type': TokenType.CALL, 'regex': '^call'},
             {'type': TokenType.METHOD, 'regex': '^method'},
             {'type': TokenType.ELIF, 'regex': '^elif'},
@@ -117,8 +118,7 @@ class Lexer(object):
             {'type': TokenType.INPUT, 'regex': '^input'},
             #{'type': TokenType.CONDITION, 'regex': "\(([^)]+)\)"},
             {'type': TokenType.IDENTIFICATIONBETWEENBRSCKETS, 'regex': "\{.*?\}"},
-            {'type': TokenType.IDENTIFICATION,
-                'regex': '^[a-zA-Z_$][a-zA-Z_$0-9]*'},
+            {'type': TokenType.IDENTIFICATION, 'regex': '^[a-zA-Z_$][a-zA-Z_$0-9]*'},
             {'type': TokenType.STRING, 'regex': '^"[^"]*"'},
             {'type': TokenType.REAL, 'regex': '[0-9]+\.[0-9]*'},
             {'type': TokenType.NUMBER, 'regex': '^\d+'},
@@ -137,6 +137,8 @@ class Lexer(object):
             {'type': TokenType.AND, 'regex': '^&'},
             {'type': TokenType.OR, 'regex': '^\|'},
             {'type': TokenType.NOT, 'regex': '^!'},
+            {'type': TokenType.LEFTBRAKET, 'regex': '^}'},
+            {'type': TokenType.RIGHTBRAKET, 'regex': '^{'},
             {'type': TokenType.SEMICOLON, 'regex': "^;"},
             {'type': TokenType.TRUE, 'regex': '^true'},
             {'type': TokenType.FALSE, 'regex': '^false'},
@@ -186,8 +188,10 @@ class Lexer(object):
                     tokens.append(token)
 
                 if token_type['type'] != TokenType.SPACE:
+                    token_value = match.group().strip()
+
                     token = Token(token_type['type'],
-                                  match.group(), line_number)
+                                  token_value, line_number)
                     tokens.append(token)
 
                 # Increase line number when finding new line.

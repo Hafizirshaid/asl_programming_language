@@ -342,3 +342,5 @@ class Continue(Statement):
         """
 
         super().__init__(StatementType.CONTINUE)
+
+

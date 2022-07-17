@@ -93,10 +93,6 @@ class Compiler(object):
         elif isinstance(statement, Break):
             self._handle_break_statement(execution_tree, stack, statement)
 
-
-
-            pass
-
         elif isinstance(statement, If):
             self._handle_if(stack, statement)
 
