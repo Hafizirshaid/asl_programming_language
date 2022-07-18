@@ -1,5 +1,9 @@
 # Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+"""
 
+Executor Library
+
+"""
 from compiler import ExecutionTree
 from expression_evaluator import Evaluator
 from instructions.instruction import EchoInstruction, InstructionType
@@ -9,7 +13,9 @@ from statements.statement import ConditionStatement, Else, ElseIf, For, If, Whil
 
 class Executor(object):
     """
+
     Executor Class
+
     """
 
     def __init__(self) -> None:
@@ -247,13 +253,15 @@ class Executor(object):
         final_echo_string = ""
         for token in tokens:
             if token.token_type == TokenType.IDENTIFICATIONBETWEENBRSCKETS:
+
                 var_name = token.match
                 var_name = var_name.strip("{}")
-                #var_name = var_name.strip("}")
-                symbol_table = self.find_symbol_table(
-                    var_name, instruction.statement)
+
+                symbol_table = self.find_symbol_table(var_name, instruction.statement)
+
                 if not symbol_table:
                     raise Exception(f"Variable Not Found {var_name}")
+
                 value = symbol_table.get_entry_value(var_name)
                 final_echo_string += str(value.value)
             else:

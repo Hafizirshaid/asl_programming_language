@@ -64,6 +64,7 @@ TODO:
     - Signed number comparisons - sign minus
     - handle ++ and --
     - Syntax Error Checking
+    - string data types
     - Enhance expression evaluator to take priority
     - Implement ! operation
     - Implement exec command on shell

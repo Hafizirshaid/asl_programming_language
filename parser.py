@@ -1,5 +1,6 @@
 # Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 """
+
 Parser Library
 
 """
@@ -48,8 +49,8 @@ class Parser:
 
             elif lex_type == TokenType.IF:
                 condition = self._get_condition(lexes, index)
-                ifstatement = If(condition, [])
-                statements.append(ifstatement)
+                if_statement = If(condition, [])
+                statements.append(if_statement)
 
             elif lex_type == TokenType.ELSE:
                 else_statement = Else([])

@@ -1,6 +1,7 @@
 # Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
 """
+
 Instruction Generator Class
 
 """

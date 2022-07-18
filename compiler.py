@@ -248,9 +248,10 @@ class Compiler(object):
                 self.set_parent_for_statements(
                     statement.if_statmenet,
                     statement.if_statmenet.statements)
-                for i in statement.elseif_statements:
-                    i.parent = statement
-                    self.set_parent_for_statements(i, i.statements)
+
+                for elseif in statement.elseif_statements:
+                    elseif.parent = statement
+                    self.set_parent_for_statements(elseif, elseif.statements)
 
                 if statement.else_statement:
                     statement.else_statement.parent = statement
@@ -280,12 +281,12 @@ class Compiler(object):
                     statement.if_statmenet,
                     statement.if_statmenet.statements)
 
-                for elif_statements in statement.elseif_statements:
-                    elif_statements.parent = statement
+                for elif_statement in statement.elseif_statements:
+                    elif_statement.parent = statement
 
                     self.set_parent_for_statements(
-                        elif_statements,
-                        elif_statements.statements)
+                        elif_statement,
+                        elif_statement.statements)
 
                 if statement.else_statement:
                     statement.else_statement.parent = statement

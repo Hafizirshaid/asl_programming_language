@@ -1,7 +1,9 @@
 # Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
 """
+
 Expression Evaluator Module
+
 """
 
 from lexer import Lexer, TokenType

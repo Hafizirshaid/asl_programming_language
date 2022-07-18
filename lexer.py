@@ -1,11 +1,13 @@
 # Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
 """
+
 Lexer Library
+
 """
 
-__version__ = '1.1'
-__all__ = ['Lexer']
+# __version__ = '1.1'
+# __all__ = ['Lexer']
 
 
 from enum import Enum
@@ -188,10 +190,9 @@ class Lexer(object):
                     tokens.append(token)
 
                 if token_type['type'] != TokenType.SPACE:
-                    token_value = match.group().strip()
 
-                    token = Token(token_type['type'],
-                                  token_value, line_number)
+                    token_value = match.group().strip()
+                    token = Token(token_type['type'], token_value, line_number)
                     tokens.append(token)
 
                 # Increase line number when finding new line.

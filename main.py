@@ -40,7 +40,7 @@ def main():
     parser = argparse.ArgumentParser("Asl Programming Language Command Line")
 
     parser.add_argument('-f', '--filename',
-                        default='asl_files/main2.asl',
+                        default='asl_files/grades.asl',
                         help='name of source file',
                         nargs=argparse.OPTIONAL,
                         )
@@ -61,7 +61,7 @@ def main():
     """ Tokenize """
     lexer = Lexer()
     tokens = lexer.tokenize_text(text)
-    print(tokens)
+
     """ Parse Tokens """
     parser = Parser()
     statements = parser.parse(tokens)
