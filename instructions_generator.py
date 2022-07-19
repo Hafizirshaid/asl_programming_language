@@ -5,6 +5,7 @@
 Instruction Generator Class
 
 """
+
 from compiler import ExecutionTree
 from instructions.instruction import (EchoInstruction, GotoInstruction,
                                       Instruction, InstructionType,

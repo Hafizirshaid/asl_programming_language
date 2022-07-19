@@ -185,8 +185,7 @@ class Lexer(object):
                 text = text.removeprefix(match.group())
 
                 if keep_spaces and token_type['type'] == TokenType.SPACE:
-                    token = Token(token_type['type'],
-                                  match.group(), line_number)
+                    token = Token(token_type['type'], match.group(), line_number)
                     tokens.append(token)
 
                 if token_type['type'] != TokenType.SPACE:

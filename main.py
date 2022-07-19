@@ -37,10 +37,10 @@ from lexer import Lexer
 def main():
 
     """ Parse Arguments """
-    parser = argparse.ArgumentParser("Asl Programming Language Command Line")
+    parser = argparse.ArgumentParser("My Programming Language Command Line version 1.0")
 
     parser.add_argument('-f', '--filename',
-                        default='asl_files/grades.asl',
+                        default='asl_files/fibonacci.asl',
                         help='name of source file',
                         nargs=argparse.OPTIONAL,
                         )
