@@ -32,6 +32,13 @@ continue to fix them on my free time.
 keywords:
     if, elseif, else, fi, for, while, endfor, endwhile, echo, break, print
 
+Command:
+
+    python3 asl.py --filename filename.asl
+
+filename.asl is the input source file
+asl.py is the main file.
+
 Sample code:
 ------------------------------------------------------------------
 echo "while loop"
