@@ -4,16 +4,93 @@
 
 Lexer Library
 
+Converts code texts into meaningful lexems to tokens:
+
+Example:
+-------------------------------
+x = 10
+
+for "i=0;i<10;i=i+1"
+    if "i==0"
+        echo "stmt says i is 0"
+    elif "i==1"
+        echo "stmt says i is 1"
+    elif "i==2"
+        echo "stmt says i is 2"
+    elif "i==3"
+        echo "stmt says i is 3"
+    elif "i==4"
+        echo "stmt says i is 4"
+    elif "i==5"
+        echo "stmt says i is 5"
+    else
+        echo "not checked i is {i}"
+    fi
+endfor
+----------------------------
+
+List of tokens:
+-------------------
+Token(TokenType.IDENTIFICATION, 'x', 1),
+Token(TokenType.EQUAL, '=', 1),
+Token(TokenType.NUMBER, '10', 1),
+Token(TokenType.NEWLINE, '', 1),
+Token(TokenType.NEWLINE, '', 2),
+Token(TokenType.FOR, 'for', 3),
+Token(TokenType.STRING, '"i=0;i<10;i=i+1"', 3),
+Token(TokenType.NEWLINE, '', 3),
+Token(TokenType.IF, 'if', 4),
+Token(TokenType.STRING, '"i==0"', 4),
+Token(TokenType.NEWLINE, '', 4),
+Token(TokenType.ECHO, 'echo', 5),
+Token(TokenType.STRING, '"stmt says i is 0"', 5),
+Token(TokenType.NEWLINE, '', 5),
+Token(TokenType.ELIF, 'elif', 6),
+Token(TokenType.STRING, '"i==1"', 6),
+Token(TokenType.NEWLINE, '', 6),
+Token(TokenType.ECHO, 'echo', 7),
+Token(TokenType.STRING, '"stmt says i is 1"', 7),
+Token(TokenType.NEWLINE, '', 7),
+Token(TokenType.ELIF, 'elif', 8),
+Token(TokenType.STRING, '"i==2"', 8),
+Token(TokenType.NEWLINE, '', 8),
+Token(TokenType.ECHO, 'echo', 9),
+Token(TokenType.STRING, '"stmt says i is 2"', 9),
+Token(TokenType.NEWLINE, '', 9),
+Token(TokenType.ELIF, 'elif', 10),
+Token(TokenType.STRING, '"i==3"', 10),
+Token(TokenType.NEWLINE, '', 10),
+Token(TokenType.ECHO, 'echo', 11),
+Token(TokenType.STRING, '"stmt says i is 3"', 11),
+Token(TokenType.NEWLINE, '', 11),
+Token(TokenType.ELIF, 'elif', 12),
+Token(TokenType.STRING, '"i==4"', 12),
+Token(TokenType.NEWLINE, '', 12),
+Token(TokenType.ECHO, 'echo', 13),
+Token(TokenType.STRING, '"stmt says i is 4"', 13),
+Token(TokenType.NEWLINE, '', 13),
+Token(TokenType.ELIF, 'elif', 14),
+Token(TokenType.STRING, '"i==5"', 14),
+Token(TokenType.NEWLINE, '', 14),
+Token(TokenType.ECHO, 'echo', 15),
+Token(TokenType.STRING, '"stmt says i is 5"', 15),
+Token(TokenType.NEWLINE, '', 15),
+Token(TokenType.ELSE, 'else', 16),
+Token(TokenType.NEWLINE, '', 16),
+Token(TokenType.ECHO, 'echo', 17),
+Token(TokenType.STRING, '"not checked i is {i}"', 17),
+Token(TokenType.NEWLINE, '', 17),
+Token(TokenType.FI, 'fi', 18),
+Token(TokenType.NEWLINE, '', 18),
+Token(TokenType.ENDFOR, 'endfor', 19)
+-------------------
+
 """
-
-# __version__ = '1.1'
-# __all__ = ['Lexer']
-
 
 from enum import Enum
 import re
 
-from exceptions.syntax_error_exception import SyntaxError
+from exceptions.language_exception import SyntaxError
 
 
 class TokenType(Enum):
@@ -72,10 +149,18 @@ class TokenType(Enum):
 
 
 class Token:
-    """ Token Class """
+    """ Token Class
+
+    Holds information about a token
+
+    Class Variables:
+        token_type: the type of the token
+        match: token value
+        line_number: line number
+    """
 
     def __init__(self, token_type: TokenType, match: str, line_number: int) -> None:
-        """Init Token
+        """ Token Constructor
         Args:
             token_type: type of token
             match: the match string
@@ -89,9 +174,19 @@ class Token:
     def __repr__(self) -> str:
         return f"{self.line_number} {self.token_type} {self.match}"
 
+    def __str__(self) -> str:
+        return f"{self.line_number} {self.token_type} {self.match}"
 
 class Lexer(object):
-    """ Lexer Class """
+    """ Lexer Class
+
+    Contains method tokenize_text() that converts source file text into meaningful
+    tokens
+
+    Class Attributes:
+        regex_list: A list that contains token types and thier regular expressions
+
+    """
 
     def __init__(self) -> None:
         """ init Lexer Class """
@@ -154,11 +249,12 @@ class Lexer(object):
         """ Tokenize source file text
         Args:
             text: text file string
-            keep_unknown:
-            keep_spaces:
+            keep_unknown: weather to keep an unknown token or not, a token that
+                          doesn't have a type in regex_list
+            keep_spaces: weather white spaces should be added to list of tokens or not
 
         Returns:
-            list of tokens
+            list of meaningful tokens
         """
 
         tokens = []
@@ -169,7 +265,7 @@ class Lexer(object):
             token_type = None
             match = None
 
-            # Find Matching token in regex_list
+            # Find a matching token in regex_list
             for regex in self.regex_list:
                 current_match = re.match(regex['regex'], text)
                 if current_match:
@@ -177,7 +273,6 @@ class Lexer(object):
                     token_type = regex
                     match = current_match
                     break
-                pass
 
             if match:
 
@@ -185,6 +280,7 @@ class Lexer(object):
                 text = text.removeprefix(match.group())
 
                 if keep_spaces and token_type['type'] == TokenType.SPACE:
+                    # add white space token to list
                     token = Token(token_type['type'], match.group(), line_number)
                     tokens.append(token)
 
@@ -198,14 +294,15 @@ class Lexer(object):
                 if token_type['type'] == TokenType.NEWLINE:
                     line_number += 1
             else:
+
+                # Unrecognized token found
                 if keep_unknown:
                     token = Token(TokenType.UNKNOWN, text[0], line_number)
                     tokens.append(token)
+                    # Remove first unknown char from the text string.
                     text = text[1:]
-                    pass
                 else:
-                    # Exception, unrecognized char, syntax error
-                    raise SyntaxError(
-                        f"Syntax Error at line {line_number} \n {text}")
+                    # Exception, unrecognized token, raise syntax error
+                    raise SyntaxError(f"Syntax Error at line {line_number} \n {text}")
 
         return tokens

@@ -4,33 +4,63 @@
 
 Instruction Generator Class
 
+Converts execution tree into executable instructions list
+
 """
 
+from ast import While
 from compiler import ExecutionTree
-from instructions.instruction import (EchoInstruction, GotoInstruction,
-                                      Instruction, InstructionType,
-                                      JumpIfInstruction, JumpIfNotInstruction,
-                                      LabelInstruction, VariableInstruction)
-from statements.statement import *
+from exceptions.language_exception import UnexpectedError
+from instructions.instruction import EchoInstruction
+from instructions.instruction import GotoInstruction
+from instructions.instruction import Instruction
+from instructions.instruction import InstructionType
+from instructions.instruction import JumpIfNotInstruction
+from instructions.instruction import LabelInstruction
+from instructions.instruction import  VariableInstruction
+from statements.statement import Break, ConditionStatement, Continue, Echo, For, Variable
 
 
 class InstructionsGenerator:
+    """ Instructions Generator Class
+
+    Generate executable instructions based on execution tree generated from the compiler.
+
+    Class Attributes:
+        instruction_list: instruction list to be generated
+        label_counter: label counter
+        execution_tree: execution tree to be converted to instructions list
+        start_label_loop_stack: start loop stack to store start of loop label
+        end_label_loop_stack: end loop stack to store end of loop label
+
+    """
 
     def __init__(self) -> None:
+        """ Instructions Generator Class Constructor """
+
         self.instruction_list = []
         self.label_counter = 0
         self.execution_tree = None
         self.start_label_loop_stack = []
         self.end_label_loop_stack = []
-        pass
 
     def create_label_tag(self):
-        """ Create Label Tag"""
+        """ Create Label Tag and increment label counter.
+        Args:
+            None
+        Returns:
+            New Label string
+        """
         self.label_counter += 1
         return f"Label_{self.label_counter}"
 
     def generate_label(self):
-        """ This Method Generate Label Instruction"""
+        """ This Method Generate Label Instruction
+        Args:
+            None
+        Returns:
+            LabelInstruction
+        """
         return LabelInstruction(self.create_label_tag())
 
     def add_instruction(self, instruction: Instruction):
@@ -50,6 +80,7 @@ class InstructionsGenerator:
         Returns:
             list of instructions generated from execution tree
         """
+
         self.execution_tree = execution_tree
 
         # if none or no elements in execution tree, return empty list.
@@ -68,42 +99,68 @@ class InstructionsGenerator:
 
         # for each statement in execution tree, generate instructions
         for statement in execution_tree:
+
+            # For Statement
             if isinstance(statement, For):
                 self.handle_for_loop(statement)
+
+            # While Statement
             elif isinstance(statement, While):
                 self.handle_while_statement(statement)
+
+            # Condition Statement
             elif isinstance(statement, ConditionStatement):
                 self.handle_condition_statement(statement)
+
+            # Echo Statement
             elif isinstance(statement, Echo):
                 self.handle_echo_statement(statement)
+
+            # Variable Statement
             elif isinstance(statement, Variable):
                 self.handle_variable_statement(statement)
+
+            # Break Statement
             elif isinstance(statement, Break):
-                # TODO implement this
-                # find parent for or while. create goto instruction to end of for
-                # and while
+                # find loop parent for forloop or whileloop.
+                # create goto instruction to end of forloop and whileloop
+                # break statement should break the loop, should go to end label.
                 loop_end_label = self.end_label_loop_stack[-1]
                 goto = GotoInstruction(loop_end_label.lable_name)
                 self.add_instruction(goto)
-                pass
+
+            # Continue Statement
             elif isinstance(statement, Continue):
-                # TODO implement this
                 # find parent for or while. create goto instruction to end of for
-                # and while
+                # and while.
+                # Continue statememt should change instruction pointer to go to
+                # start of the loop
                 loop_start_label = self.start_label_loop_stack[-1]
                 goto = GotoInstruction(loop_start_label.lable_name)
                 self.add_instruction(goto)
-                pass
+
         return self.instruction_list
 
     def handle_variable_statement(self, statement):
-        """ Method to create variable instruction """
+        """ create variable instruction and add to instructions list
+        Args:
+            statement: variable statement to be added
+        Returns:
+            None
+        """
+
         var_inst = VariableInstruction(statement.variable_expression)
         var_inst.variable_statement = statement
         self.add_instruction(var_inst)
 
     def handle_echo_statement(self, statement):
-        """ Method to create echo instruction """
+        """ Method to create echo instruction
+        Args:
+            statement: echo statement to be created
+        Returns:
+            None
+        """
+
         instruction = EchoInstruction(InstructionType.ECHO, statement)
         instruction.echo_string = statement.echo_string
         self.instruction_list.append(instruction)
@@ -113,15 +170,17 @@ class InstructionsGenerator:
         This method builds for loop instructions structure as follows:
 
             For Loop Statement:
-
                 code:
+                    -----------------------
                     before statements
                     for(start; condition; increment)
                         statements inside for
                     endfor
                     after statements
+                    -----------------------
 
                 instructions:
+                    -----------------------
                     before statements
                     start
                     Label_1:
@@ -132,26 +191,48 @@ class InstructionsGenerator:
                         goto Label_1
                     Label_2:
                     after statments
-                """
+                    -----------------------
 
+        Args:
+            statement: For loop statement to be created
+        Returns:
+            None
+        """
+
+        # create label_1
         label_1 = self.generate_label()
         self.add_instruction(label_1)
-        before_increment_label = self.generate_label()
 
+        # before increment lable is nessessary for continue statement,
+        # in case of continue statement, loop variable should be incremented
+        # after that it jumps to label_1 to contine the execution.
+        before_increment_label = self.generate_label()
         self.start_label_loop_stack.append(before_increment_label)
+
+        # create end of loop label
         label2 = self.generate_label()
+
+        # jump statement to be executed to determine if loop should contine 
+        # or not based on loop condition
         jump_for = JumpIfNotInstruction(label2.lable_name, statement.loop_condition, statement)
         self.add_instruction(jump_for)
+
         # generate instruction for loop statements
         self.end_label_loop_stack.append(label2)
+
+        # Build instructions for children statements inside for loop
         self.build_instructions_list(statement.statements)
+
+        # before_increment_label should be added before loop increment statement.
         self.instruction_list.insert(len(self.instruction_list) - 1, before_increment_label)
         self.start_label_loop_stack.pop()
         self.end_label_loop_stack.pop()
 
+        # goto label_1 at the begining of loop after inctementing variable
         goto_l1 = GotoInstruction(label_1.lable_name)
         self.add_instruction(goto_l1)
 
+        # End of Loop Label
         self.add_instruction(label2)
 
     def handle_while_statement(self, statement):
@@ -159,12 +240,15 @@ class InstructionsGenerator:
         Create instructions for While loop statement
             WHILE LOOP
                 code:
+                    ----------------
                     before statements
                     while "conditon"
                         Statments inside while loop
                     endwhile
                     After Statements
+                    ----------------
                 instructions:
+                    ----------------
                     before statements
                     Label1:
                         Jump If Not "condition" To Label 2
@@ -172,7 +256,14 @@ class InstructionsGenerator:
                         Goto Label1
                     L2:
                         After Statements
-                """
+                    ----------------
+
+        Args:
+            statement: While loop statement to be created
+        Returns:
+            None
+        """
+
         label_1 = self.generate_label()
         self.instruction_list.append(label_1)
         self.start_label_loop_stack.append(label_1)
@@ -193,26 +284,99 @@ class InstructionsGenerator:
         self.end_label_loop_stack.pop()
 
     def handle_condition_statement(self, statement):
-        """handle_condition_statement"""
+        """ Create Condition statement, it handles if statement, else statement and
+            else statement.
+
+            Code:
+                -------------------
+                Before_statements
+                if c1
+                    if1_statements
+                elif c2
+                    elseif2_statements
+                elif c3
+                    elseif3_statements
+                else
+                    else_statements4
+                fi
+                After_statements
+                -------------------
+            Instructions:
+                -------------------
+                Before_statements
+                label_1:
+                    Jump If not c1 to Label2
+                    if1_statements
+                    jump to end_label
+                Label_2
+                    Jump If not c2 to Label3
+                    elseif2_statements
+                    jump to end_label
+                Label_3
+                    Jump If not c3 to Label4
+                    elseif3_statements
+                    jump to end_label
+                Label_4
+                    else_statements4
+                    jump to end_label
+                end_label
+                After_statements
+                -------------------
+
+        Args:
+            statement: conditon statement that contains if,elseif and else statements
+                        if is a mandatory statement, else if and else are optional
+        Returns:
+            None
+        """
+
+        # End label to indicate end of condition statement block
         end_label = self.generate_label()
+
         self.handle_if_condition(statement, end_label)
         self.handle_if_else_statements(statement, end_label)
         self.handle_else_statement(statement)
         self.add_instruction(end_label)
 
     def handle_else_statement(self, statement):
-        """ handle_else_statement
-
-        Else Statement:
-            Instructions:
-
+        """ generate instructions for else statement children statements
+        Args:
+            statement: else statement to be generated.
+        Returns:
+            None
         """
         if statement.else_statement:
             self.build_instructions_list(statement.else_statement.statements)
             pass
 
     def handle_if_else_statements(self, statement, end_label):
-        """ handle_if_else_statements """
+        """ Generate instructions for elseif statements inside statement.
+            for each else if statement with condition, the following instructions
+            will be generated:
+
+            Code:
+                -----------------
+                elif conditon
+                    elseif_statements
+                elseif conditon 2
+                    next_else_if_statement
+                -----------------
+            Instructions
+                -----------------
+                Label
+                    Jump If not condtion to Label_next
+                    elseif_statements
+                    jump to end_label
+                -----------------
+
+        Args:
+            statement: conditon statement that contains else if statements
+            end_label: end of condition statement label
+        Returns:
+            None
+
+        """
+
         if statement.elseif_statements:
             for else_if in statement.elseif_statements:
                 label_3 = self.generate_label()
@@ -231,13 +395,16 @@ class InstructionsGenerator:
 
         If Statement:
             code:
+                --------------
                 before statements
                 if conditon
                     statmenets inside if statement
                 fi
                 after statements
+                --------------
 
             instructions:
+                --------------
                 before statements
                 Label_1
                 Jump if not condition to Label_2
@@ -245,10 +412,21 @@ class InstructionsGenerator:
                 goto end_label
                 Label_2
                 end_label
+                --------------
+
+        Args:
+            statement: conditon statement that contains if_statmenet,
+                        if statement is mandatory statement, if if_statmenet is null
+                        UnexpectedError will be thrown
+            end_label: end label of condition block
+        Returns:
+            None
+        Raises:
+            UnexpectedError: when if_statmenet is None
         """
 
         if not statement.if_statmenet:
-            raise Exception(
+            raise UnexpectedError(
                 "Unexprected state, if statement should not be none inside conditon")
 
         label_1 = self.generate_label()
@@ -261,3 +439,4 @@ class InstructionsGenerator:
         goto_end = GotoInstruction(end_label.lable_name)
         self.add_instruction(goto_end)
         self.add_instruction(label_2)
+

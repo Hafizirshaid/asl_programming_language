@@ -4,14 +4,23 @@
 
 Compiler Library
 
+Compiles list of statements into execution tree
+
 """
 
 from statements.statement import *
 from symbols.symbols_table import SymbolTable
-
+from exceptions.language_exception import *
 
 class ExecutionTree:
-    """ Execution Tree Class """
+    """ Execution Tree Class
+
+    Class Attributes:
+        tree: Execution tree to be built out of list of statements
+        symbols_table: Symbols table that contains variable names and values.
+        parent: Parent is always None. Execution tree is the superior class.
+
+    """
 
     def __init__(self) -> None:
         """ Execution Tree Constructor """
@@ -30,10 +39,10 @@ class ExecutionTree:
 
 
 class Compiler(object):
-    """Compiler Class"""
+    """Compiler Class """
 
     def __init__(self) -> None:
-        """ Compiler Constructor"""
+        """ Compiler Class Constructor"""
         pass
 
     def compile(self, statements: list) -> list:
@@ -55,14 +64,13 @@ class Compiler(object):
         # If stack is not empty, that menas there are some statements without end
         # statement in the code
         if stack:
-            raise Exception("Syntax Error, no end for statements, ", stack)
+            raise SyntaxError("Syntax Error, no end for statements, ", stack)
 
         # TODO remove this function, try to set parents when looping thru
         # list of statements and adding elements to stack
         self.set_parents(execution_tree)
 
-        # TODO store variable names in symbol table without value, just
-        # store the right location for each varaible
+        # store variables in the right location in symbols table
         self.store_variables_in_symbols_table(execution_tree)
 
         return execution_tree
@@ -70,9 +78,9 @@ class Compiler(object):
     def compile_statement(self, execution_tree, stack, statement):
         """ Compile statement
         Args:
-            execution_tree:
-            stack:
-            statement:
+            execution_tree: Execution tree that contains statement
+            stack: Scopes stack
+            statement: statement to be compiled
         Returns:
             None
         """
@@ -106,24 +114,35 @@ class Compiler(object):
             self._handle_end_statement(execution_tree, stack)
 
     def _handle_break_statement(self, execution_tree: ExecutionTree, stack, statement: Break):
-        """ Store variables in symbols table
+        """ Compile break statement, find which loop this break statement belongs to 
+            weather it's a for loop or a while loop
         Args:
-            execution_tree:
+            execution_tree: Execution tree that contains statement
+            stack: scopes stack
+            statement: break statement
         Returns:
             None
         """
+
         if stack:
+            # when adding break statement, 
+            loop_found = False
             for stack_item in stack[::-1]:
                 if isinstance(stack_item, While) or isinstance(stack_item, For):
                      self._handle_one_line_statement(execution_tree, stack, statement)
+                     loop_found = True
                      break
+
+            # Check if loop was found, otherwise, break statement doesn't have a loop
+            if not loop_found:
+                raise SyntaxError("Break statement should be only inside a While Loops or For Loops")
         else:
-            raise Exception("No Loop Found")
+            raise SyntaxError("Break statement should be only inside a While Loops or For Loops")
 
     def store_variables_in_symbols_table(self, execution_tree: ExecutionTree):
         """ Store variables in symbols table
         Args:
-            execution_tree:
+            execution_tree: execution tree
         Returns:
             None
         """
@@ -188,9 +207,9 @@ class Compiler(object):
         return symbols_table
 
     def store_variables_in_symbols_table_for_statements(self, statements: list[Statement]):
-        """ Store variables in symbols table for statements
+        """ Store variables in symbols table for statements (Recursive Method)
         Args:
-            statements:
+            statements: list of statements
         Returns:
             None
         """
@@ -227,7 +246,7 @@ class Compiler(object):
     def set_parents(self, execution_tree: ExecutionTree):
         """ Set parents for execution tree
         Args:
-            execution_tree:
+            execution_tree: execution tree
         Returns:
             None
         """
@@ -264,23 +283,28 @@ class Compiler(object):
     def set_parent_for_statements(self, parent, statements):
         """ Set parents for statements
         Args:
-            parent:
-            statements:
+            parent: parent of statement
+            statements: list of statements to set {parent} for
         Returns:
             None
         """
 
         for statement in statements:
             statement.parent = parent
+
             if (self.is_scope_statement(statement)):
                 self.set_parent_for_statements(statement, statement.statements)
 
+            # Set parent for condition statement
             if isinstance(statement, ConditionStatement):
                 statement.if_statmenet.parent = statement
+                # Set parents for If, else ifs, and else statements
+
                 self.set_parent_for_statements(
                     statement.if_statmenet,
                     statement.if_statmenet.statements)
 
+                # Else if statements
                 for elif_statement in statement.elseif_statements:
                     elif_statement.parent = statement
 
@@ -288,6 +312,7 @@ class Compiler(object):
                         elif_statement,
                         elif_statement.statements)
 
+                # else statement is optional, if it exists, set parent for else.
                 if statement.else_statement:
                     statement.else_statement.parent = statement
 
@@ -301,8 +326,8 @@ class Compiler(object):
     def _handle_endif(self, execution_tree: ExecutionTree, stack):
         """ Handle End If Statement compilation
         Args:
-            execution_tree:
-            stack:
+            execution_tree: execution tree
+            stack: scope stack
         Returns:
             None
         """
@@ -316,8 +341,10 @@ class Compiler(object):
             clause = stack.pop()
 
         ifstatement = if_statement_stack.pop()
+
+        # if statement should never be None
         if not isinstance(ifstatement, If):
-            raise Exception("case can't happen")
+            raise SyntaxError("Unexpected Error, if statement should never be None")
         clause.if_statmenet = ifstatement
 
         while if_statement_stack:
@@ -335,8 +362,8 @@ class Compiler(object):
     def _handle_if(self, stack, statement):
         """ Handle If Statement compilation
         Args:
-            stack:
-            statement:
+            stack: scope stack
+            statement: if statement
         Returns:
             None
         """
@@ -346,11 +373,12 @@ class Compiler(object):
         stack.append(statement)
 
     def _handle_one_line_statement(self, execution_tree, stack, statement):
-        """ Handle End Statement compilation
+        """ Handle End Statement compilation, add it to scope statement if
+            stack is not empty, otherwise add statement to exection tree
         Args:
-            execution_tree:
-            stack:
-            statement:
+            execution_tree: execution tree
+            stack: scope stack
+            statement: statement to be added
         Returns:
             None
         """
@@ -363,8 +391,8 @@ class Compiler(object):
     def _handle_end_statement(self, execution_tree, stack):
         """ Handle End Statement compilation
         Args:
-            execution_tree:
-            stack:
+            execution_tree: execution tree
+            stack: scope stack
         Returns:
             None
         """
@@ -378,8 +406,8 @@ class Compiler(object):
     def _handle_end_forloop_statement(self, execution_tree, stack):
         """ Handle End For Loop Statement compilation
         Args:
-            execution_tree:
-            stack:
+            execution_tree: execution tree
+            stack: scope stack
         Returns:
             None
         """
@@ -396,9 +424,9 @@ class Compiler(object):
     def handle_for_loop(self, execution_tree, stack, statement):
         """ Handle For Loop Statement compilation
         Args:
-            execution_tree:
-            stack:
-            statement:
+            execution_tree: exection tree
+            stack: scope stack
+            statement: for loop statement
         Returns:
             None
         """

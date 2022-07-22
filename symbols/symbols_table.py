@@ -1,10 +1,19 @@
 # Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
+"""
+
+Symbols Table Library
+
+Contains Symbols table definitions and types
+
+"""
+
 from enum import Enum
 
 
 class SymbolsType(Enum):
     """ Symbol types enum """
+
     NUMBER = 1
     STRING = 2
     OBJECT = 3
@@ -12,12 +21,12 @@ class SymbolsType(Enum):
 
 
 class SymbolTableEntry:
-    """ Symbol Table Entry """
+    """ Symbol Table Entry Class"""
 
     def __init__(self, name: str, value: str, type=None) -> None:
-        """
+        """ Symbol Table Entry Class Constructor
         Desc:
-            Initialize Symbol Table Entry
+            Initialize Symbol Table Entry (Constrctor)
         Args:
             name: name of entry
             value: value of entry
@@ -25,6 +34,7 @@ class SymbolTableEntry:
         Returns:
             None
         """
+
         self.name = name
         self.value = value
 
@@ -35,7 +45,7 @@ class SymbolTableEntry:
 
 
 class SymbolTable:
-    """ Symbol Table Object """
+    """ Symbol Table Class """
 
     def __init__(self) -> None:
         """ Initializes Symbol table to empty dictionary """
@@ -76,6 +86,7 @@ class SymbolTable:
         Returns:
             None
         """
+
         # Check each entry in the table if it contains name
         for entry in self.symbol_table:
             if entry == name:

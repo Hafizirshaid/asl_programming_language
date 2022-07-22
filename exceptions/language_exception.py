@@ -1,5 +1,15 @@
 # Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
+"""
+
+Exceptions Module
+
+Contains SyntaxError, UnknwonVariable, UnexpectedError, ExpressionEvaluationError
+Those exceptions are being used in order to identify potential issues in the code
+
+"""
+
+
 class SyntaxError(Exception):
     """ Syntax Error Exception """
 

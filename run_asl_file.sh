@@ -7,8 +7,8 @@ for i in $(ls $FOLDER_NAME/*.asl);do
 
     echo "------ Running $i `date` ------"
 
-    $PYTHON main.py -f $i
-
+    $PYTHON asl.py -f $i
+    echo "Result: $?"
     echo "------ Done $i    `date` ------"
 
 done

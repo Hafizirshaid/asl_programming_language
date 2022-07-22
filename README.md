@@ -57,21 +57,48 @@ for "var=1;var <= 1000;var = var + 1"
 endfor
 ------------------------------------------------------------------
 
-TODO:
+Remaining TODO items:
     - Variable types(number, string)
     - functions (methods) calls
-    - Arrays
+    - Arrays and lists
     - Signed number comparisons - sign minus
     - handle ++ and --
     - Syntax Error Checking
-    - string data types
     - Enhance expression evaluator to take priority
     - Implement ! operation
     - Implement exec command on shell
         exec "ls -l"
             should execute ls -l command on the shell
+    - For loop, while loop and if statements remove "" and make it C/C++ style for loop
+    - Implement Unit Testing.
+
+------------------------------------------------------------
+My Programming Language Block Diagram:
+
+       -------------        --------------        ----------------        -----------------        ----------------
+      |             |      |              |      |                |      |                 |      |                |
+------|    Lexer    |------|    Parser    |------|    Compiler    |------|    Generator    |------|    Executor    |------> Program Output
+ |    |             |  |   |              |  |   |                |  |   |                 |  |   |                |
+ |     -------------   |    --------------   |    ----------------   |    -----------------   |    ----------------
+ |                     |                     |                       |                        |
+\ /                   \ /                   \ /                     \ /                      \ /
+Input               List of               list of                Execution                 List of
+File                 tokens              statements                Tree                  Instructions
+
+Classes Description:
+
+    Lexer: Converts code texts into meaningful lexems to tokens
+
+    Parser: Convert list of tokens into statements and extract thier attributes
+
+    Compiler: Compiles list of statements into execution tree
+
+    Generator: Converts execution tree into executable instructions list
+
+    Executor: Contains methods to execute list of instructions to produce program logical output
 
 
+######################################## Regex List ##############################
 {'type': TokenType.COMMENT, 'regex': '(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)'},
 {'type': TokenType.CALL, 'regex': '^call'},
 {'type': TokenType.METHOD, 'regex': '^method'},
@@ -119,3 +146,4 @@ TODO:
 {'type': TokenType.SPACE, 'regex': '\s'},
 {'type': TokenType.OPENPARANTHESIS, 'regex': '^\('},
 {'type': TokenType.CLOSINGPARANTHESIS, 'regex': '^\)'}
+######################################## Regex List ##############################

@@ -4,6 +4,11 @@
 
 Expression Evaluator Module
 
+Contains methods that calculates expressions like
+
+10 + 10 * 5
+(True & True) | False
+
 """
 
 from lexer import Lexer, TokenType
@@ -61,6 +66,7 @@ class Evaluator:
             True token is an operator
             False if token is not an operator
         """
+
         return (token_type == TokenType.EQUIVALENT or
                 token_type == TokenType.EQUAL or
                 token_type == TokenType.NOTEQUIVALENT or
