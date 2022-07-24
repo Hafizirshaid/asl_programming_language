@@ -20,6 +20,7 @@ class InstructionType(Enum):
     JUMP_IF = 4
     JUMP_IF_NOT = 5
     VARIABLE = 6
+    INPUT = 7
 
 
 class Instruction(object):
@@ -78,6 +79,30 @@ class EchoInstruction(Instruction):
 
         super().__init__(InstructionType.ECHO)
         self.echo_string = echo_string
+        self.statement = statement
+
+    def __repr__(self) -> str:
+        return f"echo ---> {self.echo_string}"
+
+    def __str__(self) -> str:
+        return self.__repr__()
+
+
+class InputInstruction(Instruction):
+    """ Input Instruction Class """
+
+    def __init__(self, input_variable: str, statement=None) -> None:
+        """ Input Instruction Class Constructor
+        Args:
+            input_variable: variable name to store input value
+            statement: Optional, echo statement that contains input variable name,
+                        used in order to lookup symbols table.
+        Returns:
+            None
+        """
+
+        super().__init__(InstructionType.INPUT)
+        self.input_variable = input_variable
         self.statement = statement
 
     def __repr__(self) -> str:

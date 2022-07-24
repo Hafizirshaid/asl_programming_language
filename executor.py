@@ -12,7 +12,7 @@ program logical output.
 from compiler import ExecutionTree
 from exceptions.language_exception import UnknwonVariable
 from expression_evaluator import Evaluator
-from instructions.instruction import EchoInstruction, InstructionType
+from instructions.instruction import EchoInstruction, InputInstruction, InstructionType
 from lexer import Lexer, TokenType
 from statements.statement import ConditionStatement, Else, ElseIf, For, If, While
 
@@ -75,6 +75,11 @@ class Executor(object):
             self.execute_echo_instruction(current_instruction)
             self.increment_instruction_pointer()
 
+        # Input Instruction
+        elif current_instruction.type == InstructionType.INPUT:
+            self.execute_input_instruction(current_instruction)
+            self.increment_instruction_pointer()
+
         # Variable Instruction
         elif current_instruction.type == InstructionType.VARIABLE:
             self.execute_variable_instruction(current_instruction)
@@ -134,7 +139,7 @@ class Executor(object):
 
         tokens = Lexer().tokenize_text(condition.strip('"'))
 
-        # If condition contains variables, they should be subsituted by
+        # If condition contains variables, they should be substituted by
         # thier values in the symbols table
         final_condition = ""
         for token in tokens:
@@ -144,7 +149,7 @@ class Executor(object):
                 symbol_table = self.find_symbol_table(token.match, instruction.statement)
                 symbol_entry = symbol_table.get_entry_value(token.match)
 
-                # Subsitute variable value in final condition
+                # Substitute variable value in final condition
                 final_condition += str(symbol_entry.value)
             else:
                 final_condition += str(token.match)
@@ -198,7 +203,7 @@ class Executor(object):
         final_expression = ""
         for token in tokens:
             if token.token_type == TokenType.IDENTIFICATION:
-                    # Subsitute variable values in final expression to be evaluated
+                # Substitute variable values in final expression to be evaluated
                 symbol_table = self.find_symbol_table(
                         token.match, instruction.variable_statement)
                 symbol = symbol_table.get_entry_value(token.match)
@@ -240,11 +245,11 @@ class Executor(object):
                     variable_name, instruction.variable_statement)
             dest_symbol_table.modify_entry(variable_name, new_value.value)
         else:
-                # variable value is normal value not variable assigment to another variable
-            value = Evaluator().evaluate(variable_value)
+            # variable value is normal value not variable assigment to another variable
+            #value = Evaluator().evaluate(variable_value)
             name = instruction.variable_name
             symbol_table = self.find_symbol_table(name, instruction.variable_statement)
-            symbol_table.modify_entry(name, value)
+            symbol_table.modify_entry(name, variable_value)
 
     def find_symbol_table(self, name: str, statement):
         """ Find Symbol table that contains variable name
@@ -316,7 +321,7 @@ class Executor(object):
 
         # Tokenize echo string and keep unknown tokens and spaces.
         # Echo string might contain anything, this is needed only to find if
-        # echo string contains variables so they can be subsituted.
+        # echo string contains variables so they can be substituted.
         tokens = Lexer().tokenize_text(
             instruction.echo_string.strip('"'),
             keep_unknown=True,
@@ -326,7 +331,7 @@ class Executor(object):
         for token in tokens:
             if token.token_type == TokenType.IDENTIFICATIONBETWEENBRSCKETS:
                 # If echo string contains a variable between {} for example
-                # {variable_name}, subsitute variable_name with it's value
+                # {variable_name}, Substitute variable_name with it's value
 
                 var_name = token.match
                 var_name = var_name.strip("{}")
@@ -345,3 +350,23 @@ class Executor(object):
         print(final_echo_string)
 
         return
+
+
+    def execute_input_instruction(self, instruction: InputInstruction):
+        """ Execute Input Instruction
+        Args:
+            instruction: Input instruction that contains variable to read from keyboard
+        Returns:
+            None
+        """
+
+        variable_name = instruction.input_variable
+        symbol_table = self.find_symbol_table(variable_name, instruction.statement)
+
+        if not symbol_table:
+            raise UnknwonVariable(f"Variable Not Found {variable_name}")
+
+        # input from keyboard
+        input_value = input()
+        symbol_table.modify_entry(variable_name, input_value)
+

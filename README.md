@@ -66,6 +66,7 @@ endfor
 
 Remaining TODO items:
     - Variable types(number, string)
+    - String comparison
     - functions (methods) calls
     - Arrays and lists
     - Signed number comparisons - sign minus
@@ -76,7 +77,6 @@ Remaining TODO items:
     - Implement exec command on shell
         exec "ls -l"
             should execute ls -l command on the shell
-    - For loop, while loop and if statements remove "" and make it C/C++ style for loop
     - Implement Unit Testing.
 
 ------------------------------------------------------------

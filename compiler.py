@@ -95,7 +95,8 @@ class Compiler(object):
 
         elif (isinstance(statement, Echo) or
               isinstance(statement, Continue) or
-              isinstance(statement, Variable)):
+              isinstance(statement, Variable) or
+              isinstance(statement, Input)):
             self._handle_one_line_statement(execution_tree, stack, statement)
 
         elif isinstance(statement, Break):
@@ -412,14 +413,17 @@ class Compiler(object):
             None
         """
 
-        end = stack.pop()
+        # Get for loop statement from stack
+        for_loop_statement = stack.pop()
+
         # create increment variable at the end of for loop
-        increment_variable = Variable(end.loop_increment)
-        end.statements.append(increment_variable)
+        if for_loop_statement.loop_increment:
+            increment_variable = Variable(for_loop_statement.loop_increment)
+            for_loop_statement.statements.append(increment_variable)
         if stack:
-            stack[-1].statements.append(end)
+            stack[-1].statements.append(for_loop_statement)
         else:
-            execution_tree.append(end)
+            execution_tree.append(for_loop_statement)
 
     def handle_for_loop(self, execution_tree, stack, statement):
         """ Handle For Loop Statement compilation

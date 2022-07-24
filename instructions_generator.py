@@ -8,17 +8,16 @@ Converts execution tree into executable instructions list
 
 """
 
-from ast import While
 from compiler import ExecutionTree
 from exceptions.language_exception import UnexpectedError
-from instructions.instruction import EchoInstruction
+from instructions.instruction import EchoInstruction, InputInstruction
 from instructions.instruction import GotoInstruction
 from instructions.instruction import Instruction
 from instructions.instruction import InstructionType
 from instructions.instruction import JumpIfNotInstruction
 from instructions.instruction import LabelInstruction
 from instructions.instruction import  VariableInstruction
-from statements.statement import Break, ConditionStatement, Continue, Echo, For, Variable
+from statements.statement import Break, ConditionStatement, Continue, Echo, For, Input, Variable, While
 
 
 class InstructionsGenerator:
@@ -116,6 +115,10 @@ class InstructionsGenerator:
             elif isinstance(statement, Echo):
                 self.handle_echo_statement(statement)
 
+            # Input Statement
+            elif isinstance(statement, Input):
+                self.handle_input_statement(statement)
+
             # Variable Statement
             elif isinstance(statement, Variable):
                 self.handle_variable_statement(statement)
@@ -163,6 +166,18 @@ class InstructionsGenerator:
 
         instruction = EchoInstruction(InstructionType.ECHO, statement)
         instruction.echo_string = statement.echo_string
+        self.instruction_list.append(instruction)
+
+    def handle_input_statement(self, statement):
+        """ Method to create input instruction
+        Args:
+            statement: input statement to be created
+        Returns:
+            None
+        """
+
+        instruction = InputInstruction(InstructionType.INPUT, statement)
+        instruction.input_variable = statement.input_variable
         self.instruction_list.append(instruction)
 
     def handle_for_loop(self, statement):

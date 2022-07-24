@@ -54,6 +54,7 @@ End For Loop
 """
 
 from lexer import TokenType
+from statements import statement
 from statements.statement import *
 
 
@@ -69,7 +70,11 @@ class Parser:
 
     def __init__(self) -> None:
         """ Parser Class Constructor """
+        self.token_pointer = 0
         pass
+
+    def increment_token_pointer(self):
+        self.token_pointer += 1
 
     def parse(self, lexes: list) -> list:
         """ Parse list of lexes
@@ -81,83 +86,56 @@ class Parser:
         """
 
         statements = []
-        index = 0
+        # index = 0
+        self.token_pointer = 0
 
-        while index <= len(lexes) - 1:
+        while self.token_pointer <= len(lexes) - 1:
 
-            lex = lexes[index]
+            lex = lexes[self.token_pointer]
             lex_type = lex.token_type
 
             if lex_type == TokenType.ECHO or lex_type == TokenType.PRINT:
-                echoString = ""
-                # ignore spaces
-                next_lex = lexes[index + 1]
-                while next_lex.token_type == TokenType.SPACE:
-                    index += 1
-                    next_lex = lexes[index]
-                if next_lex.token_type == TokenType.STRING:
-                    echoString = next_lex.match
-
-                echo_statement = Echo(echoString)
-                statements.append(echo_statement)
-
+                self.parse_echo(lexes, statements)
+            elif lex_type == TokenType.INPUT:
+                self.parse_input(lexes, statements)
             elif lex_type == TokenType.IF:
-                condition = self._get_condition(lexes, index)
-                if_statement = If(condition, [])
-                statements.append(if_statement)
+                self.parse_if(lexes, statements)
 
             elif lex_type == TokenType.ELSE:
-                else_statement = Else([])
-                statements.append(else_statement)
+                self.parse_else(statements)
 
             elif lex_type == TokenType.ELIF:
-                condition = self._get_condition(lexes, index)
-                elif_Statement = ElseIf(condition, [])
-                statements.append(elif_Statement)
+                self.parse_elseif(lexes, statements)
 
             elif lex_type == TokenType.FI:
-                endif = Fi()
-                statements.append(endif)
+                self.parse_endif(statements)
 
             elif lex_type == TokenType.ENDFOR:
-                endfor = EndFor()
-                statements.append(endfor)
+                self.parse_endfor(statements)
 
             elif lex_type == TokenType.ENDWHILE:
-                endwhile = EndWhile()
-                statements.append(endwhile)
+                self.parse_endwhile(statements)
 
             elif lex_type == TokenType.BREAK:
-                break_statement = Break()
-                statements.append(break_statement)
+                self.parse_break(statements)
 
             elif lex_type == TokenType.CONTINUE:
-                continue_statement = Continue()
-                statements.append(continue_statement)
+                self.parse_continue(statements)
 
             elif lex_type == TokenType.FOR:
-                condition = self._get_condition(lexes, index)
-                forloop = For(condition, [])
-                statements.append(forloop)
+                self.parse_for(lexes, statements)
 
             elif lex_type == TokenType.WHILE:
-                condition = self._get_condition(lexes, index)
-                statements.append(While(condition, []))
+                self.parse_while(lexes, statements)
 
             elif lex_type == TokenType.IDENTIFICATION:
-                identification = lexes[index].match
-                index += 1
-                next_lex = lexes[index]
-                while next_lex.token_type != TokenType.NEWLINE:
-                    identification += next_lex.match
-                    index += 1
-                    next_lex = lexes[index]
-                variablestatement = Variable(identification)
-                statements.append(variablestatement)
-
-            # Increment Index to get next token
-            index += 1
-
+                self.parse_variable(lexes, statements)
+            elif lex_type == TokenType.NEWLINE:
+                pass
+            elif lex_type == TokenType.COMMENT:
+                pass
+            else:
+                raise SyntaxError("Invalid Char " + str(lex_type))
             # Below token types are not needed at this moment, for future use only
             # elif lex_type == TokenType.TO:
             #     pass
@@ -210,10 +188,98 @@ class Parser:
             # elif lex_type == TokenType.COMMENT:
             #     pass
 
+            # Increment Index to get next token
+            #index += 1
+            self.increment_token_pointer()
 
         return statements
 
-    def _get_condition(self, lexes, index) -> str:
+    def parse_variable(self, lexes, statements):
+        identification = lexes[self.token_pointer].match
+        # index += 1
+
+        self.increment_token_pointer()
+        next_lex = lexes[self.token_pointer]
+        while next_lex.token_type != TokenType.NEWLINE:
+            identification += next_lex.match
+            # index += 1
+            self.increment_token_pointer()
+            next_lex = lexes[self.token_pointer]
+        variablestatement = Variable(identification)
+        statements.append(variablestatement)
+
+    def parse_while(self, lexes, statements):
+        condition = self._get_condition(lexes)
+        statements.append(While(condition, []))
+
+    def parse_for(self, lexes, statements):
+        condition = self._get_condition(lexes)
+        forloop = For(condition, [])
+        statements.append(forloop)
+
+    def parse_continue(self, statements):
+        continue_statement = Continue()
+        statements.append(continue_statement)
+
+    def parse_break(self, statements):
+        break_statement = Break()
+        statements.append(break_statement)
+
+    def parse_endwhile(self, statements):
+        endwhile = EndWhile()
+        statements.append(endwhile)
+
+    def parse_endfor(self, statements):
+        endfor = EndFor()
+        statements.append(endfor)
+
+    def parse_endif(self, statements):
+        endif = Fi()
+        statements.append(endif)
+
+    def parse_elseif(self, lexes, statements):
+        condition = self._get_condition(lexes)
+        elif_Statement = ElseIf(condition, [])
+        statements.append(elif_Statement)
+
+    def parse_else(self, statements):
+        else_statement = Else([])
+        statements.append(else_statement)
+
+    def parse_if(self, lexes, statements):
+        condition = self._get_condition(lexes)
+        if_statement = If(condition, [])
+        statements.append(if_statement)
+
+    def parse_input(self, lexes, statements):
+        self.increment_token_pointer()
+        next_lex = lexes[self.token_pointer]
+        input_variable = ""
+        if next_lex.token_type == TokenType.IDENTIFICATION:
+            input_variable = next_lex.match
+        else:
+            raise SyntaxError("Invalid Input Function" +  str(next_lex.TokenType ))
+        input_statement = Input(input_variable)
+        statements.append(input_statement)
+        pass
+
+    def parse_echo(self, lexes, statements):
+        echoString = ""
+        # ignore spaces
+        self.increment_token_pointer()
+        next_lex = lexes[self.token_pointer]
+
+        while next_lex.token_type == TokenType.SPACE:
+            #index += 1
+            self.increment_token_pointer()
+            next_lex = lexes[self.token_pointer]
+        if next_lex.token_type == TokenType.STRING:
+            echoString = next_lex.match
+
+        echo_statement = Echo(echoString)
+        statements.append(echo_statement)
+
+    def _get_condition(self, lexes) -> str:
         """ This method extracts tokens as condtions, it stops when it found
             new line, usually used for statements that ends in a new line mark
             Example:
@@ -229,10 +295,13 @@ class Parser:
         """
 
         condition = ""
-        next_lex = lexes[index + 1]
-        index += 1
+        self.increment_token_pointer()
+        next_lex = lexes[self.token_pointer]
+        #index += 1
+        
         while next_lex.token_type != TokenType.NEWLINE:
             condition += next_lex.match
-            index += 1
-            next_lex = lexes[index]
+            # index += 1
+            self.increment_token_pointer()
+            next_lex = lexes[self.token_pointer]
         return condition

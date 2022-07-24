@@ -53,12 +53,12 @@ Classes Description:
 """
 
 import argparse
-from parser import Parser
 
 from compiler import Compiler
+from enhanced_parser import EnhancedParser
 from executor import Executor
 from instructions_generator import InstructionsGenerator
-from lexer import Lexer, TokenType
+from lexer import Lexer
 
 
 def main():
@@ -76,7 +76,7 @@ def main():
     # Argument identifier: --filename or -f
     # File name that contails source code to be executed.
     parser.add_argument('-f', '--filename',
-                        #default='asl_files/variable.asl',
+                        default='asl_files/functions.asl',
                         help='source file name',
                         nargs=argparse.OPTIONAL,
                         )
@@ -100,18 +100,18 @@ def main():
     tokens = lexer.tokenize_text(text)
 
     # Parses list of tokens into list of statements
-    parser = Parser()
+    parser = EnhancedParser()
     statements = parser.parse(tokens)
 
     # Compiles list of statements into execution tree
     compiler = Compiler()
     execution_tree = compiler.compile(statements)
 
-    # Generate Instructions list
+    # Generates Instructions list
     generator = InstructionsGenerator()
     instructions = generator.generate_instructions(execution_tree)
 
-    # Execute Instructions list into meaningful program
+    # Executes Instructions list into meaningful program
     executor = Executor()
     executor.execute(instructions, execution_tree)
 

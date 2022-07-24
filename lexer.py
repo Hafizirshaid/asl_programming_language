@@ -8,81 +8,150 @@ Converts code texts into meaningful lexems to tokens:
 
 Example:
 -------------------------------
-x = 10
+echo "Calculate Grades rank between 0 to 100"
 
-for "i=0;i<10;i=i+1"
-    if "i==0"
-        echo "stmt says i is 0"
-    elif "i==1"
-        echo "stmt says i is 1"
-    elif "i==2"
-        echo "stmt says i is 2"
-    elif "i==3"
-        echo "stmt says i is 3"
-    elif "i==4"
-        echo "stmt says i is 4"
-    elif "i==5"
-        echo "stmt says i is 5"
+for (grade = 0; grade <= 100; grade = grade + 1)
+
+    if ((grade >= 90) & (grade <= 100))
+        echo "{grade} Outstanding"
+    elif ((grade >= 80) & (grade <= 90))
+        echo "{grade} very good"
+    elif ((grade >= 70) & (grade <= 80))
+        echo "{grade} good"
+    elif ((grade >= 60) & (grade <= 70))
+        echo "{grade} fair"
+    elif ((grade >= 0) & (grade <= 60))
+        echo "{grade} failure"
     else
-        echo "not checked i is {i}"
+        echo "Invalid Grade"
     fi
+
 endfor
 ----------------------------
 
 List of tokens:
 -------------------
-Token(TokenType.IDENTIFICATION, 'x', 1),
-Token(TokenType.EQUAL, '=', 1),
-Token(TokenType.NUMBER, '10', 1),
+Token(TokenType.ECHO, 'echo', 1),
+Token(TokenType.STRING, '"Calculate Grades rank between 0 to 100"', 1),
 Token(TokenType.NEWLINE, '', 1),
 Token(TokenType.NEWLINE, '', 2),
 Token(TokenType.FOR, 'for', 3),
-Token(TokenType.STRING, '"i=0;i<10;i=i+1"', 3),
+Token(TokenType.OPENPARANTHESIS, '(', 3),
+Token(TokenType.IDENTIFICATION, 'grade', 3),
+Token(TokenType.EQUAL, '=', 3),
+Token(TokenType.NUMBER, '0', 3),
+Token(TokenType.SEMICOLON, ';', 3),
+Token(TokenType.IDENTIFICATION, 'grade', 3),
+Token(TokenType.LESSTHANOREQUAL, '<=', 3),
+Token(TokenType.NUMBER, '100', 3),
+Token(TokenType.SEMICOLON, ';', 3),
+Token(TokenType.IDENTIFICATION, 'grade', 3),
+Token(TokenType.EQUAL, '=', 3),
+Token(TokenType.IDENTIFICATION, 'grade', 3),
+Token(TokenType.ADD, '+', 3),
+Token(TokenType.NUMBER, '1', 3),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 3),
 Token(TokenType.NEWLINE, '', 3),
-Token(TokenType.IF, 'if', 4),
-Token(TokenType.STRING, '"i==0"', 4),
 Token(TokenType.NEWLINE, '', 4),
-Token(TokenType.ECHO, 'echo', 5),
-Token(TokenType.STRING, '"stmt says i is 0"', 5),
+Token(TokenType.IF, 'if', 5),
+Token(TokenType.OPENPARANTHESIS, '(', 5),
+Token(TokenType.OPENPARANTHESIS, '(', 5),
+Token(TokenType.IDENTIFICATION, 'grade', 5),
+Token(TokenType.GRATERTHANOREQUAL, '>=', 5),
+Token(TokenType.NUMBER, '90', 5),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 5),
+Token(TokenType.AND, '&', 5),
+Token(TokenType.OPENPARANTHESIS, '(', 5),
+Token(TokenType.IDENTIFICATION, 'grade', 5),
+Token(TokenType.LESSTHANOREQUAL, '<=', 5),
+Token(TokenType.NUMBER, '100', 5),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 5),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 5),
 Token(TokenType.NEWLINE, '', 5),
-Token(TokenType.ELIF, 'elif', 6),
-Token(TokenType.STRING, '"i==1"', 6),
+Token(TokenType.ECHO, 'echo', 6),
+Token(TokenType.STRING, '"{grade} Outstanding"', 6),
 Token(TokenType.NEWLINE, '', 6),
-Token(TokenType.ECHO, 'echo', 7),
-Token(TokenType.STRING, '"stmt says i is 1"', 7),
+Token(TokenType.ELIF, 'elif', 7),
+Token(TokenType.OPENPARANTHESIS, '(', 7),
+Token(TokenType.OPENPARANTHESIS, '(', 7),
+Token(TokenType.IDENTIFICATION, 'grade', 7),
+Token(TokenType.GRATERTHANOREQUAL, '>=', 7),
+Token(TokenType.NUMBER, '80', 7),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 7),
+Token(TokenType.AND, '&', 7),
+Token(TokenType.OPENPARANTHESIS, '(', 7),
+Token(TokenType.IDENTIFICATION, 'grade', 7),
+Token(TokenType.LESSTHANOREQUAL, '<=', 7),
+Token(TokenType.NUMBER, '90', 7),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 7),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 7),
 Token(TokenType.NEWLINE, '', 7),
-Token(TokenType.ELIF, 'elif', 8),
-Token(TokenType.STRING, '"i==2"', 8),
+Token(TokenType.ECHO, 'echo', 8),
+Token(TokenType.STRING, '"{grade} very good"', 8),
 Token(TokenType.NEWLINE, '', 8),
-Token(TokenType.ECHO, 'echo', 9),
-Token(TokenType.STRING, '"stmt says i is 2"', 9),
+Token(TokenType.ELIF, 'elif', 9),
+Token(TokenType.OPENPARANTHESIS, '(', 9),
+Token(TokenType.OPENPARANTHESIS, '(', 9),
+Token(TokenType.IDENTIFICATION, 'grade', 9),
+Token(TokenType.GRATERTHANOREQUAL, '>=', 9),
+Token(TokenType.NUMBER, '70', 9),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 9),
+Token(TokenType.AND, '&', 9),
+Token(TokenType.OPENPARANTHESIS, '(', 9),
+Token(TokenType.IDENTIFICATION, 'grade', 9),
+Token(TokenType.LESSTHANOREQUAL, '<=', 9),
+Token(TokenType.NUMBER, '80', 9),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 9),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 9),
 Token(TokenType.NEWLINE, '', 9),
-Token(TokenType.ELIF, 'elif', 10),
-Token(TokenType.STRING, '"i==3"', 10),
+Token(TokenType.ECHO, 'echo', 10),
+Token(TokenType.STRING, '"{grade} good"', 10),
 Token(TokenType.NEWLINE, '', 10),
-Token(TokenType.ECHO, 'echo', 11),
-Token(TokenType.STRING, '"stmt says i is 3"', 11),
+Token(TokenType.ELIF, 'elif', 11),
+Token(TokenType.OPENPARANTHESIS, '(', 11),
+Token(TokenType.OPENPARANTHESIS, '(', 11),
+Token(TokenType.IDENTIFICATION, 'grade', 11),
+Token(TokenType.GRATERTHANOREQUAL, '>=', 11),
+Token(TokenType.NUMBER, '60', 11),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 11),
+Token(TokenType.AND, '&', 11),
+Token(TokenType.OPENPARANTHESIS, '(', 11),
+Token(TokenType.IDENTIFICATION, 'grade', 11),
+Token(TokenType.LESSTHANOREQUAL, '<=', 11),
+Token(TokenType.NUMBER, '70', 11),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 11),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 11),
 Token(TokenType.NEWLINE, '', 11),
-Token(TokenType.ELIF, 'elif', 12),
-Token(TokenType.STRING, '"i==4"', 12),
+Token(TokenType.ECHO, 'echo', 12),
+Token(TokenType.STRING, '"{grade} fair"', 12),
 Token(TokenType.NEWLINE, '', 12),
-Token(TokenType.ECHO, 'echo', 13),
-Token(TokenType.STRING, '"stmt says i is 4"', 13),
+Token(TokenType.ELIF, 'elif', 13),
+Token(TokenType.OPENPARANTHESIS, '(', 13),
+Token(TokenType.OPENPARANTHESIS, '(', 13),
+Token(TokenType.IDENTIFICATION, 'grade', 13),
+Token(TokenType.GRATERTHANOREQUAL, '>=', 13),
+Token(TokenType.NUMBER, '0', 13),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 13),
+Token(TokenType.AND, '&', 13),
+Token(TokenType.OPENPARANTHESIS, '(', 13),
+Token(TokenType.IDENTIFICATION, 'grade', 13),
+Token(TokenType.LESSTHANOREQUAL, '<=', 13),
+Token(TokenType.NUMBER, '60', 13),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 13),
+Token(TokenType.CLOSINGPARANTHESIS, ')', 13),
 Token(TokenType.NEWLINE, '', 13),
-Token(TokenType.ELIF, 'elif', 14),
-Token(TokenType.STRING, '"i==5"', 14),
+Token(TokenType.ECHO, 'echo', 14),
+Token(TokenType.STRING, '"{grade} failure"', 14),
 Token(TokenType.NEWLINE, '', 14),
-Token(TokenType.ECHO, 'echo', 15),
-Token(TokenType.STRING, '"stmt says i is 5"', 15),
+Token(TokenType.ELSE, 'else', 15),
 Token(TokenType.NEWLINE, '', 15),
-Token(TokenType.ELSE, 'else', 16),
+Token(TokenType.ECHO, 'echo', 16),
+Token(TokenType.STRING, '"Invalid Grade"', 16),
 Token(TokenType.NEWLINE, '', 16),
-Token(TokenType.ECHO, 'echo', 17),
-Token(TokenType.STRING, '"not checked i is {i}"', 17),
+Token(TokenType.FI, 'fi', 17),
 Token(TokenType.NEWLINE, '', 17),
-Token(TokenType.FI, 'fi', 18),
 Token(TokenType.NEWLINE, '', 18),
-Token(TokenType.ENDFOR, 'endfor', 19)
+Token(TokenType.ENDFOR, 'endfor', 19),
 -------------------
 
 """
@@ -146,6 +215,14 @@ class TokenType(Enum):
     PRINT = 48
     LEFTBRAKET = 49
     RIGHTBRAKET = 50
+    COMMA = 51
+    ENDMETHOD = 52
+    OPENSQUAREBRACKET = 53
+    CLOSESQUAREBRACKET = 54
+    STRUCT = 55
+    ENDSTRUCT = 56
+    DOT = 57
+    RETURN = 58
 
 
 class Token:
@@ -201,18 +278,23 @@ class Lexer(object):
             {'type': TokenType.IF, 'regex': '^if'},
             {'type': TokenType.ELSE, 'regex': '^else'},
             {'type': TokenType.FI, 'regex': '^fi'},
+            {'type': TokenType.FI, 'regex': '^endif'},
             {'type': TokenType.ENDFOR, 'regex': '^endfor'},
             {'type': TokenType.ENDWHILE, 'regex': '^endwhile'},
             {'type': TokenType.BREAK, 'regex': '^break'},
             {'type': TokenType.CONTINUE, 'regex': '^continue'},
             {'type': TokenType.FOR, 'regex': '^for'},
-            {'type': TokenType.TO, 'regex': '^to'},
             {'type': TokenType.INCR, 'regex': '^incr'},
             {'type': TokenType.WHILE, 'regex': '^while'},
-            {'type': TokenType.DO, 'regex': '^do'},
+            {'type': TokenType.STRUCT, 'regex': '^struct'},
+            {'type': TokenType.ENDSTRUCT, 'regex': '^endstruct'},
+            # {'type': TokenType.DO, 'regex': '^do'},
             {'type': TokenType.ECHO, 'regex': '^echo'},
             {'type': TokenType.PRINT, 'regex': '^print'},
             {'type': TokenType.INPUT, 'regex': '^input'},
+            {'type': TokenType.RETURN, 'regex': '^return'},
+
+
             #{'type': TokenType.CONDITION, 'regex': "\(([^)]+)\)"},
             {'type': TokenType.IDENTIFICATIONBETWEENBRSCKETS, 'regex': "\{.*?\}"},
             {'type': TokenType.IDENTIFICATION, 'regex': '^[a-zA-Z_$][a-zA-Z_$0-9]*'},
@@ -242,7 +324,12 @@ class Lexer(object):
             {'type': TokenType.NEWLINE, 'regex': '^\n'},
             {'type': TokenType.SPACE, 'regex': '\s'},
             {'type': TokenType.OPENPARANTHESIS, 'regex': '^\('},
-            {'type': TokenType.CLOSINGPARANTHESIS, 'regex': '^\)'}
+            {'type': TokenType.CLOSINGPARANTHESIS, 'regex': '^\)'},
+            {'type': TokenType.COMMA, 'regex': '^,'},
+            {'type': TokenType.OPENSQUAREBRACKET, 'regex': '^\['},
+            {'type': TokenType.CLOSESQUAREBRACKET, 'regex': '^\]'},
+            {'type': TokenType.DOT, 'regex': '^\.'},
+
         ]
 
     def tokenize_text(self, text: str, keep_unknown=False, keep_spaces=False) -> list:

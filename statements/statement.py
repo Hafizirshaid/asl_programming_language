@@ -28,7 +28,7 @@ class StatementType(Enum):
     ENDWHILE = 11
     BREAK = 12
     CONTINUE = 13
-
+    INPUT = 14
 
 class Statement(object):
     """ Statement Class """
@@ -143,8 +143,32 @@ class For(Statement):
         self.loop_increment = chunks[2]
         self.symbols_table = SymbolTable()
 
+    def __init__(self,
+                 statements: list,
+                 loop_initial_variable : str,
+                 loop_condition : str,
+                 loop_increment : str) -> None:
+
+        """ For Statement Class Constructor
+        Args:
+            condition: For Loop Expression
+            statements: Children statements of for loop
+        Returns:
+            None
+        """
+
+        super().__init__(StatementType.FOR)
+        self.statements = statements
+
+        self.loop_initial_variable = loop_initial_variable
+        self.loop_condition = loop_condition
+        self.loop_increment = loop_increment
+
+        self.conditon = None
+        self.symbols_table = SymbolTable()
+
     def __str__(self) -> str:
-        return f"For Loop: {self.conditon}"
+        return f"For Loop: {self.loop_initial_variable}; {self.loop_condition}; {self.loop_increment}"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -272,6 +296,26 @@ class Echo(Statement):
 
     def __str__(self) -> str:
         return f"Echo Statement: {self.echo_string}"
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+
+class Input(Statement):
+    """ Input Statement Class """
+
+    def __init__(self, input_variable) -> None:
+        """ Input Statement Class Constructor
+        Args:
+            input_variable: Input variable name
+        Returns:
+            None
+        """
+        super().__init__(StatementType.INPUT)
+        self.input_variable = input_variable
+
+    def __str__(self) -> str:
+        return f"Input Statement: {self.input_variable}"
 
     def __repr__(self) -> str:
         return self.__str__()
