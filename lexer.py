@@ -223,6 +223,11 @@ class TokenType(Enum):
     ENDSTRUCT = 56
     DOT = 57
     RETURN = 58
+    PLUSEQUAL = 59
+    SUBEQUAL = 60
+    MULTEQUAL = 61
+    DIVEQUAL = 62
+    INVERT = 63
 
 
 class Token:
@@ -254,6 +259,7 @@ class Token:
     def __str__(self) -> str:
         return f"{self.line_number} {self.token_type} {self.match}"
 
+
 class Lexer(object):
     """ Lexer Class
 
@@ -271,7 +277,10 @@ class Lexer(object):
         # this list contains all regular expressions that are recognized by
         # the programming language.
         self.regex_list = [
+            # Comment
             {'type': TokenType.COMMENT, 'regex': '(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)'},
+
+            # KeyWords:
             {'type': TokenType.CALL, 'regex': '^call'},
             {'type': TokenType.METHOD, 'regex': '^method'},
             {'type': TokenType.ELIF, 'regex': '^elif'},
@@ -284,55 +293,72 @@ class Lexer(object):
             {'type': TokenType.BREAK, 'regex': '^break'},
             {'type': TokenType.CONTINUE, 'regex': '^continue'},
             {'type': TokenType.FOR, 'regex': '^for'},
-            {'type': TokenType.INCR, 'regex': '^incr'},
             {'type': TokenType.WHILE, 'regex': '^while'},
             {'type': TokenType.STRUCT, 'regex': '^struct'},
             {'type': TokenType.ENDSTRUCT, 'regex': '^endstruct'},
-            # {'type': TokenType.DO, 'regex': '^do'},
             {'type': TokenType.ECHO, 'regex': '^echo'},
             {'type': TokenType.PRINT, 'regex': '^print'},
             {'type': TokenType.INPUT, 'regex': '^input'},
             {'type': TokenType.RETURN, 'regex': '^return'},
+            {'type': TokenType.TRUE, 'regex': '^true'},
+            {'type': TokenType.FALSE, 'regex': '^false'},
 
-
-            #{'type': TokenType.CONDITION, 'regex': "\(([^)]+)\)"},
+            # Expressions:
             {'type': TokenType.IDENTIFICATIONBETWEENBRSCKETS, 'regex': "\{.*?\}"},
             {'type': TokenType.IDENTIFICATION, 'regex': '^[a-zA-Z_$][a-zA-Z_$0-9]*'},
             {'type': TokenType.STRING, 'regex': '^"[^"]*"'},
             {'type': TokenType.REAL, 'regex': '[0-9]+\.[0-9]*'},
             {'type': TokenType.NUMBER, 'regex': '^\d+'},
+
+            # Assignment Operators
             {'type': TokenType.EQUIVALENT, 'regex': '^=='},
+            {'type': TokenType.PLUSEQUAL, 'regex': '^\+='},
+            {'type': TokenType.SUBEQUAL, 'regex': '^\-='},
+            {'type': TokenType.MULTEQUAL, 'regex': '^\*='},
+            {'type': TokenType.DIVEQUAL, 'regex': '^\/='},
+            {'type': TokenType.INVERT, 'regex': '^=!'},
             {'type': TokenType.EQUAL, 'regex': '^='},
+
+            # Logical Compare Operators
             {'type': TokenType.NOTEQUIVALENT, 'regex': '^!='},
             {'type': TokenType.GRATERTHANOREQUAL, 'regex': '^>='},
             {'type': TokenType.LESSTHANOREQUAL, 'regex': '^<='},
             {'type': TokenType.GRATERTHAN, 'regex': '^>'},
             {'type': TokenType.LESSTHAN, 'regex': '^<'},
+
+            # Mathmatical Operators
             {'type': TokenType.ADD, 'regex': '^\+'},
             {'type': TokenType.SUB, 'regex': '^\-'},
             {'type': TokenType.MULT, 'regex': '^\*'},
             {'type': TokenType.DIV, 'regex': '^\/'},
             {'type': TokenType.MOD, 'regex': '^\%'},
+            
+            # Logical Operators
             {'type': TokenType.AND, 'regex': '^&'},
             {'type': TokenType.OR, 'regex': '^\|'},
             {'type': TokenType.NOT, 'regex': '^!'},
+            #brackets and paranthsis
+
             {'type': TokenType.LEFTBRAKET, 'regex': '^}'},
             {'type': TokenType.RIGHTBRAKET, 'regex': '^{'},
-            {'type': TokenType.SEMICOLON, 'regex': "^;"},
-            {'type': TokenType.TRUE, 'regex': '^true'},
-            {'type': TokenType.FALSE, 'regex': '^false'},
-            {'type': TokenType.NEWLINE, 'regex': '^\n'},
-            {'type': TokenType.SPACE, 'regex': '\s'},
             {'type': TokenType.OPENPARANTHESIS, 'regex': '^\('},
             {'type': TokenType.CLOSINGPARANTHESIS, 'regex': '^\)'},
-            {'type': TokenType.COMMA, 'regex': '^,'},
             {'type': TokenType.OPENSQUAREBRACKET, 'regex': '^\['},
             {'type': TokenType.CLOSESQUAREBRACKET, 'regex': '^\]'},
+
+            # SemiColon
+            {'type': TokenType.SEMICOLON, 'regex': "^;"},
+
+            {'type': TokenType.NEWLINE, 'regex': '^\n'},
+            {'type': TokenType.SPACE, 'regex': '\s'},
+            
+            {'type': TokenType.COMMA, 'regex': '^,'},
+
             {'type': TokenType.DOT, 'regex': '^\.'},
 
         ]
 
-    def tokenize_text(self, text: str, keep_unknown=False, keep_spaces=False) -> list:
+    def tokenize_text(self, text: str, keep_unknown=False, keep_spaces=False, ignore_new_lines=True) -> list:
         """ Tokenize source file text
         Args:
             text: text file string
@@ -363,15 +389,17 @@ class Lexer(object):
 
             if match:
 
-                # New Token Found, remove token from text.
+                # New Token Found, remove match from text.
                 text = text.removeprefix(match.group())
 
-                if keep_spaces and token_type['type'] == TokenType.SPACE:
+
+                if ((keep_spaces and token_type['type'] == TokenType.SPACE)
+                    or (not ignore_new_lines and token_type['type'] == TokenType.NEWLINE)):
                     # add white space token to list
                     token = Token(token_type['type'], match.group(), line_number)
                     tokens.append(token)
 
-                if token_type['type'] != TokenType.SPACE:
+                if token_type['type'] != TokenType.SPACE and token_type['type'] != TokenType.NEWLINE:
 
                     token_value = match.group().strip()
                     token = Token(token_type['type'], token_value, line_number)
@@ -393,3 +421,4 @@ class Lexer(object):
                     raise SyntaxError(f"Syntax Error at line {line_number} \n {text}")
 
         return tokens
+

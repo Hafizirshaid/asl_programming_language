@@ -10,11 +10,11 @@ program logical output.
 """
 
 from compiler import ExecutionTree
-from exceptions.language_exception import UnknwonVariable
+from exceptions.language_exception import UnexpectedError, UnknwonVariable
 from expression_evaluator import Evaluator
-from instructions.instruction import EchoInstruction, InputInstruction, InstructionType
+from instructions.instruction import EchoInstruction, InputInstruction, InstructionType, VariableInstruction
 from lexer import Lexer, TokenType
-from statements.statement import ConditionStatement, Else, ElseIf, For, If, While
+from statements.statement import ConditionStatement, Else, ElseIf, For, If, Variable, While
 
 
 class Executor(object):
@@ -22,18 +22,21 @@ class Executor(object):
 
     Executor Class
 
+    Execute List of instructions for a program
+
     Class Attributes:
         instruction_pointer: Pointer that points to the current instruction to be
                              executed by the instruction executor.
 
-        label_index_table: A dictionary that contains labels to indexes mapping
+        label_index_table:   A dictionary that contains labels to indexes mapping
 
-        execution_tree: Execution tree that contains statement, it is needed in this
-                        class in order to lookup symbols tables for variables assignment.
+        execution_tree:      Execution tree that contains statement, it is needed in this
+                             class in order to lookup symbols tables for variables assignment.
     """
 
     def __init__(self) -> None:
         """ Executor Class Constructor """
+
         self.instruction_pointer = 0
         self.label_index_table = {}
         self.execution_tree = None
@@ -167,7 +170,7 @@ class Executor(object):
         """
         self.instruction_pointer = self.label_index_table[current_instruction.goto_label]
 
-    def execute_variable_instruction(self, instruction):
+    def execute_variable_instruction(self, instruction: VariableInstruction):
         """ Execute variable assignment instruction
         Args:
             instruction: Variable Instruction to be executed
@@ -176,23 +179,25 @@ class Executor(object):
         """
 
         # Calcuate Variable name and variable value
-        variable_expression = instruction.variable_expression
-        variable_name = variable_expression.split("=")[0].strip()
-        variable_value = variable_expression.split("=")[1].strip()
+        # variable_expression = instruction.variable_expression
+        variable_name = instruction.variable_statement.variable_name
+        variable_value = instruction.variable_statement.variable_value
+
+        operation = instruction.variable_statement.operation
 
         # Tokenize variable value to make sure variable can be evaulated
         tokens = Lexer().tokenize_text(variable_value)
 
         if len(tokens) == 1:
-            self.handle_one_token_variable(instruction, variable_name, variable_value, tokens)
+            self.handle_one_token_variable(instruction, variable_name, variable_value, tokens, operation)
         else:
-            self.handle_multiple_tokens_variable(instruction, tokens)
+            self.handle_multiple_tokens_variable(instruction, tokens, operation)
         return
 
-    def handle_multiple_tokens_variable(self, instruction, tokens):
+    def handle_multiple_tokens_variable(self, instruction, tokens, operation):
         """ Evaluate multiple tokens variable expression.
             For example: x = y + z
-            This method will detemine the result of y + z and store it in x
+            This method will determine the result of y + z and store it in x
         Args:
             instruction: variable instruction that contains the variable statement
             tokens: variable statement tokens to be evaluated.
@@ -204,8 +209,7 @@ class Executor(object):
         for token in tokens:
             if token.token_type == TokenType.IDENTIFICATION:
                 # Substitute variable values in final expression to be evaluated
-                symbol_table = self.find_symbol_table(
-                        token.match, instruction.variable_statement)
+                symbol_table = self.find_symbol_table(token.match, instruction.variable_statement)
                 symbol = symbol_table.get_entry_value(token.match)
                 final_expression += str(symbol.value)
                 pass
@@ -217,10 +221,9 @@ class Executor(object):
         name = instruction.variable_name
 
         # Store value of variable
-        symbol_table = self.find_symbol_table(name, instruction.variable_statement)
-        symbol_table.modify_entry(name, value)
+        self.store_variable(name, value, operation, instruction)
 
-    def handle_one_token_variable(self, instruction, variable_name, variable_value, tokens):
+    def handle_one_token_variable(self, instruction, variable_name, variable_value, tokens, operation):
         """ Evaluate one token variable assignment, example:
             x = y or x = 1
         Args:
@@ -236,27 +239,60 @@ class Executor(object):
         # if one token found, make sure the value is not another variable
         if tokens[0].token_type == TokenType.IDENTIFICATION:
             # Variable value is an assigmnet to another variable
-            symbol_table = self.find_symbol_table(
-                    variable_value, instruction.variable_statement)
+            symbol_table = self.find_symbol_table(variable_value, instruction.variable_statement)
+
             if not symbol_table:
                 raise UnknwonVariable(f"Variable not found {variable_value}")
+
             new_value = symbol_table.get_entry_value(variable_value)
-            dest_symbol_table = self.find_symbol_table(
-                    variable_name, instruction.variable_statement)
-            dest_symbol_table.modify_entry(variable_name, new_value.value)
+
+            self.store_variable(variable_name, new_value.value, operation, instruction)
         else:
             # variable value is normal value not variable assigment to another variable
-            #value = Evaluator().evaluate(variable_value)
-            name = instruction.variable_name
-            symbol_table = self.find_symbol_table(name, instruction.variable_statement)
-            symbol_table.modify_entry(name, variable_value)
+            self.store_variable(instruction.variable_name, variable_value, operation, instruction)
+
+    def store_variable(self, variable_name, variable_value, operation, instruction):
+        """ Store Variable value in the right location and apply operation
+        Args:
+            variable_name: name of the variable
+            variable_value: new variable value
+            operation: operation to be applied, =, +=, -=, *= or /=
+            instruction: current instruction holding the variable statement
+        Returns:
+            None
+        """
+
+        symbols_table = self.find_symbol_table(variable_name, instruction.variable_statement)
+        new_variable_value = variable_value
+
+        if operation != TokenType.EQUAL:
+            # Apply Operation
+
+            old_value = symbols_table.get_entry_value(variable_name)
+
+            if old_value:
+                old_value = old_value.value
+
+            if operation == TokenType.PLUSEQUAL:
+                new_variable_value = float(old_value) + float(variable_value)
+
+            elif operation == TokenType.SUBEQUAL:
+                new_variable_value = float(old_value) - float(variable_value)
+
+            elif operation == TokenType.MULTEQUAL:
+                new_variable_value = float(old_value) * float(variable_value)
+
+            elif operation == TokenType.DIVEQUAL:
+                new_variable_value = float(old_value) / float(variable_value)
+
+        symbols_table.modify_entry(variable_name, new_variable_value)
 
     def find_symbol_table(self, name: str, statement):
         """ Find Symbol table that contains variable name
 
         Args:
             name: variable name to be found
-            statement: A statement that can be used to lookup symbols table in 
+            statement: A statement that can be used to lookup symbols table in
                        the execution tree.
         Returns:
             Symbols table that contains variable {name}
@@ -351,7 +387,6 @@ class Executor(object):
 
         return
 
-
     def execute_input_instruction(self, instruction: InputInstruction):
         """ Execute Input Instruction
         Args:
@@ -369,4 +404,3 @@ class Executor(object):
         # input from keyboard
         input_value = input()
         symbol_table.modify_entry(variable_name, input_value)
-

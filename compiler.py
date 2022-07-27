@@ -91,30 +91,30 @@ class Compiler(object):
             stack.append(statement)
 
         elif isinstance(statement, For):
-            self.handle_for_loop(execution_tree, stack, statement)
+            self.compile_for_loop(execution_tree, stack, statement)
 
         elif (isinstance(statement, Echo) or
               isinstance(statement, Continue) or
               isinstance(statement, Variable) or
               isinstance(statement, Input)):
-            self._handle_one_line_statement(execution_tree, stack, statement)
+            self.compile_one_line_statement(execution_tree, stack, statement)
 
         elif isinstance(statement, Break):
-            self._handle_break_statement(execution_tree, stack, statement)
+            self.compile_break_statement(execution_tree, stack, statement)
 
         elif isinstance(statement, If):
-            self._handle_if(stack, statement)
+            self.compile_if_statement(stack, statement)
 
         elif isinstance(statement, Fi):
-            self._handle_endif(execution_tree, stack)
+            self.compile_endif(execution_tree, stack)
 
         elif isinstance(statement, EndFor):
-            self._handle_end_forloop_statement(execution_tree, stack)
+            self.compile_endfor(execution_tree, stack)
 
         elif isinstance(statement, EndWhile):
-            self._handle_end_statement(execution_tree, stack)
+            self.compile_end_statement(execution_tree, stack)
 
-    def _handle_break_statement(self, execution_tree: ExecutionTree, stack, statement: Break):
+    def compile_break_statement(self, execution_tree: ExecutionTree, stack, statement: Break):
         """ Compile break statement, find which loop this break statement belongs to 
             weather it's a for loop or a while loop
         Args:
@@ -126,13 +126,17 @@ class Compiler(object):
         """
 
         if stack:
-            # when adding break statement, 
+            # when adding break statement, the first loop in stack will be the loop 
+            # for this break statement.
             loop_found = False
+
+            # search stack array backward
             for stack_item in stack[::-1]:
                 if isinstance(stack_item, While) or isinstance(stack_item, For):
-                     self._handle_one_line_statement(execution_tree, stack, statement)
-                     loop_found = True
-                     break
+                    # Loop Found
+                    self.compile_one_line_statement(execution_tree, stack, statement)
+                    loop_found = True
+                    break
 
             # Check if loop was found, otherwise, break statement doesn't have a loop
             if not loop_found:
@@ -324,7 +328,7 @@ class Compiler(object):
                 pass
         pass
 
-    def _handle_endif(self, execution_tree: ExecutionTree, stack):
+    def compile_endif(self, execution_tree: ExecutionTree, stack):
         """ Handle End If Statement compilation
         Args:
             execution_tree: execution tree
@@ -360,7 +364,7 @@ class Compiler(object):
         else:
             execution_tree.append(clause)
 
-    def _handle_if(self, stack, statement):
+    def compile_if_statement(self, stack, statement):
         """ Handle If Statement compilation
         Args:
             stack: scope stack
@@ -373,7 +377,7 @@ class Compiler(object):
         stack.append(conditon)
         stack.append(statement)
 
-    def _handle_one_line_statement(self, execution_tree, stack, statement):
+    def compile_one_line_statement(self, execution_tree, stack, statement):
         """ Handle End Statement compilation, add it to scope statement if
             stack is not empty, otherwise add statement to exection tree
         Args:
@@ -389,7 +393,7 @@ class Compiler(object):
         else:
             execution_tree.append(statement)
 
-    def _handle_end_statement(self, execution_tree, stack):
+    def compile_end_statement(self, execution_tree, stack):
         """ Handle End Statement compilation
         Args:
             execution_tree: execution tree
@@ -404,7 +408,7 @@ class Compiler(object):
         else:
             execution_tree.append(end)
 
-    def _handle_end_forloop_statement(self, execution_tree, stack):
+    def compile_endfor(self, execution_tree, stack):
         """ Handle End For Loop Statement compilation
         Args:
             execution_tree: execution tree
@@ -418,14 +422,14 @@ class Compiler(object):
 
         # create increment variable at the end of for loop
         if for_loop_statement.loop_increment:
-            increment_variable = Variable(for_loop_statement.loop_increment)
+            increment_variable = for_loop_statement.loop_increment
             for_loop_statement.statements.append(increment_variable)
         if stack:
             stack[-1].statements.append(for_loop_statement)
         else:
             execution_tree.append(for_loop_statement)
 
-    def handle_for_loop(self, execution_tree, stack, statement):
+    def compile_for_loop(self, execution_tree, stack, statement):
         """ Handle For Loop Statement compilation
         Args:
             execution_tree: exection tree
@@ -437,8 +441,8 @@ class Compiler(object):
 
         # add for loop variable
         if statement.loop_initial_variable:
-            loop_initial_variable = Variable(statement.loop_initial_variable)
-            self._handle_one_line_statement(execution_tree, stack, loop_initial_variable)
+            loop_initial_variable = statement.loop_initial_variable
+            self.compile_one_line_statement(execution_tree, stack, loop_initial_variable)
         stack.append(statement)
 
     def is_scope_statement(self, statement):
@@ -455,3 +459,4 @@ class Compiler(object):
                 isinstance(statement, If) or
                 isinstance(statement, ElseIf) or
                 isinstance(statement, Else))
+

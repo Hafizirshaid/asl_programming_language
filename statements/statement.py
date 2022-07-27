@@ -48,6 +48,7 @@ class Statement(object):
 class Variable(Statement):
     """ Variable Statement Class """
 
+    # TODO PYTHON DOESN'T ALLOW MULTIPLE CONSTRUCTORS OVERLOADING
     def __init__(self, variable_expression: str) -> None:
         """ Variable Statement Class Constructor
         Args:
@@ -64,6 +65,22 @@ class Variable(Statement):
         self.variable_name = self.variable_name.strip('"')
         self.variable_value = chunks[1]
         self.symbols_table = None
+
+    def __init__(self, variable_name, operation, variable_value) -> None:
+        """ Variable Statement Class Constructor
+        Args:
+            variable_name:
+            operation:
+            variable_value:
+        Returns:
+            None
+        """
+
+        super().__init__(StatementType.VAR)
+        self.variable_name = variable_name
+        self.operation = operation
+        self.variable_value = variable_value
+        self.variable_expression = f"{self.variable_name}{self.operation}{self.variable_value}"
 
     def __str__(self) -> str:
         return "Variable: " + str(self.variable_expression)
@@ -123,25 +140,25 @@ class If(Statement):
 class For(Statement):
     """ For Statement Class """
 
-    def __init__(self, condition: str, statements: list) -> None:
-        """ For Statement Class Constructor
-        Args:
-            condition: For Loop Expression
-            statements: Children statements of for loop
-        Returns:
-            None
-        """
+    # def __init__(self, condition: str, statements: list) -> None:
+    #     """ For Statement Class Constructor
+    #     Args:
+    #         condition: For Loop Expression
+    #         statements: Children statements of for loop
+    #     Returns:
+    #         None
+    #     """
 
-        super().__init__(StatementType.FOR)
-        self.statements = statements
-        self.conditon = condition.strip('"')
+    #     super().__init__(StatementType.FOR)
+    #     self.statements = statements
+    #     self.conditon = condition.strip('"')
 
-        chunks = self.conditon.split(';')
-        # Dirty way to split things, TODO find a better solution
-        self.loop_initial_variable = chunks[0]
-        self.loop_condition = chunks[1]
-        self.loop_increment = chunks[2]
-        self.symbols_table = SymbolTable()
+    #     chunks = self.conditon.split(';')
+    #     # Dirty way to split things, TODO find a better solution
+    #     self.loop_initial_variable = chunks[0]
+    #     self.loop_condition = chunks[1]
+    #     self.loop_increment = chunks[2]
+    #     self.symbols_table = SymbolTable()
 
     def __init__(self,
                  statements: list,

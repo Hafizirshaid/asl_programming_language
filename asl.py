@@ -71,17 +71,17 @@ def main():
     """
 
     # Parse program argument
-    parser = argparse.ArgumentParser("My Programming Language Command Line version 1.0")
+    args_parser = argparse.ArgumentParser("My Programming Language Command Line version 1.0")
 
     # Argument identifier: --filename or -f
     # File name that contails source code to be executed.
-    parser.add_argument('-f', '--filename',
-                        default='asl_files/functions.asl',
+    args_parser.add_argument('-f', '--filename',
+                        default='asl_files/enhanced_variables.asl',
                         help='source file name',
                         nargs=argparse.OPTIONAL,
                         )
 
-    args = parser.parse_args()
+    args = args_parser.parse_args()
 
     filename = args.filename
 

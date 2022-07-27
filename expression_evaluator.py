@@ -11,11 +11,17 @@ Contains methods that calculates expressions like
 
 """
 
+from exceptions.language_exception import ExpressionEvaluationError
 from lexer import Lexer, TokenType
 
 
 class Evaluator:
     """ Expression Evaluator Class """
+
+    def __init__(self) -> None:
+        """ Expression Evaluator Class Constructor """
+        # empty constructor
+        pass
 
     def calculate(self, value1, value2, operator):
         """ Calcuates the result value
@@ -113,7 +119,7 @@ class Evaluator:
             try:
                 result = self.evaluate_tokens(tokens)
             except:
-                raise Exception(f"Unable to evaluate expression {expression}")
+                raise ExpressionEvaluationError(f"Unable to evaluate expression {expression}")
         return result
 
     def evaluate_tokens(self, tokens: list):

@@ -1,6 +1,16 @@
 
 x = 10
 i = 0
+
+yy
+=
+11
++
+22
+for(;;)
+echo "bailout"
+break
+endfor
 for          (     ;         ((i < 10) | (i < 22))         ;          )
     echo "hi {x} {i}"
     x = x + 1

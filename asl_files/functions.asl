@@ -14,7 +14,7 @@ endmethod
 
 
 echo "before calling method"
-call m1
+call m1(1,2,3)
 echo "after calling method"
 x = strct()
 x.name = "hi"

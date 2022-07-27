@@ -10,6 +10,8 @@ Contains Instructions definitions and types
 
 from enum import Enum
 
+from statements.statement import Variable
+
 
 class InstructionType(Enum):
     """ Enum contains instruction types """
@@ -188,8 +190,7 @@ class JumpIfNotInstruction(Instruction):
 class VariableInstruction(Instruction):
     """ Variable Instruction Class """
 
-    def __init__(self, variable_expression: str,
-                       variable_name="",
+    def __init__(self, variable_statement: Variable,
                        symbols_table=None) -> None:
         """ Variable Instruction Class Constructor
         Args:
@@ -201,10 +202,11 @@ class VariableInstruction(Instruction):
         """
 
         super().__init__(InstructionType.VARIABLE)
-        self.variable_expression = variable_expression
-        self.variable_name = self.variable_expression.split("=")[0].strip()
+        self.variable_expression = variable_statement.variable_expression
+        self.variable_name = variable_statement.variable_name
+        self.operation = variable_statement.operation
         self.symbols_table = symbols_table
-        self.variable_statement = None
+        self.variable_statement = variable_statement
 
     def __repr__(self) -> str:
         return f"var {self.variable_name} ---> {self.variable_expression}"
