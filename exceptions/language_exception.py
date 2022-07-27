@@ -10,10 +10,6 @@ Those exceptions are being used in order to identify potential issues in the cod
 """
 
 
-from typing import Optional
-# from lexer import Token
-
-
 class SyntaxError(Exception):
     """ Syntax Error Exception """
 

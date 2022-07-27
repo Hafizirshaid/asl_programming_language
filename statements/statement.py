@@ -140,26 +140,6 @@ class If(Statement):
 class For(Statement):
     """ For Statement Class """
 
-    # def __init__(self, condition: str, statements: list) -> None:
-    #     """ For Statement Class Constructor
-    #     Args:
-    #         condition: For Loop Expression
-    #         statements: Children statements of for loop
-    #     Returns:
-    #         None
-    #     """
-
-    #     super().__init__(StatementType.FOR)
-    #     self.statements = statements
-    #     self.conditon = condition.strip('"')
-
-    #     chunks = self.conditon.split(';')
-    #     # Dirty way to split things, TODO find a better solution
-    #     self.loop_initial_variable = chunks[0]
-    #     self.loop_condition = chunks[1]
-    #     self.loop_increment = chunks[2]
-    #     self.symbols_table = SymbolTable()
-
     def __init__(self,
                  statements: list,
                  loop_initial_variable : str,
