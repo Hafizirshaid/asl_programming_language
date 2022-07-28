@@ -1,16 +1,15 @@
 # Asl Programming Language
+### Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
-
-Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
-
-I had some free time so I decided to develop my own programming language
+> I had some free time so I decided to develop my own programming language
 for fun only. This programming langauge might have some issues, I will
 continue to fix them on my free time.
 
-keywords:
+## keywords:
+```
     if, elseif, else, fi, for, while, endfor, endwhile, echo, break, print
-
-Command:
+```
+## Command:
 
 ```
     python3 asl.py --filename filename.asl
@@ -19,8 +18,8 @@ Command:
 filename.asl is the input source file
 asl.py is the main file.
 
-Sample code:
-```
+## Sample code:
+```asl
 echo "while loop"
 i = 0
 end = 50
@@ -35,7 +34,7 @@ endwhile
 
 echo "testing for loop"
 
-for (var=1;var <= 10;var = var + 1)
+for (var = 1; var <= 10; var = var + 1)
     if ((var % 2) == 0)
         echo "{var} is even"
     else
@@ -59,7 +58,7 @@ endfor
     - Implement Unit Testing.
 
 
-##My Programming Language Block Diagram:
+## My Programming Language Block Diagram:
 
 ```
 
@@ -74,7 +73,7 @@ Input               List of               list of                Execution      
 File                 tokens              statements                Tree                  Instructions
 
 ```
-Classes Description:
+## Classes Description:
 
     Lexer: Converts code texts into meaningful lexems to tokens
 
