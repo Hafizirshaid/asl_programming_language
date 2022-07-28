@@ -1,7 +1,4 @@
 
-
-
-
 from expression_evaluator import Evaluator
 from lexer import Lexer, TokenType
 
@@ -89,9 +86,4 @@ class EnhancedExpressionEvaluator(Evaluator):
             result = self.calculate2(value2, value1, operator)
             values_stack.append(result)
         return result
-
-
-# print(EnhancedExpressionEvaluator().evaluate(" hafizirshaid + aliirshaid + mohammandirshaid"))
-
-
 
