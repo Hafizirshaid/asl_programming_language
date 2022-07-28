@@ -10,11 +10,12 @@ program logical output.
 """
 
 from compiler import ExecutionTree
+from enhanced_expression_evalator import EnhancedExpressionEvaluator
 from exceptions.language_exception import UnexpectedError, UnknwonVariable
 from expression_evaluator import Evaluator
 from instructions.instruction import EchoInstruction, InputInstruction, InstructionType, VariableInstruction
 from lexer import Lexer, TokenType
-from statements.statement import ConditionStatement, Else, ElseIf, For, If, Variable, While
+from statements.statement import ConditionStatement, Else, ElseIf, For, If, Variable, VariableType, While
 
 
 class Executor(object):
@@ -206,18 +207,30 @@ class Executor(object):
         """
 
         final_expression = ""
+
+        is_contatination = False
         for token in tokens:
             if token.token_type == TokenType.IDENTIFICATION:
                 # Substitute variable values in final expression to be evaluated
                 symbol_table = self.find_symbol_table(token.match, instruction.variable_statement)
                 symbol = symbol_table.get_entry_value(token.match)
+
+                if symbol.type == TokenType.STRING:
+                    # Variables should be contacinated rather than evaluating them since
+                    # there is a string value
+                    is_contatination = True
+
                 final_expression += str(symbol.value)
                 pass
             else:
+                # if token.token_type != TokenType.ADD:
                 final_expression += str(token.match)
             pass
 
-        value = Evaluator().evaluate(final_expression)
+        if is_contatination:
+            value = final_expression
+        else:
+            value = EnhancedExpressionEvaluator().evaluate(final_expression)
         name = instruction.variable_name
 
         # Store value of variable
@@ -238,6 +251,7 @@ class Executor(object):
 
         # if one token found, make sure the value is not another variable
         if tokens[0].token_type == TokenType.IDENTIFICATION:
+
             # Variable value is an assigmnet to another variable
             symbol_table = self.find_symbol_table(variable_value, instruction.variable_statement)
 
@@ -364,6 +378,7 @@ class Executor(object):
             keep_spaces=True)
 
         final_echo_string = ""
+
         for token in tokens:
             if token.token_type == TokenType.IDENTIFICATIONBETWEENBRSCKETS:
                 # If echo string contains a variable between {} for example

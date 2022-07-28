@@ -332,13 +332,13 @@ class Lexer(object):
             {'type': TokenType.MULT, 'regex': '^\*'},
             {'type': TokenType.DIV, 'regex': '^\/'},
             {'type': TokenType.MOD, 'regex': '^\%'},
-            
+
             # Logical Operators
             {'type': TokenType.AND, 'regex': '^&'},
             {'type': TokenType.OR, 'regex': '^\|'},
             {'type': TokenType.NOT, 'regex': '^!'},
-            #brackets and paranthsis
 
+            #brackets and paranthsis
             {'type': TokenType.LEFTBRAKET, 'regex': '^}'},
             {'type': TokenType.RIGHTBRAKET, 'regex': '^{'},
             {'type': TokenType.OPENPARANTHESIS, 'regex': '^\('},
@@ -351,11 +351,8 @@ class Lexer(object):
 
             {'type': TokenType.NEWLINE, 'regex': '^\n'},
             {'type': TokenType.SPACE, 'regex': '\s'},
-            
             {'type': TokenType.COMMA, 'regex': '^,'},
-
             {'type': TokenType.DOT, 'regex': '^\.'},
-
         ]
 
     def tokenize_text(self, text: str, keep_unknown=False, keep_spaces=False, ignore_new_lines=True) -> list:
@@ -391,7 +388,6 @@ class Lexer(object):
 
                 # New Token Found, remove match from text.
                 text = text.removeprefix(match.group())
-
 
                 if ((keep_spaces and token_type['type'] == TokenType.SPACE)
                     or (not ignore_new_lines and token_type['type'] == TokenType.NEWLINE)):

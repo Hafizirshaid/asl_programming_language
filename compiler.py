@@ -115,7 +115,7 @@ class Compiler(object):
             self.compile_end_statement(execution_tree, stack)
 
     def compile_break_statement(self, execution_tree: ExecutionTree, stack, statement: Break):
-        """ Compile break statement, find which loop this break statement belongs to 
+        """ Compile break statement, find which loop this break statement belongs to
             weather it's a for loop or a while loop
         Args:
             execution_tree: Execution tree that contains statement
@@ -156,7 +156,7 @@ class Compiler(object):
             if isinstance(statement, Variable):
                 # don't store values yet, symbol table should contain the values
                 # after executing the variable instruction
-                execution_tree.symbols_table.add_entry(statement.variable_name, "")
+                execution_tree.symbols_table.add_entry(statement.variable_name, "", statement.type)
                 statement.symbols_table = execution_tree.symbols_table
 
             if (self.is_scope_statement(statement)):
@@ -227,7 +227,7 @@ class Compiler(object):
                 # if not found, store it in parents symbol table
                 if not symbol:
                     statement.parent.symbols_table.add_entry(
-                        statement.variable_name, "")
+                        statement.variable_name, "", statement.type)
                     statement.symbols_table = statement.parent.symbols_table
 
             if (self.is_scope_statement(statement)):

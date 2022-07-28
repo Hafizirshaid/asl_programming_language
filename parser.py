@@ -185,6 +185,7 @@ class Parser:
         Returns:
             None
         """
+
         continue_statement = Continue()
         statements.append(continue_statement)
 
@@ -195,6 +196,7 @@ class Parser:
         Returns:
             None
         """
+
         break_statement = Break()
         statements.append(break_statement)
 
@@ -205,6 +207,7 @@ class Parser:
         Returns:
             None
         """
+
         endwhile = EndWhile()
         statements.append(endwhile)
 
@@ -215,6 +218,7 @@ class Parser:
         Returns:
             None
         """
+
         endfor = EndFor()
         statements.append(endfor)
 
@@ -225,6 +229,7 @@ class Parser:
         Returns:
             None
         """
+
         endif = Fi()
         statements.append(endif)
 
@@ -236,6 +241,7 @@ class Parser:
         Returns:
             None
         """
+
         condition = self._get_condition(lexes)
         elif_Statement = ElseIf(condition, [])
         statements.append(elif_Statement)
@@ -247,6 +253,7 @@ class Parser:
         Returns:
             None
         """
+
         else_statement = Else([])
         statements.append(else_statement)
 
@@ -258,6 +265,7 @@ class Parser:
         Returns:
             None
         """
+
         condition = self._get_condition(lexes)
         if_statement = If(condition, [])
         statements.append(if_statement)
@@ -270,6 +278,7 @@ class Parser:
         Returns:
             None
         """
+
         self.increment_token_pointer()
         next_lex = lexes[self.token_pointer]
         input_variable = ""
@@ -279,7 +288,6 @@ class Parser:
             raise SyntaxError("Invalid Input Function" +  str(next_lex.TokenType ))
         input_statement = Input(input_variable)
         statements.append(input_statement)
-        pass
 
     def parse_echo(self, lexes, statements):
         """ Parse Echo Statement
@@ -289,6 +297,7 @@ class Parser:
         Returns:
             None
         """
+
         echoString = ""
         # ignore spaces
         self.increment_token_pointer()
@@ -302,7 +311,6 @@ class Parser:
 
         if next_lex.token_type == TokenType.STRING:
             echoString = next_lex.match
-
 
         if with_paranthesis:
             self.increment_token_pointer()

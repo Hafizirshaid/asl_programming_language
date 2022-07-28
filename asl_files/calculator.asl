@@ -1,16 +1,46 @@
-num1 = 0
-num2 = 0
-//op = "+"
-num333=11
+while(1 == 1)
 
-echo "enter num1, op, num2"
-input num1
-//input op
-input num2
+    echo "--------------- Calculator --------------- "
+    num1 = 0
+    num2 = 0
+    op = 0
 
-echo "I'll calculate {num1} + {num2}"
+    echo "Please enter number 1"
+    input num1
 
-//if (op == "+")
-    result = num1 + num2
-    echo "result {result}"
-//endif
+    echo "Please Enter Operation:"
+    echo "  1 for +"
+    echo "  2 for -"
+    echo "  3 for *"
+    echo "  4 for /"
+    input op
+
+    echo "Please enter number 2"
+    input num2
+
+    result = 0
+    if (op == "plus")
+        result = num1 + num2
+    elif (op == 2)
+        result = num1 - num2
+    elif (op == 3)
+        result = num1 * num2
+    elif (op == 4)
+        result = num1 / num2
+    else
+        echo "invalid operation"
+    fi
+
+    echo "Result: {result}"
+
+    echo "To continue, enter 1, to exit enter 2"
+
+    cmd = 1
+    input cmd
+
+    if (cmd == 1)
+        continue
+    else
+        break
+    fi
+endwhile

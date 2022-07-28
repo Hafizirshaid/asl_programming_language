@@ -1,5 +1,9 @@
 import unittest
 
+from numpy import true_divide
+from exceptions.language_exception import ExpressionEvaluationError
+from expression_evaluator import Evaluator
+
 from lexer import Lexer, TokenType
 
 """
@@ -8,59 +12,82 @@ TODO: to be implemented
 
 """
 
-class TestCompiler(unittest.TestCase):
+class ExpressionEvaluatorUnitTest(unittest.TestCase):
     def setUp(self):
-        super(TestCompiler, self).setUp()
+        super(ExpressionEvaluatorUnitTest, self).setUp()
 
-    def test_compiler_program(self):
-        text = """
-for    
+    def test_expression_evaluator_1(self):
+        result = Evaluator().evaluate("10 > 20")
+        self.assertEqual(result, 10 > 20)
 
-(
+    def test_expression_evaluator_2(self):
+        result = Evaluator().evaluate("(10 + 2) / 6")
+        self.assertEqual(result, (10 + 2) / 6)
 
-    var
+    def test_expression_evaluator_3(self):
+        result = Evaluator().evaluate("(10 > 2) & (20 < 30)")
+        self.assertEqual(result, (10 > 2) and (20 < 30))
 
-    = 
+    def test_expression_evaluator_4(self):
+        result = Evaluator().evaluate("\"hafiz\" == \"hafiz\"")
+        self.assertEqual(result, "hafiz" == "hafiz")
 
-    1
+    def test_expression_evaluator_5(self):
+        result = Evaluator().evaluate("60 * 70")
+        self.assertEqual(result, 60 * 70)
 
-    ;
+    def test_expression_evaluator_6(self):
+        result = Evaluator().evaluate("\"hafizx\" > \"hafiz\"")
+        self.assertEqual(result, "hafizx" > "hafiz")
 
-    var 
+    def test_expression_evaluator_7(self):
+        result = Evaluator().evaluate("10 > 20")
+        self.assertEqual(result, False)
 
-    > 
+    def test_expression_evaluator_8(self):
+        result = Evaluator().evaluate("\"hafizzz\" != \"hafiz\"")
+        self.assertEqual(result, "hafizzz" != "hafiz")
 
-    10
+    def test_expression_evaluator_9(self):
+        result = Evaluator().evaluate("\"string1234\" != \"string12345\"")
+        self.assertEqual(result, "string1234" != "string12345")
 
-    ;
+    def test_expression_evaluator_10(self):
+        result = Evaluator().evaluate("((7 + 2) > 4) & ((11 % 2) == 1)")
+        self.assertEqual(result, ((7 + 2) > 4) and ((11 % 2) == 1))
 
-    var 
+    def test_expression_evaluator_11(self):
+        result = Evaluator().evaluate("10 > 20")
+        self.assertEqual(result, 10 > 20)
 
-    +=
+    def test_expression_evaluator_12(self):
+        result = Evaluator().evaluate("20 > 10")
+        self.assertEqual(result, 20 > 10)
 
-    1
+    def test_expression_evaluator_13(self):
+        result = Evaluator().evaluate("10 == 1")
+        self.assertEqual(result, 10 == 1)
 
+    def test_expression_evaluator_14(self):
+        result = Evaluator().evaluate("1 == 10")
+        self.assertEqual(result, 1 == 10)
 
-)       """
+    def test_expression_evaluator_15(self):
+        result = Evaluator().evaluate("10 == 10")
+        self.assertEqual(result, 10 == 10)
 
-        tokens = Lexer().tokenize_text(text)
-
-
-
-        token_pointer = 0
-
-        if tokens[token_pointer].token_type == TokenType.NEWLINE:
-
-            token_pointer += 1
-
-        else:
-            if tokens[token_pointer].token_type == TokenType.FOR:
-                pass
-
-        pass
+    def test_expression_evaluator_16(self):
+        try:
+            result = Evaluator().evaluate(" == ")
+            self.fail("Failed due to operator only not handled")
+        except Exception as e:
+            if not isinstance(e, ExpressionEvaluationError):
+                self.fail("Didnt throw ExpressionEvaluationError")
+            pass
+        self.assertEqual(result, 10 == 10)
 
     def tearDown(self):
-        super(TestCompiler, self).tearDown()
+        super(ExpressionEvaluatorUnitTest, self).tearDown()
 
 
 if __name__ == '__main__':

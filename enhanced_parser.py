@@ -72,6 +72,7 @@ class EnhancedParser(Parser):
             TokenType.DIVEQUAL,
             TokenType.INVERT
         ]
+
         self.math_operation = [
             TokenType.ADD,
             TokenType.SUB,
@@ -79,13 +80,24 @@ class EnhancedParser(Parser):
             TokenType.MULT,
             TokenType.MOD,
             TokenType.EQUIVALENT,
-            TokenType.NOTEQUIVALENT]
+            TokenType.NOTEQUIVALENT
+        ]
 
         self.logical_operation = [
             TokenType.AND,
-            TokenType.OR, ]
+            TokenType.OR
+        ]
 
     def check_token_type_in_list(self, lexes, token_types, stop_on=None):
+        """ Checks if current token belongs to list of token types.
+        Args:
+            lexes: list of lexes
+            token_types:
+            stop_on:
+        Returns:
+            True:
+            False:
+        """
         token_type = lexes[self.token_pointer].token_type
         if token_type in token_types:
             return True
@@ -115,7 +127,7 @@ class EnhancedParser(Parser):
 
             loop_initial_variable = self.parse_for_loop_variable(lexes, paranthesis_stack)
             condition = self.parse_for_loop_condition(lexes, paranthesis_stack)
-            increment = self.parse_for_loop_increment(lexes, paranthesis_stack)
+            increment = self.parse_for_loop_increment(lexes)
 
             # empty condition should return true, this is nessessary for cases like;
             # for(;;)
@@ -137,6 +149,14 @@ class EnhancedParser(Parser):
             raise SyntaxError("invalid for loop", lexes[self.token_pointer])
 
     def parse_for_loop_condition(self, lexes, paranthesis_stack):
+        """ Parse for loop condition
+        Args:
+            lexes: list of lexes
+            paranthesis_stack:
+        Returns:
+            Condition
+        """
+
         self.increment_token_pointer()
 
         condition = ""
@@ -153,10 +173,19 @@ class EnhancedParser(Parser):
         return condition
 
     def parse_for_loop_variable(self, lexes, paranthesis_stack):
+        """ Parse for loop Variable
+        Args:
+            lexes: list of lexes
+            paranthesis_stack:
+        Returns:
+            variable
+        """
 
         var_name = ""
         var_op = ""
         var_val = ""
+
+        # Empty Statement
         if lexes[self.token_pointer].token_type == TokenType.SEMICOLON:
             return None
 
@@ -183,8 +212,15 @@ class EnhancedParser(Parser):
                 return Variable(var_name, var_op, var_val)
         return None
 
-    def parse_for_loop_increment(self, lexes, paranthesis_stack):
+    def parse_for_loop_increment(self, lexes):
+        """ Parse for loop Increment
+        Args:
+            lexes: list of lexes
+        Returns:
+            Increment variable
+        """
 
+        # Empty Statement
         if lexes[self.token_pointer].token_type == TokenType.CLOSINGPARANTHESIS:
             return None
 
@@ -210,7 +246,6 @@ class EnhancedParser(Parser):
             else:
                 raise SyntaxError("Invalid op ", lexes[self.token_pointer])
         return None
-
 
     def parse_while(self, lexes, statements):
         """ Parse While Loop
@@ -245,6 +280,7 @@ class EnhancedParser(Parser):
             variable_value = ""
             next_lex = lexes[self.token_pointer]
             should_continue = True
+            first_token_type = None
 
             while (should_continue):
 
@@ -253,6 +289,7 @@ class EnhancedParser(Parser):
                     or next_lex.token_type == TokenType.REAL
                     or next_lex.token_type == TokenType.STRING):
 
+                    first_token_type = next_lex.token_type
                     variable_value += next_lex.match
 
                     self.increment_token_pointer()
@@ -289,7 +326,7 @@ class EnhancedParser(Parser):
             # this has caused an error with next statement
             self.token_pointer -= 1
 
-            variablestatement = Variable(variable_name, operation, variable_value)
+            variablestatement = Variable(variable_name, operation, variable_value, first_token_type)
             statements.append(variablestatement)
         else:
             raise SyntaxError("Invalid operation ",
@@ -357,8 +394,7 @@ class EnhancedParser(Parser):
             while paranthesis_stack:
                 self.increment_token_pointer()
                 if lexes[self.token_pointer].token_type == TokenType.OPENPARANTHESIS:
-                    paranthesis_stack.append(
-                        lexes[self.token_pointer].token_type)
+                    paranthesis_stack.append(lexes[self.token_pointer].token_type)
                 if lexes[self.token_pointer].token_type == TokenType.CLOSINGPARANTHESIS:
                     paranthesis_stack.pop()
 

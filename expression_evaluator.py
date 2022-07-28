@@ -23,6 +23,24 @@ class Evaluator:
         # empty constructor
         pass
 
+    def clean_value(self, value):
+        """ Convert value to float if type is float, or
+            strip double quotes if value is string
+        Args:
+            value: value
+        Returns:
+            cleaned value
+        """
+
+        result = None
+        if self.is_numeric(value):
+            result = float(value)
+        elif isinstance(value, str):
+            result = value.strip('"')
+        else:
+            raise ExpressionEvaluationError("Unrecognized value type")
+        return result
+
     def calculate(self, value1, value2, operator):
         """ Calcuates the result value
             of v1 and v2 by op
@@ -33,6 +51,10 @@ class Evaluator:
         Returns:
             result of v1 op v2
         """
+
+        # Clean values before calculating result.
+        value1 = self.clean_value(value1)
+        value2 = self.clean_value(value2)
 
         if operator == "+":
             result = value1 + value2
@@ -62,7 +84,24 @@ class Evaluator:
             result = value1 == value2
         elif operator == "!=":
             result = value1 != value2
+        else:
+            raise ExpressionEvaluationError(f"Unknown operator {operator}")
         return result
+
+    def is_numeric(self, value):
+        """ This function checks if value represents a number.
+        Args:
+            value: value
+        Returns:
+            True if value is a number
+            False if value is not a number
+        """
+
+        try:
+            float(value)
+            return True
+        except:
+            return False
 
     def _is_operator(self, token_type: TokenType) -> bool:
         """ This function checks if token type is an operator
@@ -105,8 +144,8 @@ class Evaluator:
             return False
 
         # "strip double and single quotes "
-        expression = expression.strip("'")
-        expression = expression.strip('"')
+        # expression = expression.strip("'")
+        # expression = expression.strip('"')
 
         lexer = Lexer()
         tokens = lexer.tokenize_text(expression)
@@ -118,7 +157,7 @@ class Evaluator:
         else:
             try:
                 result = self.evaluate_tokens(tokens)
-            except:
+            except Exception as e:
                 raise ExpressionEvaluationError(f"Unable to evaluate expression {expression}")
         return result
 
@@ -147,15 +186,15 @@ class Evaluator:
                 pass
 
             if token_type == TokenType.CLOSINGPARANTHESIS:
-                value1 = float(values_stack.pop())
-                value2 = float(values_stack.pop())
+                value1 = values_stack.pop()
+                value2 = values_stack.pop()
                 operator = operators_stack.pop()
                 result = self.calculate(value2, value1, operator)
                 values_stack.append(result)
                 pass
 
-            if token_type == TokenType.NUMBER or token_type == TokenType.REAL:
-                values_stack.append(float(value))
+            if token_type == TokenType.NUMBER or token_type == TokenType.REAL or token_type == TokenType.STRING or token_type == TokenType.IDENTIFICATION:
+                values_stack.append(value)
             pass
 
         while operators_stack:

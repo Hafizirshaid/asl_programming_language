@@ -9,6 +9,8 @@ Contains Symbols table definitions and types
 """
 
 from enum import Enum
+from typing import Optional
+
 
 
 class SymbolsType(Enum):
@@ -51,7 +53,7 @@ class SymbolTable:
         """ Initializes Symbol table to empty dictionary """
         self.symbol_table = {}
 
-    def add_entry(self, name: str, value: str):
+    def add_entry(self, name: str, value: str, type=None):
         """
         Desc:
             Adds entry to symbols table
@@ -61,7 +63,7 @@ class SymbolTable:
         Returns:
             None
         """
-        self.symbol_table[name] = SymbolTableEntry(name, value)
+        self.symbol_table[name] = SymbolTableEntry(name, value, type)
 
     def get_entry_value(self, name: str):
         """

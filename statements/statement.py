@@ -30,6 +30,7 @@ class StatementType(Enum):
     CONTINUE = 13
     INPUT = 14
 
+
 class Statement(object):
     """ Statement Class """
 
@@ -45,28 +46,16 @@ class Statement(object):
         self.parent = None
 
 
+class VariableType(Enum):
+    NUMERIC = 0
+    STRING = 1
+    STRUCT = 2
+
+
 class Variable(Statement):
     """ Variable Statement Class """
 
-    # TODO PYTHON DOESN'T ALLOW MULTIPLE CONSTRUCTORS OVERLOADING
-    def __init__(self, variable_expression: str) -> None:
-        """ Variable Statement Class Constructor
-        Args:
-            variable_expression: Variable Expression
-        Returns:
-            None
-        """
-
-        super().__init__(StatementType.VAR)
-        self.variable_expression = variable_expression
-        chunks = self.variable_expression.split("=")
-        # remove empty space from variable name
-        self.variable_name = chunks[0].strip()
-        self.variable_name = self.variable_name.strip('"')
-        self.variable_value = chunks[1]
-        self.symbols_table = None
-
-    def __init__(self, variable_name, operation, variable_value) -> None:
+    def __init__(self, variable_name, operation, variable_value, type=None) -> None:
         """ Variable Statement Class Constructor
         Args:
             variable_name:
@@ -81,6 +70,18 @@ class Variable(Statement):
         self.operation = operation
         self.variable_value = variable_value
         self.variable_expression = f"{self.variable_name}{self.operation}{self.variable_value}"
+
+        if not type:
+            if isinstance(variable_value, str):
+                if variable_value.isnumeric():
+                    self.type = VariableType.NUMERIC
+                else:
+                    self.type = VariableType.STRING
+                pass
+            else:
+                self.type = VariableType.STRUCT
+        else:
+            self.type = type
 
     def __str__(self) -> str:
         return "Variable: " + str(self.variable_expression)
