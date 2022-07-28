@@ -10,7 +10,6 @@ continue to fix them on my free time.
     if, elseif, else, fi, for, while, endfor, endwhile, echo, break, print
 ```
 ## Command:
-
 ```
     python3 asl.py --filename filename.asl
 ```
