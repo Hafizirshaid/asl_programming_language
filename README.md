@@ -42,7 +42,7 @@ for "var=1;var <= 1000;var = var + 1"
     fi
 endfor
 ```
-Remaining TODO items:
+## Remaining TODO items:
     - Variable types(number, string)
     - String comparison
     - functions (methods) calls
