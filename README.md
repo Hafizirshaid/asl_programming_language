@@ -1,6 +1,7 @@
-Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+# Asl Programming Language
 
-Asl Programming Language
+
+Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
 I had some free time so I decided to develop my own programming language
 for fun only. This programming langauge might have some issues, I will
