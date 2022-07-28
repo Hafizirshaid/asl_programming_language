@@ -1,26 +1,3 @@
-The MIT License (MIT)
-
-Copyright (c) 2022 Hafez Irshaid
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-------------------------------------------------------------------------------
-
 Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
 Asl Programming Language
@@ -34,13 +11,15 @@ keywords:
 
 Command:
 
+```
     python3 asl.py --filename filename.asl
+```
 
 filename.asl is the input source file
 asl.py is the main file.
 
 Sample code:
-------------------------------------------------------------------
+```
 echo "while loop"
 i = 0
 end = 50
@@ -62,8 +41,7 @@ for "var=1;var <= 1000;var = var + 1"
         echo "{var} is odd"
     fi
 endfor
-------------------------------------------------------------------
-
+```
 Remaining TODO items:
     - Variable types(number, string)
     - String comparison
@@ -79,8 +57,10 @@ Remaining TODO items:
             should execute ls -l command on the shell
     - Implement Unit Testing.
 
-------------------------------------------------------------
-My Programming Language Block Diagram:
+
+##My Programming Language Block Diagram:
+
+```
 
        -------------        --------------        ----------------        -----------------        ----------------
       |             |      |              |      |                |      |                 |      |                |
@@ -92,6 +72,7 @@ My Programming Language Block Diagram:
 Input               List of               list of                Execution                 List of
 File                 tokens              statements                Tree                  Instructions
 
+```
 Classes Description:
 
     Lexer: Converts code texts into meaningful lexems to tokens
@@ -105,7 +86,8 @@ Classes Description:
     Executor: Contains methods to execute list of instructions to produce program logical output
 
 
-######################################## Regex List ##############################
+## Regex List
+```
 {'type': TokenType.COMMENT, 'regex': '(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)'},
 {'type': TokenType.CALL, 'regex': '^call'},
 {'type': TokenType.METHOD, 'regex': '^method'},
@@ -153,4 +135,4 @@ Classes Description:
 {'type': TokenType.SPACE, 'regex': '\s'},
 {'type': TokenType.OPENPARANTHESIS, 'regex': '^\('},
 {'type': TokenType.CLOSINGPARANTHESIS, 'regex': '^\)'}
-######################################## Regex List ##############################
+```
