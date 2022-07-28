@@ -85,9 +85,10 @@ File                 tokens              statements                Tree         
 
     Executor: Contains methods to execute list of instructions to produce program logical output
 
+    Expression Evaluator:
 
 ## Regex List
-```
+```python
 {'type': TokenType.COMMENT, 'regex': '(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)'},
 {'type': TokenType.CALL, 'regex': '^call'},
 {'type': TokenType.METHOD, 'regex': '^method'},
