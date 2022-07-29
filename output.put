@@ -1,7 +1,7 @@
------- Running asl_files/arrays.asl Fri Jul 29 17:28:27 EEST 2022 ------
+------ Running asl_files/arrays.asl Fri Jul 29 15:31:17 EEST 2022 ------
 Result: 0
------- Done asl_files/arrays.asl    Fri Jul 29 17:28:27 EEST 2022 ------
------- Running asl_files/break_statement.asl Fri Jul 29 17:28:27 EEST 2022 ------
+------ Done asl_files/arrays.asl    Fri Jul 29 15:31:17 EEST 2022 ------
+------ Running asl_files/break_statement.asl Fri Jul 29 15:31:17 EEST 2022 ------
 again 0 not reaching 10
 again 1.0 not reaching 10
 again 2.0 not reaching 10
@@ -29,8 +29,8 @@ again 4.0 not reaching 5
 i is 5.0 and we should break for loop
 ----- breaking while ------
 Result: 0
------- Done asl_files/break_statement.asl    Fri Jul 29 17:28:27 EEST 2022 ------
------- Running asl_files/calculator.asl Fri Jul 29 17:28:27 EEST 2022 ------
+------ Done asl_files/break_statement.asl    Fri Jul 29 15:31:17 EEST 2022 ------
+------ Running asl_files/calculator.asl Fri Jul 29 15:31:17 EEST 2022 ------
 --------------- Calculator --------------- 
 Please enter number 1
 Please Enter Operation:
@@ -39,10 +39,11 @@ Please Enter Operation:
   3 for *
   4 for /
 Please enter number 2
-Unhandled Exception  Unable to evaluate expression (+=="plus")
-Result: 1
------- Done asl_files/calculator.asl    Fri Jul 29 17:28:32 EEST 2022 ------
------- Running asl_files/continue_statement.asl Fri Jul 29 17:28:32 EEST 2022 ------
+Result: 0.0
+To continue, enter 1, to exit enter 2
+Result: 0
+------ Done asl_files/calculator.asl    Fri Jul 29 15:31:21 EEST 2022 ------
+------ Running asl_files/continue_statement.asl Fri Jul 29 15:31:21 EEST 2022 ------
 start
 again 0 not reaching 10
 end
@@ -193,11 +194,11 @@ again 49.0 not reaching 10
 end
 end of for
 Result: 0
------- Done asl_files/continue_statement.asl    Fri Jul 29 17:28:32 EEST 2022 ------
------- Running asl_files/empty.asl Fri Jul 29 17:28:32 EEST 2022 ------
+------ Done asl_files/continue_statement.asl    Fri Jul 29 15:31:22 EEST 2022 ------
+------ Running asl_files/empty.asl Fri Jul 29 15:31:22 EEST 2022 ------
 Result: 0
------- Done asl_files/empty.asl    Fri Jul 29 17:28:32 EEST 2022 ------
------- Running asl_files/enhanced_variables.asl Fri Jul 29 17:28:32 EEST 2022 ------
+------ Done asl_files/empty.asl    Fri Jul 29 15:31:22 EEST 2022 ------
+------ Running asl_files/enhanced_variables.asl Fri Jul 29 15:31:22 EEST 2022 ------
 x is 10
 x is 11.0 after increment
 x is 13.0 after adding y 2
@@ -218,8 +219,8 @@ z is 359.0
 z is 395.0
 end of program
 Result: 0
------- Done asl_files/enhanced_variables.asl    Fri Jul 29 17:28:32 EEST 2022 ------
------- Running asl_files/errors.asl Fri Jul 29 17:28:32 EEST 2022 ------
+------ Done asl_files/enhanced_variables.asl    Fri Jul 29 15:31:22 EEST 2022 ------
+------ Running asl_files/errors.asl Fri Jul 29 15:31:22 EEST 2022 ------
 x = 22.0 y = 2 z = 0 w = 1
 hafiz
 hafiz
@@ -233,8 +234,8 @@ hafiz
 hafiz
 breaking
 Result: 0
------- Done asl_files/errors.asl    Fri Jul 29 17:28:33 EEST 2022 ------
------- Running asl_files/fibonacci.asl Fri Jul 29 17:28:33 EEST 2022 ------
+------ Done asl_files/errors.asl    Fri Jul 29 15:31:22 EEST 2022 ------
+------ Running asl_files/fibonacci.asl Fri Jul 29 15:31:22 EEST 2022 ------
 1
 2.0
 4.0
@@ -246,8 +247,8 @@ Result: 0
 256.0
 512.0
 Result: 0
------- Done asl_files/fibonacci.asl    Fri Jul 29 17:28:33 EEST 2022 ------
------- Running asl_files/for_loop.asl Fri Jul 29 17:28:33 EEST 2022 ------
+------ Done asl_files/fibonacci.asl    Fri Jul 29 15:31:22 EEST 2022 ------
+------ Running asl_files/for_loop.asl Fri Jul 29 15:31:22 EEST 2022 ------
 testing for loop
 1 is odd
 2.0 is even
@@ -260,11 +261,12 @@ testing for loop
 9.0 is odd
 10.0 is even
 Result: 0
------- Done asl_files/for_loop.asl    Fri Jul 29 17:28:33 EEST 2022 ------
------- Running asl_files/functions.asl Fri Jul 29 17:28:33 EEST 2022 ------
-Result: 0
------- Done asl_files/functions.asl    Fri Jul 29 17:28:33 EEST 2022 ------
------- Running asl_files/grades.asl Fri Jul 29 17:28:33 EEST 2022 ------
+------ Done asl_files/for_loop.asl    Fri Jul 29 15:31:22 EEST 2022 ------
+------ Running asl_files/functions.asl Fri Jul 29 15:31:22 EEST 2022 ------
+Unhandled Exception  Invalid token TokenType.STRUCT
+Result: 1
+------ Done asl_files/functions.asl    Fri Jul 29 15:31:22 EEST 2022 ------
+------ Running asl_files/grades.asl Fri Jul 29 15:31:22 EEST 2022 ------
 Calculate Grades rank between 0 to 100
 0 failure
 1.0 failure
@@ -368,18 +370,18 @@ Calculate Grades rank between 0 to 100
 99.0 Outstanding
 100.0 Outstanding
 Result: 0
------- Done asl_files/grades.asl    Fri Jul 29 17:28:33 EEST 2022 ------
------- Running asl_files/input_string.asl Fri Jul 29 17:28:33 EEST 2022 ------
-2
+------ Done asl_files/grades.asl    Fri Jul 29 15:31:23 EEST 2022 ------
+------ Running asl_files/input_string.asl Fri Jul 29 15:31:23 EEST 2022 ------
+2e2
 3.0
 Result: 0
------- Done asl_files/input_string.asl    Fri Jul 29 17:28:37 EEST 2022 ------
------- Running asl_files/keyboard_input.asl Fri Jul 29 17:28:37 EEST 2022 ------
+------ Done asl_files/input_string.asl    Fri Jul 29 15:31:27 EEST 2022 ------
+------ Running asl_files/keyboard_input.asl Fri Jul 29 15:31:27 EEST 2022 ------
 please input grade: 
-22 failure
+Invalid Grade
 Result: 0
------- Done asl_files/keyboard_input.asl    Fri Jul 29 17:28:39 EEST 2022 ------
------- Running asl_files/main.asl Fri Jul 29 17:28:39 EEST 2022 ------
+------ Done asl_files/keyboard_input.asl    Fri Jul 29 15:31:29 EEST 2022 ------
+------ Running asl_files/main.asl Fri Jul 29 15:31:29 EEST 2022 ------
 hello
 x is grater than or equal 10
 before for
@@ -395,8 +397,8 @@ inside while loop
 inside while loop
 inside while loop
 Result: 0
------- Done asl_files/main.asl    Fri Jul 29 17:28:39 EEST 2022 ------
------- Running asl_files/main2.asl Fri Jul 29 17:28:39 EEST 2022 ------
+------ Done asl_files/main.asl    Fri Jul 29 15:31:29 EEST 2022 ------
+------ Running asl_files/main2.asl Fri Jul 29 15:31:29 EEST 2022 ------
 ------ start ------
 helllo
 x = §123-=+'/>,````$%@! is 20.1 y is 70.0 z is 49.9
@@ -419,8 +421,8 @@ inside while loop 8.0
 inside while loop 9.0
 ---- end of program -----
 Result: 0
------- Done asl_files/main2.asl    Fri Jul 29 17:28:39 EEST 2022 ------
------- Running asl_files/new_syntax.asl Fri Jul 29 17:28:39 EEST 2022 ------
+------ Done asl_files/main2.asl    Fri Jul 29 15:31:29 EEST 2022 ------
+------ Running asl_files/new_syntax.asl Fri Jul 29 15:31:29 EEST 2022 ------
 bailout
 hi 10 0
 hi 11.0 1.0
@@ -472,8 +474,8 @@ hello
 hello
 hello
 Result: 0
------- Done asl_files/new_syntax.asl    Fri Jul 29 17:28:40 EEST 2022 ------
------- Running asl_files/odd_even.asl Fri Jul 29 17:28:40 EEST 2022 ------
+------ Done asl_files/new_syntax.asl    Fri Jul 29 15:31:29 EEST 2022 ------
+------ Running asl_files/odd_even.asl Fri Jul 29 15:31:29 EEST 2022 ------
 0 is even
 1.0 is odd
 2.0 is even
@@ -526,11 +528,11 @@ Result: 0
 49.0 is odd
 50.0 is even
 Result: 0
------- Done asl_files/odd_even.asl    Fri Jul 29 17:28:40 EEST 2022 ------
------- Running asl_files/one_var.asl Fri Jul 29 17:28:40 EEST 2022 ------
+------ Done asl_files/odd_even.asl    Fri Jul 29 15:31:29 EEST 2022 ------
+------ Running asl_files/one_var.asl Fri Jul 29 15:31:29 EEST 2022 ------
 Result: 0
------- Done asl_files/one_var.asl    Fri Jul 29 17:28:40 EEST 2022 ------
------- Running asl_files/prime.asl Fri Jul 29 17:28:40 EEST 2022 ------
+------ Done asl_files/one_var.asl    Fri Jul 29 15:31:29 EEST 2022 ------
+------ Running asl_files/prime.asl Fri Jul 29 15:31:29 EEST 2022 ------
 2 is prime
 3.0 is prime
 5.0 is prime
@@ -557,18 +559,18 @@ Result: 0
 89.0 is prime
 97.0 is prime
 Result: 0
------- Done asl_files/prime.asl    Fri Jul 29 17:28:42 EEST 2022 ------
------- Running asl_files/real_numbers.asl Fri Jul 29 17:28:42 EEST 2022 ------
+------ Done asl_files/prime.asl    Fri Jul 29 15:31:32 EEST 2022 ------
+------ Running asl_files/real_numbers.asl Fri Jul 29 15:31:32 EEST 2022 ------
 3.5 + 55.8 = 59.3
 looks like this language can handle floating point
 Result: 0
------- Done asl_files/real_numbers.asl    Fri Jul 29 17:28:42 EEST 2022 ------
------- Running asl_files/strings.asl Fri Jul 29 17:28:42 EEST 2022 ------
+------ Done asl_files/real_numbers.asl    Fri Jul 29 15:31:32 EEST 2022 ------
+------ Running asl_files/strings.asl Fri Jul 29 15:31:32 EEST 2022 ------
 str3 is "hello, world! this is hafiz"+" | hala irshaid "+"20"
 "hello, world! this is hafiz"+" | hala irshaid "+"20"+" this is final "
 Result: 0
------- Done asl_files/strings.asl    Fri Jul 29 17:28:43 EEST 2022 ------
------- Running asl_files/variable.asl Fri Jul 29 17:28:43 EEST 2022 ------
+------ Done asl_files/strings.asl    Fri Jul 29 15:31:32 EEST 2022 ------
+------ Running asl_files/variable.asl Fri Jul 29 15:31:32 EEST 2022 ------
 stmt says i is 0
 stmt says i is 1
 stmt says i is 2
@@ -580,8 +582,8 @@ not checked i is 7.0
 not checked i is 8.0
 not checked i is 9.0
 Result: 0
------- Done asl_files/variable.asl    Fri Jul 29 17:28:43 EEST 2022 ------
------- Running asl_files/while_for.asl Fri Jul 29 17:28:43 EEST 2022 ------
+------ Done asl_files/variable.asl    Fri Jul 29 15:31:32 EEST 2022 ------
+------ Running asl_files/while_for.asl Fri Jul 29 15:31:32 EEST 2022 ------
 while loop
 0 is even
 1.0 is odd
@@ -646,8 +648,8 @@ testing for loop
 9.0 is odd
 10.0 is even
 Result: 0
------- Done asl_files/while_for.asl    Fri Jul 29 17:28:43 EEST 2022 ------
------- Running asl_files/while_loop.asl Fri Jul 29 17:28:43 EEST 2022 ------
+------ Done asl_files/while_for.asl    Fri Jul 29 15:31:32 EEST 2022 ------
+------ Running asl_files/while_loop.asl Fri Jul 29 15:31:32 EEST 2022 ------
 hi
 testing while loop
 inside while loop 1
@@ -667,4 +669,4 @@ hello 4.0
 hello 5.0
 breaking
 Result: 0
------- Done asl_files/while_loop.asl    Fri Jul 29 17:28:43 EEST 2022 ------
+------ Done asl_files/while_loop.asl    Fri Jul 29 15:31:32 EEST 2022 ------

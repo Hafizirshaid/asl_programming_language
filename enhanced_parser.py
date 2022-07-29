@@ -107,6 +107,9 @@ class EnhancedParser(Parser):
 
         return False
 
+    def is_there_more_tokens(self, lexes):
+        return len(lexes) > self.token_pointer
+
     def parse_for(self, lexes, statements):
         """ Parse For loop
         Args:
@@ -278,11 +281,13 @@ class EnhancedParser(Parser):
             operation = lexes[self.token_pointer].token_type
             self.increment_token_pointer()
             variable_value = ""
-            next_lex = lexes[self.token_pointer]
+
             should_continue = True
             first_token_type = None
 
             while (should_continue):
+
+                next_lex = lexes[self.token_pointer]
 
                 if (next_lex.token_type == TokenType.IDENTIFICATION
                     or next_lex.token_type == TokenType.NUMBER
@@ -293,18 +298,15 @@ class EnhancedParser(Parser):
                     variable_value += next_lex.match
 
                     self.increment_token_pointer()
-                    next_lex = lexes[self.token_pointer]
+                    #next_lex = lexes[self.token_pointer]
                 else:
                     raise SyntaxError("Invalid id or num ", lexes[self.token_pointer])
 
-                if (next_lex.token_type == TokenType.IDENTIFICATION
-                    or next_lex.token_type == TokenType.NUMBER
-                    or next_lex.token_type == TokenType.REAL
-                    or next_lex.token_type in self.keywords
-                    or next_lex.token_type in self.comments):
-                    should_continue = False
-                    # Found new statement
+                if not self.is_there_more_tokens(lexes):
+
                     break
+                else:
+                    next_lex = lexes[self.token_pointer]
 
                 if (next_lex.token_type == TokenType.ADD
                     or next_lex.token_type == TokenType.SUB
@@ -314,13 +316,36 @@ class EnhancedParser(Parser):
                     or next_lex.token_type == TokenType.OR
                     or next_lex.token_type == TokenType.EQUIVALENT
                     or next_lex.token_type == TokenType.NOTEQUIVALENT):
-
                     variable_value += next_lex.match
-
                     self.increment_token_pointer()
-                    next_lex = lexes[self.token_pointer]
+
                 else:
-                    raise SyntaxError("Invalid id or num ", lexes[self.token_pointer])
+                    break
+                    #self.increment_token_pointer()
+                    #next_lex = lexes[self.token_pointer]
+
+
+                # if (next_lex.token_type == TokenType.IDENTIFICATION
+                #     or next_lex.token_type == TokenType.NUMBER
+                #     or next_lex.token_type == TokenType.REAL
+                #     or next_lex.token_type in self.keywords
+                #     or next_lex.token_type in self.comments):
+                #     should_continue = False
+                #     # Found new statement
+                #     break
+
+                # if (next_lex.token_type == TokenType.ADD
+                #     or next_lex.token_type == TokenType.SUB
+                #     or next_lex.token_type == TokenType.DIV
+                #     or next_lex.token_type == TokenType.MULT
+                #     or next_lex.token_type == TokenType.AND
+                #     or next_lex.token_type == TokenType.OR
+                #     or next_lex.token_type == TokenType.EQUIVALENT
+                #     or next_lex.token_type == TokenType.NOTEQUIVALENT):
+
+
+                # else:
+                #     raise SyntaxError("Invalid id or num ", lexes[self.token_pointer])
 
             # Token pointer now points at next token outside variable scope,
             # this has caused an error with next statement
