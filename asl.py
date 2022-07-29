@@ -76,7 +76,7 @@ def main():
     # Argument identifier: --filename or -f
     # File name that contails source code to be executed.
     args_parser.add_argument('-f', '--filename',
-                        default='asl_files/calculator.asl',
+                        default='asl_files/fibonacci.asl',
                         help='source file name',
                         nargs=argparse.OPTIONAL,
                         )

@@ -1,13 +1,23 @@
 import unittest
 
+from numpy import true_divide
+from exceptions.language_exception import ExpressionEvaluationError
+from expression_evaluator import Evaluator
+
 from lexer import Lexer, Token, TokenType
 
+"""
 
-class TestLexer(unittest.TestCase):
+TODO: to be implemented
+
+"""
+
+
+class ExpressionEvaluatorUnitTest(unittest.TestCase):
     def setUp(self):
-        super(TestLexer, self).setUp()
+        super(ExpressionEvaluatorUnitTest, self).setUp()
 
-    def lexer_test_ifstatement_for_loop(self):
+    def test_lexer_ifstatement_for_loop(self):
         text = """x = 10
 
 for "i=0;i<10;i=i+1"
@@ -92,7 +102,7 @@ endfor"""
                 val.line_number, actual[i].line_number, "Not Matched line number")
 
     def tearDown(self):
-        super(TestLexer, self).tearDown()
+        super(ExpressionEvaluatorUnitTest, self).tearDown()
 
 
 if __name__ == '__main__':

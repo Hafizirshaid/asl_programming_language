@@ -41,20 +41,20 @@ for (var = 1; var <= 10; var = var + 1)
     fi
 endfor
 ```
-## Remaining TODO items:
-    - Variable types(number, string)
-    - String comparison
-    - functions (methods) calls
-    - Arrays and lists
-    - Signed number comparisons - sign minus
-    - handle ++ and --
-    - Syntax Error Checking
-    - Enhance expression evaluator to take priority
-    - Implement ! operation
-    - Implement exec command on shell
+## Remaining features to be implemented:
+    - [x] Variable types(number, string)
+    - [x] String comparison
+    - [ ] functions (methods) calls
+    - [ ] Arrays and lists
+    - [ ] Signed number comparisons - sign minus
+    - [ ] handle ++ and --
+    - [ ] Enhanced Syntax Error Checking
+    - [ ] Enhance expression evaluator to take priority
+    - [ ] Implement ! operation
+    - [ ] Implement exec command on shell
         exec "ls -l"
             should execute ls -l command on the shell
-    - Implement Unit Testing.
+    - [ ] Implement Unit Testing.
 
 
 ## My Programming Language Block Diagram:
@@ -87,52 +87,64 @@ File                 tokens              statements                Tree         
     Expression Evaluator:
 
 ## Regex List
-```python
-{'type': TokenType.COMMENT, 'regex': '(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)'},
-{'type': TokenType.CALL, 'regex': '^call'},
-{'type': TokenType.METHOD, 'regex': '^method'},
-{'type': TokenType.ELIF, 'regex': '^elif'},
-{'type': TokenType.IF, 'regex': '^if'},
-{'type': TokenType.ELSE, 'regex': '^else'},
-{'type': TokenType.FI, 'regex': '^fi'},
-{'type': TokenType.ENDFOR, 'regex': '^endfor'},
-{'type': TokenType.ENDWHILE, 'regex': '^endwhile'},
-{'type': TokenType.BREAK, 'regex': '^break'},
-{'type': TokenType.CONT, 'regex': '^cont'},
-{'type': TokenType.FOR, 'regex': '^for'},
-{'type': TokenType.TO, 'regex': '^to'},
-{'type': TokenType.INCR, 'regex': '^incr'},
-{'type': TokenType.WHILE, 'regex': '^while'},
-{'type': TokenType.DO, 'regex': '^do'},
-{'type': TokenType.ECHO, 'regex': '^echo'},
-{'type': TokenType.PRINT, 'regex': '^print'},
-{'type': TokenType.INPUT, 'regex': '^input'},
-#{'type': TokenType.CONDITION, 'regex': "\(([^)]+)\)"},
-{'type': TokenType.IDENTIFICATIONBETWEENBRSCKETS, 'regex': "\{.*?\}"},
-{'type': TokenType.IDENTIFICATION,'regex': '^[a-zA-Z_$][a-zA-Z_$0-9]*'},
-{'type': TokenType.STRING, 'regex': '^"[^"]*"'},
-{'type': TokenType.REAL, 'regex': '[0-9]+\.[0-9]*'},
-{'type': TokenType.NUMBER, 'regex': '^\d+'},
-{'type': TokenType.EQUIVALENT, 'regex': '^=='},
-{'type': TokenType.EQUAL, 'regex': '^='},
-{'type': TokenType.NOTEQUIVALENT, 'regex': '^!='},
-{'type': TokenType.GRATERTHANOREQUAL, 'regex': '^>='},
-{'type': TokenType.LESSTHANOREQUAL, 'regex': '^<='},
-{'type': TokenType.GRATERTHAN, 'regex': '^>'},
-{'type': TokenType.LESSTHAN, 'regex': '^<'},
-{'type': TokenType.ADD, 'regex': '^\+'},
-{'type': TokenType.SUB, 'regex': '^\-'},
-{'type': TokenType.MULT, 'regex': '^\*'},
-{'type': TokenType.DIV, 'regex': '^\/'},
-{'type': TokenType.MOD, 'regex': '^\%'},
-{'type': TokenType.AND, 'regex': '^&'},
-{'type': TokenType.OR, 'regex': '^\|'},
-{'type': TokenType.NOT, 'regex': '^!'},
-{'type': TokenType.SEMICOLON, 'regex': "^;"},
-{'type': TokenType.TRUE, 'regex': '^true'},
-{'type': TokenType.FALSE, 'regex': '^false'},
-{'type': TokenType.NEWLINE, 'regex': '^\n'},
-{'type': TokenType.SPACE, 'regex': '\s'},
-{'type': TokenType.OPENPARANTHESIS, 'regex': '^\('},
-{'type': TokenType.CLOSINGPARANTHESIS, 'regex': '^\)'}
-```
+
+Token Type | Regular Expression
+---|:---
+COMMENT  | (/\*([^*]|[\n]|(\*+([^*/]|[\n])))*\*+/)|(//.*)
+CALL  |  ^call
+METHOD  |  ^method
+ELIF  |  ^elif
+IF  |  ^if
+ELSE  |  ^else
+FI  |  ^fi
+FI  |  ^endif
+ENDFOR  |  ^endfor
+ENDWHILE  |  ^endwhile
+BREAK  |  ^break
+CONTINUE  |  ^continue
+FOR  |  ^for
+WHILE  |  ^while
+STRUCT  |  ^struct
+ENDSTRUCT  |  ^endstruct
+ECHO  |  ^echo
+PRINT  |  ^print
+INPUT  |  ^input
+RETURN  |  ^return
+TRUE  |  ^true
+FALSE  |  ^false
+IDENTIFICATIONBETWEENBRSCKETS  |  \{.*?\}
+IDENTIFICATION  |  ^[a-zA-Z_$][a-zA-Z_$0-9]*
+STRING  |  ^"[^"]*"
+REAL  |  [0-9]+\.[0-9]*
+NUMBER  |  ^\d+
+EQUIVALENT  |  ^==
+PLUSEQUAL  |  ^\+=
+SUBEQUAL  |  ^\-=
+MULTEQUAL  |  ^\*=
+DIVEQUAL  |  ^\/=
+INVERT  |  ^=!
+EQUAL  |  ^=
+NOTEQUIVALENT  |  ^!=
+GRATERTHANOREQUAL  |  ^>=
+LESSTHANOREQUAL  |  ^<=
+GRATERTHAN  |  ^>
+LESSTHAN  |  ^<
+ADD  |  ^\+
+SUB  |  ^\-
+MULT  |  ^\*
+DIV  |  ^\/
+MOD  |  ^\%
+AND  |  ^&
+OR  |  ^\|
+NOT  |  ^!
+LEFTBRAKET  |  ^}
+RIGHTBRAKET  |  ^{
+OPENPARANTHESIS  |  ^\(
+CLOSINGPARANTHESIS  |  ^\)
+OPENSQUAREBRACKET  |  ^\[
+CLOSESQUAREBRACKET  |  ^\]
+SEMICOLON  |  ^;
+NEWLINE  |  ^\n
+SPACE  |  \s
+COMMA  |  ^,
+DOT  |  ^\.
