@@ -4,7 +4,7 @@
 
 Parser Library
 
-Convert list of tokens into statements and extract thier attributes
+Convert list of tokens into statements and extract their attributes
 Example:
 Code:
 
@@ -150,8 +150,8 @@ class Parser:
             # index += 1
             self.increment_token_pointer()
             next_lex = lexes[self.token_pointer]
-        variablestatement = Variable(identification)
-        statements.append(variablestatement)
+        variable_statement = Variable(identification)
+        statements.append(variable_statement)
 
     def parse_while(self, lexes, statements):
         """ Parse While
@@ -303,29 +303,29 @@ class Parser:
         self.increment_token_pointer()
         next_lex = lexes[self.token_pointer]
 
-        with_paranthesis = False
+        with_parenthesis = False
         if next_lex.token_type == TokenType.OPENPARANTHESIS:
             self.increment_token_pointer()
             next_lex = lexes[self.token_pointer]
-            with_paranthesis = True
+            with_parenthesis = True
 
         if next_lex.token_type == TokenType.STRING:
             echoString = next_lex.match
 
-        if with_paranthesis:
+        if with_parenthesis:
             self.increment_token_pointer()
             next_lex = lexes[self.token_pointer]
             if next_lex.token_type == TokenType.CLOSINGPARANTHESIS:
                 #self.increment_token_pointer()
                 pass
             else:
-                raise SyntaxError("Unclosed paranthesis in echo")
+                raise SyntaxError("Unclosed parenthesis in echo")
 
         echo_statement = Echo(echoString)
         statements.append(echo_statement)
 
     def _get_condition(self, lexes) -> str:
-        """ This method extracts tokens as condtions, it stops when it found
+        """ This method extracts tokens as conditions, it stops when it found
             new line, usually used for statements that ends in a new line mark
             Example:
                 While "x >= 10"

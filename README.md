@@ -2,8 +2,10 @@
 ### Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
 
 > I had some free time so I decided to develop my own programming language
-for fun only. This programming langauge might have some issues, I will
+for fun only. This programming language might have some issues, I will
 continue to fix them on my free time.
+
+This language doesn't generate binary or machine code nor it does convert code into assembly language. It executes the code by emulating my own instruction set.
 
 ## keywords:
 ```
@@ -74,9 +76,9 @@ File                 tokens              statements                Tree         
 ```
 ## Classes Description:
 
-    Lexer: Converts code texts into meaningful lexems to tokens
+    Lexer: Converts code texts into meaningful lexemes to tokens
 
-    Parser: Convert list of tokens into statements and extract thier attributes
+    Parser: Convert list of tokens into statements and extract their attributes
 
     Compiler: Compiles list of statements into execution tree
 

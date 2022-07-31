@@ -61,7 +61,7 @@ class Compiler(object):
         for statement in statements:
             self.compile_statement(execution_tree, stack, statement)
 
-        # If stack is not empty, that menas there are some statements without end
+        # If stack is not empty, that means there are some statements without end
         # statement in the code
         if stack:
             raise SyntaxError("Syntax Error, no end for statements, ", stack)
@@ -193,7 +193,7 @@ class Compiler(object):
 
         while statement_pointer:
             # If statement_pointer points to one of these statement types, that means
-            # it contains a symbol table, otherwhise, we keep going up
+            # it contains a symbol table, otherwise, we keep going up
             if (self.is_scope_statement(statement_pointer) or
                 isinstance(statement_pointer, ExecutionTree)):
 
@@ -222,7 +222,7 @@ class Compiler(object):
         for statement in statements:
             if isinstance(statement, Variable):
                 # find in all parents if symbol exists in any symbol tables,
-                # if found do nohting
+                # if found do nothing
                 symbol = self.find_symbol(statement)
                 # if not found, store it in parents symbol table
                 if not symbol:
@@ -267,7 +267,7 @@ class Compiler(object):
             if isinstance(statement, ConditionStatement):
                 # Condition Statement contains ifstatement,
                 # elseifstatement and elsestatement, each one should
-                # be handled seperatly
+                # be handled separately
                 statement.if_statmenet.parent = statement
                 self.set_parent_for_statements(
                     statement.if_statmenet,
@@ -379,7 +379,7 @@ class Compiler(object):
 
     def compile_one_line_statement(self, execution_tree, stack, statement):
         """ Handle End Statement compilation, add it to scope statement if
-            stack is not empty, otherwise add statement to exection tree
+            stack is not empty, otherwise add statement to execution tree
         Args:
             execution_tree: execution tree
             stack: scope stack
@@ -432,7 +432,7 @@ class Compiler(object):
     def compile_for_loop(self, execution_tree, stack, statement):
         """ Handle For Loop Statement compilation
         Args:
-            execution_tree: exection tree
+            execution_tree: execution tree
             stack: scope stack
             statement: for loop statement
         Returns:
@@ -450,8 +450,8 @@ class Compiler(object):
         Args:
             statement: Statement to be checked
         Returns:
-            True: if statment is scope statment
-            False: if statment is not scope statement
+            True: if statement is scope statement
+            False: if statement is not scope statement
         """
 
         return (isinstance(statement, For) or

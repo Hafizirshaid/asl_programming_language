@@ -141,7 +141,7 @@ class InstructionsGenerator:
 
         # find parent for or while. create goto instruction to end of for
         # and while.
-        # Continue statememt should change instruction pointer to go to
+        # Continue statement should change instruction pointer to go to
         # start of the loop
         loop_start_label = self.start_label_loop_stack[-1]
         goto = GotoInstruction(loop_start_label.lable_name)
@@ -155,8 +155,8 @@ class InstructionsGenerator:
             None
         """
 
-        # find loop parent for forloop or whileloop.
-        # create goto instruction to end of forloop and whileloop
+        # find loop parent for for loop or while loop.
+        # create goto instruction to end of forloop and while loop
         # break statement should break the loop, should go to end label.
         loop_end_label = self.end_label_loop_stack[-1]
         goto = GotoInstruction(loop_end_label.lable_name)
@@ -236,16 +236,16 @@ class InstructionsGenerator:
         label_1 = self.generate_label()
         self._add_instruction(label_1)
 
-        # before increment lable is nessessary for continue statement,
+        # before increment label is necessary for continue statement,
         # in case of continue statement, loop variable should be incremented
-        # after that it jumps to label_1 to contine the execution.
+        # after that it jumps to label_1 to continue the execution.
         before_increment_label = self.generate_label()
         self.start_label_loop_stack.append(before_increment_label)
 
         # create end of loop label
         label2 = self.generate_label()
 
-        # Jump statement to be executed to determine if loop should contine
+        # Jump statement to be executed to determine if loop should continue
         # or not based on loop condition
         jump_for = JumpIfNotInstruction(label2.lable_name, statement.loop_condition, statement)
         self._add_instruction(jump_for)
@@ -257,14 +257,14 @@ class InstructionsGenerator:
         self.build_instructions_list(statement.statements)
 
         # before_increment_label should be added before loop increment statement.
-        # this label will be used in case of contine statememt to increment the for loop
+        # this label will be used in case of continue statement to increment the for loop
         # variable and then check loop condition to determine weather the program should execute
         # the next iteration or not.
         self.instruction_list.insert(len(self.instruction_list) - 1, before_increment_label)
         self.start_label_loop_stack.pop()
         self.end_label_loop_stack.pop()
 
-        # goto label_1 at the begining of loop after inctementing variable
+        # goto label_1 at the beginning of loop after incrementing variable
         goto_l1 = GotoInstruction(label_1.lable_name)
         self._add_instruction(goto_l1)
 
@@ -278,8 +278,8 @@ class InstructionsGenerator:
                 code:
                     ----------------
                     before statements
-                    while "conditon"
-                        Statments inside while loop
+                    while "condition"
+                        Statements inside while loop
                     endwhile
                     After Statements
                     ----------------
@@ -288,7 +288,7 @@ class InstructionsGenerator:
                     before statements
                     Label1:
                         Jump If Not "condition" To Label 2
-                        Statments inside while loop
+                        Statements inside while loop
                         Goto Label1
                     L2:
                         After Statements
@@ -360,7 +360,7 @@ class InstructionsGenerator:
                 -------------------
 
         Args:
-            statement: conditon statement that contains if,elseif and else statements
+            statement: condition statement that contains if,elseif and else statements
                         if is a mandatory statement, else if and else are optional
         Returns:
             None
@@ -392,21 +392,21 @@ class InstructionsGenerator:
 
             Code:
                 -----------------
-                elif conditon
+                elif condition
                     elseif_statements
-                elseif conditon 2
+                elseif condition 2
                     next_else_if_statement
                 -----------------
             Instructions
                 -----------------
                 Label
-                    Jump If not condtion to Label_next
+                    Jump If not condition to Label_next
                     elseif_statements
                     jump to end_label
                 -----------------
 
         Args:
-            statement: conditon statement that contains else if statements
+            statement: condition statement that contains else if statements
             end_label: end of condition statement label
         Returns:
             None
@@ -433,8 +433,8 @@ class InstructionsGenerator:
             code:
                 --------------
                 before statements
-                if conditon
-                    statmenets inside if statement
+                if condition
+                    statements inside if statement
                 fi
                 after statements
                 --------------
@@ -451,19 +451,19 @@ class InstructionsGenerator:
                 --------------
 
         Args:
-            statement: conditon statement that contains if_statmenet,
-                        if statement is mandatory statement, if if_statmenet is null
+            statement: condition statement that contains if_statement,
+                        if statement is mandatory statement, if if_statement is null
                         UnexpectedError will be thrown
             end_label: end label of condition block
         Returns:
             None
         Raises:
-            UnexpectedError: when if_statmenet is None
+            UnexpectedError: when if_statement is None
         """
 
         if not statement.if_statmenet:
             raise UnexpectedError(
-                "Unexprected state, if statement should not be none inside conditon")
+                "Unexpected state, if statement should not be none inside conditon")
 
         label_1 = self.generate_label()
         self._add_instruction(label_1)

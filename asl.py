@@ -40,9 +40,9 @@ File                 tokens              statements                Tree         
 
 Classes Description:
 
-    Lexer: Converts code texts into meaningful lexems to tokens
+    Lexer: Converts code texts into meaningful lexemes to tokens
 
-    Parser: Convert list of tokens into statements and extract thier attributes
+    Parser: Convert list of tokens into statements and extract their attributes
 
     Compiler: Compiles list of statements into execution tree
 
@@ -62,7 +62,7 @@ from lexer import Lexer
 
 
 def main():
-    """ Main Function, calls modules Arguemnt Parser, File Reader, Lexer,
+    """ Main Function, calls modules Argument Parser, File Reader, Lexer,
         Parser, Compiler, Generator, Executor to execute a given source code file
     Args:
         None
@@ -74,9 +74,9 @@ def main():
     args_parser = argparse.ArgumentParser("My Programming Language Command Line version 1.0")
 
     # Argument identifier: --filename or -f
-    # File name that contails source code to be executed.
+    # File name that contains source code to be executed.
     args_parser.add_argument('-f', '--filename',
-                        default='asl_files/one_var.asl',
+                        default='asl_files/fibonacci.asl',
                         help='source file name',
                         nargs=argparse.OPTIONAL,
                         )
@@ -95,7 +95,7 @@ def main():
         for line in file:
             text += line
 
-    # Tokenizes Text file into list of meaningful tokens
+    # Tokenize Text file into list of meaningful tokens
     lexer = Lexer()
     tokens = lexer.tokenize_text(text)
 

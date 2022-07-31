@@ -41,7 +41,7 @@ class EnhancedExpressionEvaluator(Evaluator):
             for token in tokens:
                 if not self._is_operator(token.token_type):
                     result += token.match.strip('"')
-            # should concatinate
+            # should concatenate
         else:
             result = self.evaluate_tokens(tokens, values_stack, operators_stack)
         return result

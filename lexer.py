@@ -4,7 +4,7 @@
 
 Lexer Library
 
-Converts code texts into meaningful lexems to tokens:
+Converts code texts into meaningful lexemes to tokens:
 
 Example:
 -------------------------------
@@ -267,7 +267,7 @@ class Lexer(object):
     tokens
 
     Class Attributes:
-        regex_list: A list that contains token types and thier regular expressions
+        regex_list: A list that contains token types and their regular expressions
 
     """
 
@@ -326,7 +326,7 @@ class Lexer(object):
             {'type': TokenType.GRATERTHAN, 'regex': '^>'},
             {'type': TokenType.LESSTHAN, 'regex': '^<'},
 
-            # Mathmatical Operators
+            # Mathematical Operators
             {'type': TokenType.ADD, 'regex': '^\+'},
             {'type': TokenType.SUB, 'regex': '^\-'},
             {'type': TokenType.MULT, 'regex': '^\*'},
@@ -338,7 +338,7 @@ class Lexer(object):
             {'type': TokenType.OR, 'regex': '^\|'},
             {'type': TokenType.NOT, 'regex': '^!'},
 
-            #brackets and paranthsis
+            #brackets and parenthesis
             {'type': TokenType.LEFTBRAKET, 'regex': '^}'},
             {'type': TokenType.RIGHTBRAKET, 'regex': '^{'},
             {'type': TokenType.OPENPARANTHESIS, 'regex': '^\('},

@@ -11,7 +11,7 @@ program logical output.
 
 from compiler import ExecutionTree
 from enhanced_expression_evalator import EnhancedExpressionEvaluator
-from exceptions.language_exception import UnexpectedError, UnknwonVariable
+from exceptions.language_exception import UnexpectedError, UnknownVariable
 from expression_evaluator import Evaluator
 from instructions.instruction import EchoInstruction, InputInstruction, InstructionType, VariableInstruction
 from lexer import Lexer, TokenType
@@ -47,9 +47,9 @@ class Executor(object):
         Desc:
             Execute List of Instructions
         Args:
-            instructions: instructions to be exected
-            execution_tree: Execution Tree that contains statments to be executed
-                            This is nessessary to get access to symbols table
+            instructions: instructions to be executed
+            execution_tree: Execution Tree that contains statements to be executed
+                            This is necessary to get access to symbols table
         Returns:
             program output
         """
@@ -132,7 +132,7 @@ class Executor(object):
         return
 
     def evaluate_condition(self, condition, instruction):
-        """ Evaluate the result of a given conditon
+        """ Evaluate the result of a given condition
         Args:
             condition: Condition string to be evaluated
             instruction: Instruction that contains current statement to be used
@@ -144,7 +144,7 @@ class Executor(object):
         tokens = Lexer().tokenize_text(condition.strip('"'))
 
         # If condition contains variables, they should be substituted by
-        # thier values in the symbols table
+        # their values in the symbols table
         final_condition = ""
         for token in tokens:
             if token.token_type == TokenType.IDENTIFICATION:
@@ -179,14 +179,14 @@ class Executor(object):
             None
         """
 
-        # Calcuate Variable name and variable value
+        # Calculate Variable name and variable value
         # variable_expression = instruction.variable_expression
         variable_name = instruction.variable_statement.variable_name
         variable_value = instruction.variable_statement.variable_value
 
         operation = instruction.variable_statement.operation
 
-        # Tokenize variable value to make sure variable can be evaulated
+        # Tokenize variable value to make sure variable can be evaluated
         tokens = Lexer().tokenize_text(variable_value)
 
         if len(tokens) == 1:
@@ -208,7 +208,7 @@ class Executor(object):
 
         final_expression = ""
 
-        is_contatination = False
+        is_concatenation = False
         for token in tokens:
             if token.token_type == TokenType.IDENTIFICATION:
                 # Substitute variable values in final expression to be evaluated
@@ -216,9 +216,9 @@ class Executor(object):
                 symbol = symbol_table.get_entry_value(token.match)
 
                 if symbol.type == TokenType.STRING:
-                    # Variables should be contacinated rather than evaluating them since
+                    # Variables should be concatenated rather than evaluating them since
                     # there is a string value
-                    is_contatination = True
+                    is_concatenation = True
 
                 final_expression += str(symbol.value)
                 pass
@@ -227,7 +227,7 @@ class Executor(object):
                 final_expression += str(token.match)
             pass
 
-        if is_contatination:
+        if is_concatenation:
             value = final_expression
         else:
             value = EnhancedExpressionEvaluator().evaluate(final_expression)
@@ -252,17 +252,17 @@ class Executor(object):
         # if one token found, make sure the value is not another variable
         if tokens[0].token_type == TokenType.IDENTIFICATION:
 
-            # Variable value is an assigmnet to another variable
+            # Variable value is an assignment to another variable
             symbol_table = self.find_symbol_table(variable_value, instruction.variable_statement)
 
             if not symbol_table:
-                raise UnknwonVariable(f"Variable not found {variable_value}")
+                raise UnknownVariable(f"Variable not found {variable_value}")
 
             new_value = symbol_table.get_entry_value(variable_value)
 
             self.store_variable(variable_name, new_value.value, operation, instruction)
         else:
-            # variable value is normal value not variable assigment to another variable
+            # variable value is normal value not variable assignment to another variable
             self.store_variable(instruction.variable_name, variable_value, operation, instruction)
 
     def store_variable(self, variable_name, variable_value, operation, instruction):
@@ -321,7 +321,7 @@ class Executor(object):
 
             if (statement.symbols_table
                 and statement.symbols_table.get_entry_value(name)):
-                # if the given statement is a scope statment, then
+                # if the given statement is a scope statement, then
                 # lookup variable inside it's symbol tables, if it contains the value,
                 # return it directly, otherwise, lookup value in parents symbols tables.
                 return statement.symbols_table
@@ -390,7 +390,7 @@ class Executor(object):
                 symbol_table = self.find_symbol_table(var_name, instruction.statement)
 
                 if not symbol_table:
-                    raise UnknwonVariable(f"Variable Not Found {var_name}")
+                    raise UnknownVariable(f"Variable Not Found {var_name}")
 
                 value = symbol_table.get_entry_value(var_name)
                 final_echo_string += str(value.value)
@@ -414,7 +414,7 @@ class Executor(object):
         symbol_table = self.find_symbol_table(variable_name, instruction.statement)
 
         if not symbol_table:
-            raise UnknwonVariable(f"Variable Not Found {variable_name}")
+            raise UnknownVariable(f"Variable Not Found {variable_name}")
 
         # input from keyboard
         input_value = input()

@@ -42,7 +42,7 @@ class Evaluator:
         return result
 
     def calculate(self, value1, value2, operator):
-        """ Calcuates the result value
+        """ Calculates the result value
             of v1 and v2 by op
         Args:
             v1: first value
@@ -133,7 +133,7 @@ class Evaluator:
         Desc:
             evaluate expression like (10 * 30 > 5),
             this should work for both logical and
-            mathimatical expressions
+            mathematical expressions
         Args:
             expression: expression to be evaluated
         Returns:

@@ -4,7 +4,7 @@
 
 Enhanced Parser Library
 
-Convert list of tokens into statements and extract thier attributes
+Convert list of tokens into statements and extract their attributes
 
 """
 
@@ -132,7 +132,7 @@ class EnhancedParser(Parser):
             condition = self.parse_for_loop_condition(lexes, paranthesis_stack)
             increment = self.parse_for_loop_increment(lexes)
 
-            # empty condition should return true, this is nessessary for cases like;
+            # empty condition should return true, this is necessary for cases like;
             # for(;;)
             # in this case condition is an empty string, however, this has been used
             # as a technique for infinite loop, this language should support it.
@@ -351,8 +351,8 @@ class EnhancedParser(Parser):
             # this has caused an error with next statement
             self.token_pointer -= 1
 
-            variablestatement = Variable(variable_name, operation, variable_value, first_token_type)
-            statements.append(variablestatement)
+            variable_statement = Variable(variable_name, operation, variable_value, first_token_type)
+            statements.append(variable_statement)
         else:
             raise SyntaxError("Invalid operation ",
                               lexes[self.token_pointer])
@@ -426,12 +426,12 @@ class EnhancedParser(Parser):
                 if_condition += lexes[self.token_pointer].match
 
             if paranthesis_stack:
-                raise SyntaxError("Paranths error", lexes[self.token_pointer])
+                raise SyntaxError("paranthesis error", lexes[self.token_pointer])
 
             return if_condition
         else:
             raise SyntaxError(
-                "invalid token should be ( insteadof " + str(lexes[self.token_pointer].match), lexes[self.token_pointer])
+                "invalid token should be ( instead of " + str(lexes[self.token_pointer].match), lexes[self.token_pointer])
 
     def parse_echo(self, lexes, statements):
         """ Parse echo statement

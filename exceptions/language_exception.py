@@ -21,7 +21,7 @@ class SyntaxError(Exception):
         pass
 
 
-class UnknwonVariable(Exception):
+class UnknownVariable(Exception):
     """ Syntax Error Exception """
 
     def __init__(self, *args: object) -> None:
