@@ -4,7 +4,7 @@
 
 Exceptions Module
 
-Contains SyntaxError, UnknwonVariable, UnexpectedError, ExpressionEvaluationError
+Contains SyntaxError, UnknownVariable, UnexpectedError, ExpressionEvaluationError
 Those exceptions are being used in order to identify potential issues in the code
 
 """

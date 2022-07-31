@@ -176,7 +176,7 @@ class Fi(Statement):
     """ Fi Statement Class (EndIf)"""
 
     def __init__(self) -> None:
-        """ Fi Statement Class (EndIf) Constrctor
+        """ Fi Statement Class (EndIf) Constructor
         Args:
             None
         Returns:
@@ -196,7 +196,7 @@ class EndWhile(Statement):
     """ EndWhile Statement Class """
 
     def __init__(self) -> None:
-        """ EndWhile Statement Class Constrcutor
+        """ EndWhile Statement Class Constructor
         Args:
             None
         Returns:
@@ -216,7 +216,7 @@ class EndFor(Statement):
     """ EndFor Statement Class """
 
     def __init__(self) -> None:
-        """ EndFor Statement Class Constrctor
+        """ EndFor Statement Class Constructor
         Args:
             None
         Returns:
@@ -239,7 +239,7 @@ class ElseIf(Statement):
         """ ElseIf Statement Class Constructor
         Args:
             condition: else if statement condition
-            statements: Children statements in else if statment
+            statements: Children statements in else if statement
         Returns:
             None
         """
@@ -262,7 +262,7 @@ class Else(Statement):
     def __init__(self, statements) -> None:
         """ Else Statement Class Constructor
         Args:
-            statements: Children statements of else statment
+            statements: Children statements of else statement
         Returns:
             None
         """
@@ -339,8 +339,8 @@ class ConditionStatement(Statement):
         super().__init__(StatementType.CONDITION)
 
         if if_statmenet is None:
-            # If statmenet should not be none
-            raise Exception("Error, if statment can't be None")
+            # If statement should not be none
+            raise Exception("Error, if statement can't be None")
 
         self.if_statmenet = if_statmenet
         self.elseif_statements = elseif_statements

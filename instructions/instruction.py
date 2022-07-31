@@ -29,7 +29,7 @@ class Instruction(object):
     """ Instruction Class """
 
     def __init__(self, type: InstructionType) -> None:
-        """ Instruction class constrctor
+        """ Instruction class constructor
         Args:
             type: Instruction type
         Returns:
@@ -139,11 +139,11 @@ class JumpIfInstruction(Instruction):
     """ JumpIf Instruction Class """
 
     def __init__(self, label: str, condition: str, statement=None) -> None:
-        """ JumpIf Instruction Class Constrctor
+        """ JumpIf Instruction Class Constructor
         Args:
-            label: Label to go to if condtion is true
+            label: Label to go to if condition is true
             condition: Condition to be evaluated
-            statement: Optional, statement that contains condtion, it is
+            statement: Optional, statement that contains condition, it is
                         used to lookup symbols table
         Returns:
             None
@@ -169,7 +169,7 @@ class JumpIfNotInstruction(Instruction):
         Args:
             label: Label to go to if condition is false
             condition: condition to be evaluated.
-            statement: Optional, statement that contains condtion, it is
+            statement: Optional, statement that contains condition, it is
                         used to lookup symbols table
         Returns:
             None
@@ -194,7 +194,7 @@ class VariableInstruction(Instruction):
                        symbols_table=None) -> None:
         """ Variable Instruction Class Constructor
         Args:
-            variable_expression: Vairbale expression
+            variable_expression: Variable expression
             variable_name: variable name
             symbols_table: symbols table that contains this variable
         Returns:

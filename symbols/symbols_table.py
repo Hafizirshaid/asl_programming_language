@@ -28,7 +28,7 @@ class SymbolTableEntry:
     def __init__(self, name: str, value: str, type=None) -> None:
         """ Symbol Table Entry Class Constructor
         Desc:
-            Initialize Symbol Table Entry (Constrctor)
+            Initialize Symbol Table Entry (Constructor)
         Args:
             name: name of entry
             value: value of entry
