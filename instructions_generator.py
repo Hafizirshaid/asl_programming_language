@@ -144,7 +144,7 @@ class InstructionsGenerator:
         # Continue statement should change instruction pointer to go to
         # start of the loop
         loop_start_label = self.start_label_loop_stack[-1]
-        goto = GotoInstruction(loop_start_label.lable_name)
+        goto = GotoInstruction(loop_start_label.label_name)
         self._add_instruction(goto)
 
     def generate_break_statement(self):
@@ -159,7 +159,7 @@ class InstructionsGenerator:
         # create goto instruction to end of forloop and while loop
         # break statement should break the loop, should go to end label.
         loop_end_label = self.end_label_loop_stack[-1]
-        goto = GotoInstruction(loop_end_label.lable_name)
+        goto = GotoInstruction(loop_end_label.label_name)
         self._add_instruction(goto)
 
     def generate_variable_statement(self, statement):
@@ -223,7 +223,7 @@ class InstructionsGenerator:
                         increment
                         goto Label_1
                     Label_2:
-                    after statments
+                    after statements
                     -----------------------
 
         Args:
@@ -247,7 +247,7 @@ class InstructionsGenerator:
 
         # Jump statement to be executed to determine if loop should continue
         # or not based on loop condition
-        jump_for = JumpIfNotInstruction(label2.lable_name, statement.loop_condition, statement)
+        jump_for = JumpIfNotInstruction(label2.label_name, statement.loop_condition, statement)
         self._add_instruction(jump_for)
 
         # generate instruction for loop statements
@@ -265,7 +265,7 @@ class InstructionsGenerator:
         self.end_label_loop_stack.pop()
 
         # goto label_1 at the beginning of loop after incrementing variable
-        goto_l1 = GotoInstruction(label_1.lable_name)
+        goto_l1 = GotoInstruction(label_1.label_name)
         self._add_instruction(goto_l1)
 
         # End of Loop Label
@@ -305,14 +305,14 @@ class InstructionsGenerator:
         self.start_label_loop_stack.append(label_1)
 
         label2 = self.generate_label()
-        jump = JumpIfNotInstruction(label2.lable_name, statement.condition, statement)
+        jump = JumpIfNotInstruction(label2.label_name, statement.condition, statement)
         self.instruction_list.append(jump)
         self.end_label_loop_stack.append(label2)
 
         # call for children
         self.build_instructions_list(statement.statements)
 
-        goto = GotoInstruction(label_1.lable_name)
+        goto = GotoInstruction(label_1.label_name)
         self.instruction_list.append(goto)
         self.instruction_list.append(label2)
 
@@ -417,11 +417,11 @@ class InstructionsGenerator:
             for else_if in statement.elseif_statements:
                 label_3 = self.generate_label()
                 jump2 = JumpIfNotInstruction(
-                    label_3.lable_name, else_if.condition, else_if)
+                    label_3.label_name, else_if.condition, else_if)
                 self._add_instruction(jump2)
                 self.build_instructions_list(else_if.statements)
 
-                goto_end = GotoInstruction(end_label.lable_name)
+                goto_end = GotoInstruction(end_label.label_name)
                 self._add_instruction(goto_end)
 
                 self._add_instruction(label_3)
@@ -461,18 +461,18 @@ class InstructionsGenerator:
             UnexpectedError: when if_statement is None
         """
 
-        if not statement.if_statmenet:
+        if not statement.if_statement:
             raise UnexpectedError(
-                "Unexpected state, if statement should not be none inside conditon")
+                "Unexpected state, if statement should not be none inside condition")
 
         label_1 = self.generate_label()
         self._add_instruction(label_1)
         label_2 = self.generate_label()
         jump = JumpIfNotInstruction(
-            label_2.lable_name, statement.if_statmenet.condition, statement.if_statmenet)
+            label_2.label_name, statement.if_statement.condition, statement.if_statement)
         self._add_instruction(jump)
-        self.build_instructions_list(statement.if_statmenet.statements)
-        goto_end = GotoInstruction(end_label.lable_name)
+        self.build_instructions_list(statement.if_statement.statements)
+        goto_end = GotoInstruction(end_label.label_name)
         self._add_instruction(goto_end)
         self._add_instruction(label_2)
 

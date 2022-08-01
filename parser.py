@@ -304,7 +304,7 @@ class Parser:
         next_lex = lexes[self.token_pointer]
 
         with_parenthesis = False
-        if next_lex.token_type == TokenType.OPENPARANTHESIS:
+        if next_lex.token_type == TokenType.OPENPARENTHESIS:
             self.increment_token_pointer()
             next_lex = lexes[self.token_pointer]
             with_parenthesis = True
@@ -315,7 +315,7 @@ class Parser:
         if with_parenthesis:
             self.increment_token_pointer()
             next_lex = lexes[self.token_pointer]
-            if next_lex.token_type == TokenType.CLOSINGPARANTHESIS:
+            if next_lex.token_type == TokenType.CLOSINGPARENTHESIS:
                 #self.increment_token_pointer()
                 pass
             else:

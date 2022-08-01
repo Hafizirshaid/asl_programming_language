@@ -162,7 +162,7 @@ class For(Statement):
         self.loop_condition = loop_condition
         self.loop_increment = loop_increment
 
-        self.conditon = None
+        self.condition = None
         self.symbols_table = SymbolTable()
 
     def __str__(self) -> str:
@@ -323,13 +323,13 @@ class ConditionStatement(Statement):
     """ Condition Statement Class """
 
     def __init__(self,
-                 if_statmenet: If,
+                 if_statement: If,
                  elseif_statements: list,
                  else_statement: Else) -> None:
         """ Condition Statement Class Constructor
 
         Args:
-            if_statmenet: if statement, should not be null
+            if_statement: if statement, should not be null
             elseif_statements: else if statements list
             else_statement: else statement
         Returns:
@@ -338,11 +338,11 @@ class ConditionStatement(Statement):
 
         super().__init__(StatementType.CONDITION)
 
-        if if_statmenet is None:
+        if if_statement is None:
             # If statement should not be none
             raise Exception("Error, if statement can't be None")
 
-        self.if_statmenet = if_statmenet
+        self.if_statement = if_statement
         self.elseif_statements = elseif_statements
         self.else_statement = else_statement
 

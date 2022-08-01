@@ -57,10 +57,10 @@ class LabelInstruction(Instruction):
         """
 
         super().__init__(InstructionType.LABEL)
-        self.lable_name = label_name
+        self.label_name = label_name
 
     def __repr__(self) -> str:
-        return f"label ---> {self.lable_name}"
+        return f"label ---> {self.label_name}"
 
     def __str__(self) -> str:
         return self.__repr__()

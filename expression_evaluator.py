@@ -181,11 +181,11 @@ class Evaluator:
                 operators_stack.append(value)
 
             if (token_type == TokenType.SPACE or
-                token_type == TokenType.OPENPARANTHESIS):
+                token_type == TokenType.OPENPARENTHESIS):
                 # Do Nothing
                 pass
 
-            if token_type == TokenType.CLOSINGPARANTHESIS:
+            if token_type == TokenType.CLOSINGPARENTHESIS:
                 value1 = values_stack.pop()
                 value2 = values_stack.pop()
                 operator = operators_stack.pop()

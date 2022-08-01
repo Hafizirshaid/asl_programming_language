@@ -10,7 +10,7 @@ program logical output.
 """
 
 from compiler import ExecutionTree
-from enhanced_expression_evalator import EnhancedExpressionEvaluator
+from enhanced_expression_evaluator import EnhancedExpressionEvaluator
 from exceptions.language_exception import UnexpectedError, UnknownVariable
 from expression_evaluator import Evaluator
 from instructions.instruction import EchoInstruction, InputInstruction, InstructionType, VariableInstruction
@@ -128,7 +128,7 @@ class Executor(object):
 
         for index, instruction in enumerate(instructions):
             if instruction.type == InstructionType.LABEL:
-                self.label_index_table[instruction.lable_name] = index
+                self.label_index_table[instruction.label_name] = index
         return
 
     def evaluate_condition(self, condition, instruction):

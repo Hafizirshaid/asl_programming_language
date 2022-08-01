@@ -204,8 +204,8 @@ class TokenType(Enum):
     FALSE = 37
     NEWLINE = 38
     SPACE = 39
-    OPENPARANTHESIS = 40
-    CLOSINGPARANTHESIS = 41
+    OPENPARENTHESIS = 40
+    CLOSINGPARENTHESIS = 41
     INPUT = 42
     REAL = 43
     IDENTIFICATIONBETWEENBRSCKETS = 44
@@ -341,8 +341,8 @@ class Lexer(object):
             #brackets and parenthesis
             {'type': TokenType.LEFTBRAKET, 'regex': '^}'},
             {'type': TokenType.RIGHTBRAKET, 'regex': '^{'},
-            {'type': TokenType.OPENPARANTHESIS, 'regex': '^\('},
-            {'type': TokenType.CLOSINGPARANTHESIS, 'regex': '^\)'},
+            {'type': TokenType.OPENPARENTHESIS, 'regex': '^\('},
+            {'type': TokenType.CLOSINGPARENTHESIS, 'regex': '^\)'},
             {'type': TokenType.OPENSQUAREBRACKET, 'regex': '^\['},
             {'type': TokenType.CLOSESQUAREBRACKET, 'regex': '^\]'},
 

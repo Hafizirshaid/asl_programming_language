@@ -166,11 +166,11 @@ class Compiler(object):
 
             if isinstance(statement, ConditionStatement):
                 self.store_variables_in_symbols_table_for_statements(
-                    statement.if_statmenet.statements)
+                    statement.if_statement.statements)
 
-                for elifs in statement.elseif_statements:
+                for else_if_statement in statement.elseif_statements:
                     self.store_variables_in_symbols_table_for_statements(
-                        elifs.statements)
+                        else_if_statement.statements)
 
                 if statement.else_statement:
                     self.store_variables_in_symbols_table_for_statements(
@@ -239,7 +239,7 @@ class Compiler(object):
 
             if isinstance(statement, ConditionStatement):
                 self.store_variables_in_symbols_table_for_statements(
-                    statement.if_statmenet.statements)
+                    statement.if_statement.statements)
                 for elseif_statement in statement.elseif_statements:
                     self.store_variables_in_symbols_table_for_statements(
                         elseif_statement.statements)
@@ -265,13 +265,13 @@ class Compiler(object):
                 self.set_parent_for_statements(statement, statement.statements)
 
             if isinstance(statement, ConditionStatement):
-                # Condition Statement contains ifstatement,
-                # elseifstatement and elsestatement, each one should
+                # Condition Statement contains if_statement,
+                # elseif_statements and else_statement, each one should
                 # be handled separately
-                statement.if_statmenet.parent = statement
+                statement.if_statement.parent = statement
                 self.set_parent_for_statements(
-                    statement.if_statmenet,
-                    statement.if_statmenet.statements)
+                    statement.if_statement,
+                    statement.if_statement.statements)
 
                 for elseif in statement.elseif_statements:
                     elseif.parent = statement
@@ -302,12 +302,12 @@ class Compiler(object):
 
             # Set parent for condition statement
             if isinstance(statement, ConditionStatement):
-                statement.if_statmenet.parent = statement
+                statement.if_statement.parent = statement
                 # Set parents for If, else ifs, and else statements
 
                 self.set_parent_for_statements(
-                    statement.if_statmenet,
-                    statement.if_statmenet.statements)
+                    statement.if_statement,
+                    statement.if_statement.statements)
 
                 # Else if statements
                 for elif_statement in statement.elseif_statements:
@@ -345,12 +345,12 @@ class Compiler(object):
             if_statement_stack.append(clause)
             clause = stack.pop()
 
-        ifstatement = if_statement_stack.pop()
+        if_statement = if_statement_stack.pop()
 
         # if statement should never be None
-        if not isinstance(ifstatement, If):
+        if not isinstance(if_statement, If):
             raise SyntaxError("Unexpected Error, if statement should never be None")
-        clause.if_statmenet = ifstatement
+        clause.if_statement = if_statement
 
         while if_statement_stack:
             stack_element = if_statement_stack.pop()
@@ -373,8 +373,8 @@ class Compiler(object):
             None
         """
 
-        conditon = ConditionStatement(statement, [], [])
-        stack.append(conditon)
+        condition = ConditionStatement(statement, [], [])
+        stack.append(condition)
         stack.append(statement)
 
     def compile_one_line_statement(self, execution_tree, stack, statement):

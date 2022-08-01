@@ -121,15 +121,15 @@ class EnhancedParser(Parser):
 
         self.increment_token_pointer()
 
-        paranthesis_stack = []
+        parenthesis_stack = []
 
-        if lexes[self.token_pointer].token_type == TokenType.OPENPARANTHESIS:
+        if lexes[self.token_pointer].token_type == TokenType.OPENPARENTHESIS:
 
-            paranthesis_stack.append(lexes[self.token_pointer].match)
+            parenthesis_stack.append(lexes[self.token_pointer].match)
             self.increment_token_pointer()
 
-            loop_initial_variable = self.parse_for_loop_variable(lexes, paranthesis_stack)
-            condition = self.parse_for_loop_condition(lexes, paranthesis_stack)
+            loop_initial_variable = self.parse_for_loop_variable(lexes, parenthesis_stack)
+            condition = self.parse_for_loop_condition(lexes, parenthesis_stack)
             increment = self.parse_for_loop_increment(lexes)
 
             # empty condition should return true, this is necessary for cases like;
@@ -139,23 +139,23 @@ class EnhancedParser(Parser):
             if len(condition) == 0:
                 condition = "1"
 
-            if lexes[self.token_pointer].token_type == TokenType.CLOSINGPARANTHESIS:
-                paranthesis_stack.pop()
-                if not paranthesis_stack:
+            if lexes[self.token_pointer].token_type == TokenType.CLOSINGPARENTHESIS:
+                parenthesis_stack.pop()
+                if not parenthesis_stack:
                     forloop = For([], loop_initial_variable, condition, increment)
                     statements.append(forloop)
                 else:
-                    raise SyntaxError("invalid for loop, unbalanced paranthesis", lexes[self.token_pointer])
+                    raise SyntaxError("invalid for loop, unbalanced parenthesis", lexes[self.token_pointer])
             else:
                 raise SyntaxError("invalid for loop", lexes[self.token_pointer])
         else:
             raise SyntaxError("invalid for loop", lexes[self.token_pointer])
 
-    def parse_for_loop_condition(self, lexes, paranthesis_stack):
+    def parse_for_loop_condition(self, lexes, parenthesis_stack):
         """ Parse for loop condition
         Args:
             lexes: list of lexes
-            paranthesis_stack:
+            parenthesis_stack:
         Returns:
             Condition
         """
@@ -165,21 +165,21 @@ class EnhancedParser(Parser):
         condition = ""
         while (lexes[self.token_pointer].token_type != TokenType.SEMICOLON):
             condition += lexes[self.token_pointer].match
-            if lexes[self.token_pointer].token_type == TokenType.OPENPARANTHESIS:
-                paranthesis_stack.append(lexes[self.token_pointer].match)
-            if lexes[self.token_pointer].token_type == TokenType.CLOSINGPARANTHESIS:
-                paranthesis_stack.pop()
+            if lexes[self.token_pointer].token_type == TokenType.OPENPARENTHESIS:
+                parenthesis_stack.append(lexes[self.token_pointer].match)
+            if lexes[self.token_pointer].token_type == TokenType.CLOSINGPARENTHESIS:
+                parenthesis_stack.pop()
             self.increment_token_pointer()
 
         self.increment_token_pointer()
 
         return condition
 
-    def parse_for_loop_variable(self, lexes, paranthesis_stack):
+    def parse_for_loop_variable(self, lexes, parenthesis_stack):
         """ Parse for loop Variable
         Args:
             lexes: list of lexes
-            paranthesis_stack:
+            parenthesis_stack:
         Returns:
             variable
         """
@@ -205,11 +205,11 @@ class EnhancedParser(Parser):
                 while lexes[self.token_pointer].token_type != TokenType.SEMICOLON:
 
                     var_val += lexes[self.token_pointer].match
-                    if lexes[self.token_pointer].token_type == TokenType.OPENPARANTHESIS:
-                        paranthesis_stack.append(
+                    if lexes[self.token_pointer].token_type == TokenType.OPENPARENTHESIS:
+                        parenthesis_stack.append(
                             lexes[self.token_pointer].match)
-                    if lexes[self.token_pointer].token_type == TokenType.CLOSINGPARANTHESIS:
-                        paranthesis_stack.pop()
+                    if lexes[self.token_pointer].token_type == TokenType.CLOSINGPARENTHESIS:
+                        parenthesis_stack.pop()
                     self.increment_token_pointer()
 
                 return Variable(var_name, var_op, var_val)
@@ -224,22 +224,22 @@ class EnhancedParser(Parser):
         """
 
         # Empty Statement
-        if lexes[self.token_pointer].token_type == TokenType.CLOSINGPARANTHESIS:
+        if lexes[self.token_pointer].token_type == TokenType.CLOSINGPARENTHESIS:
             return None
 
         if lexes[self.token_pointer].token_type == TokenType.IDENTIFICATION:
             var_name = lexes[self.token_pointer].match
             self.increment_token_pointer()
 
-            if self.check_token_type_in_list(lexes, self.valid_assignment_operation, TokenType.CLOSINGPARANTHESIS):
+            if self.check_token_type_in_list(lexes, self.valid_assignment_operation, TokenType.CLOSINGPARENTHESIS):
                 var_operation = lexes[self.token_pointer].token_type
                 self.increment_token_pointer()
                 var_val = ""
 
                 # Get variable expression.
-                while (lexes[self.token_pointer].token_type != TokenType.CLOSINGPARANTHESIS):
-                    if lexes[self.token_pointer].token_type == TokenType.OPENPARANTHESIS:
-                        var_val += self.parse_between_paranthesis(lexes)
+                while (lexes[self.token_pointer].token_type != TokenType.CLOSINGPARENTHESIS):
+                    if lexes[self.token_pointer].token_type == TokenType.OPENPARENTHESIS:
+                        var_val += self.parse_between_parenthesis(lexes)
                     else:
                         var_val += lexes[self.token_pointer].match
 
@@ -260,7 +260,7 @@ class EnhancedParser(Parser):
         """
 
         self.increment_token_pointer()
-        while_condition = self.parse_between_paranthesis(lexes)
+        while_condition = self.parse_between_parenthesis(lexes)
         while_statement = While(while_condition, [])
         statements.append(while_statement)
 
@@ -379,7 +379,7 @@ class EnhancedParser(Parser):
         """
 
         self.increment_token_pointer()
-        elif_condition = self.parse_between_paranthesis(lexes)
+        elif_condition = self.parse_between_parenthesis(lexes)
         elif_Statement = ElseIf(elif_condition, [])
         statements.append(elif_Statement)
         pass
@@ -395,14 +395,14 @@ class EnhancedParser(Parser):
 
         self.increment_token_pointer()
 
-        if_condition = self.parse_between_paranthesis(lexes)
+        if_condition = self.parse_between_parenthesis(lexes)
 
         if_statement = If(if_condition, [])
         statements.append(if_statement)
         pass
 
-    def parse_between_paranthesis(self, lexes):
-        """ Parse between paranthesis
+    def parse_between_parenthesis(self, lexes):
+        """ Parse between parenthesis
         Args:
             lexes: list of lexes
 
@@ -410,23 +410,23 @@ class EnhancedParser(Parser):
             list of statements
         """
 
-        paranthesis_stack = []
-        if lexes[self.token_pointer].token_type == TokenType.OPENPARANTHESIS:
-            paranthesis_stack.append(lexes[self.token_pointer].token_type)
+        parenthesis_stack = []
+        if lexes[self.token_pointer].token_type == TokenType.OPENPARENTHESIS:
+            parenthesis_stack.append(lexes[self.token_pointer].token_type)
 
             if_condition = lexes[self.token_pointer].match
 
-            while paranthesis_stack:
+            while parenthesis_stack:
                 self.increment_token_pointer()
-                if lexes[self.token_pointer].token_type == TokenType.OPENPARANTHESIS:
-                    paranthesis_stack.append(lexes[self.token_pointer].token_type)
-                if lexes[self.token_pointer].token_type == TokenType.CLOSINGPARANTHESIS:
-                    paranthesis_stack.pop()
+                if lexes[self.token_pointer].token_type == TokenType.OPENPARENTHESIS:
+                    parenthesis_stack.append(lexes[self.token_pointer].token_type)
+                if lexes[self.token_pointer].token_type == TokenType.CLOSINGPARENTHESIS:
+                    parenthesis_stack.pop()
 
                 if_condition += lexes[self.token_pointer].match
 
-            if paranthesis_stack:
-                raise SyntaxError("paranthesis error", lexes[self.token_pointer])
+            if parenthesis_stack:
+                raise SyntaxError("parenthesis error", lexes[self.token_pointer])
 
             return if_condition
         else:
