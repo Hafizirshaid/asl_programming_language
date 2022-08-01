@@ -77,14 +77,8 @@ class ExpressionEvaluatorUnitTest(unittest.TestCase):
         self.assertEqual(result, 10 == 10)
 
     def test_expression_evaluator_16(self):
-        try:
-            result = Evaluator().evaluate(" == ")
-            self.fail("Failed due to operator only not handled")
-        except Exception as e:
-            if not isinstance(e, ExpressionEvaluationError):
-                self.fail("Didnt throw ExpressionEvaluationError")
-            pass
-        self.assertEqual(result, 10 == 10)
+        evaluator = Evaluator()
+        self.assertRaises(ExpressionEvaluationError, evaluator.evaluate, "1 == ")
 
     def tearDown(self):
         super(ExpressionEvaluatorUnitTest, self).tearDown()
