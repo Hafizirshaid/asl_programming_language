@@ -281,8 +281,8 @@ class Lexer(object):
             {'type': TokenType.COMMENT, 'regex': '(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)'},
 
             # KeyWords:
-            {'type': TokenType.CALL, 'regex': '^call'},
-            {'type': TokenType.METHOD, 'regex': '^method'},
+            {'type': TokenType.CALL, 'regex': '^call\s'},
+            {'type': TokenType.METHOD, 'regex': '^method\s'},
             {'type': TokenType.ELIF, 'regex': '^elif'},
             {'type': TokenType.IF, 'regex': '^if'},
             {'type': TokenType.ELSE, 'regex': '^else'},
@@ -290,15 +290,15 @@ class Lexer(object):
             {'type': TokenType.FI, 'regex': '^endif'},
             {'type': TokenType.ENDFOR, 'regex': '^endfor'},
             {'type': TokenType.ENDWHILE, 'regex': '^endwhile'},
-            {'type': TokenType.BREAK, 'regex': '^break'},
-            {'type': TokenType.CONTINUE, 'regex': '^continue'},
+            {'type': TokenType.BREAK, 'regex': '^break\n'},
+            {'type': TokenType.CONTINUE, 'regex': '^continue\n'},
             {'type': TokenType.FOR, 'regex': '^for'},
             {'type': TokenType.WHILE, 'regex': '^while'},
             {'type': TokenType.STRUCT, 'regex': '^struct'},
             {'type': TokenType.ENDSTRUCT, 'regex': '^endstruct'},
             {'type': TokenType.ECHO, 'regex': '^echo'},
-            {'type': TokenType.PRINT, 'regex': '^print'},
-            {'type': TokenType.INPUT, 'regex': '^input'},
+            {'type': TokenType.PRINT, 'regex': '^print\s'},
+            {'type': TokenType.INPUT, 'regex': '^input\s'},
             {'type': TokenType.RETURN, 'regex': '^return'},
             {'type': TokenType.TRUE, 'regex': '^true'},
             {'type': TokenType.FALSE, 'regex': '^false'},
@@ -346,7 +346,7 @@ class Lexer(object):
             {'type': TokenType.OPENSQUAREBRACKET, 'regex': '^\['},
             {'type': TokenType.CLOSESQUAREBRACKET, 'regex': '^\]'},
 
-            # SemiColon
+            # Semicolon
             {'type': TokenType.SEMICOLON, 'regex': "^;"},
 
             {'type': TokenType.NEWLINE, 'regex': '^\n'},
@@ -417,4 +417,3 @@ class Lexer(object):
                     raise SyntaxError(f"Syntax Error at line {line_number} \n {text}")
 
         return tokens
-

@@ -184,10 +184,6 @@ class EnhancedParser(Parser):
             variable
         """
 
-        var_name = ""
-        var_op = ""
-        var_val = ""
-
         # Empty Statement
         if lexes[self.token_pointer].token_type == TokenType.SEMICOLON:
             return None
@@ -200,7 +196,7 @@ class EnhancedParser(Parser):
             if self.check_token_type_in_list(lexes, self.valid_assignment_operation, TokenType.SEMICOLON):
                 var_op = lexes[self.token_pointer].token_type
                 self.increment_token_pointer()
-
+                var_val = ""
                 # Get variable expression.
                 while lexes[self.token_pointer].token_type != TokenType.SEMICOLON:
 
@@ -407,7 +403,7 @@ class EnhancedParser(Parser):
             lexes: list of lexes
 
         Returns:
-            list of statements
+            condition between parenthesis as string
         """
 
         parenthesis_stack = []

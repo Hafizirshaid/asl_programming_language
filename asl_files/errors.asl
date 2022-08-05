@@ -4,7 +4,7 @@ z = 0
 w = 1
 x += 20 + w
 
-print("x = {x} y = {y} z = {z} w = {w}")
+print ("x = {x} y = {y} z = {z} w = {w}")
 for (i = (x * y) / 2; i < 10; i += (x + z) + 1)
 //for (i = (x * y) / 2; i < 10; i += 1)
     echo ("hello {i}")

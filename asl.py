@@ -55,6 +55,7 @@ Classes Description:
 import argparse
 
 from compiler import Compiler
+from enhanced_lexer import EnhancedLexer
 from enhanced_parser import EnhancedParser
 from executor import Executor
 from instructions_generator import InstructionsGenerator
@@ -76,7 +77,7 @@ def main():
     # Argument identifier: --filename or -f
     # File name that contains source code to be executed.
     args_parser.add_argument('-f', '--filename',
-                        default='asl_files/fibonacci.asl',
+                        default='asl_files/strings.asl',
                         help='source file name',
                         nargs=argparse.OPTIONAL,
                         )
@@ -96,7 +97,7 @@ def main():
             text += line
 
     # Tokenize Text file into list of meaningful tokens
-    lexer = Lexer()
+    lexer = EnhancedLexer()
     tokens = lexer.tokenize_text(text)
 
     # Parses list of tokens into list of statements
