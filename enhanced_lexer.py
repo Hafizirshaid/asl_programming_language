@@ -2,7 +2,7 @@
 
 """
 
-Lexer Library
+Enhanced Lexer Library
 
 Converts code texts into meaningful lexemes to tokens:
 
@@ -27,15 +27,38 @@ class EnhancedLexer(Lexer):
     def __init__(self) -> None:
         """ init Lexer Class """
         super().__init__()
+        self.alphabets = "abcdefghijklmnopqrstuvwxyz"
+        self.caps_alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        self.numeric = "1234567890"
 
+
+    def is_numeric(self, char):
+        """ Check if value is a numerical value
+        Args:
+            char:  Character to be checked
+        Returns:
+            True:  if char is a numerical value
+            False: if char is not a numerical value
+        """
+        return char in self.numeric
+
+    def is_alpha(self, char):
+        """ Check if value is an alphabetical value
+        Args:
+            char:  Character to be checked
+        Returns:
+            True:  if char is an alphabetical value
+            False: if char is not an alphabetical value
+        """
+        return char in self.alphabets or char in self.caps_alphabets
 
     def tokenize_text(self, text: str, keep_unknown=False, keep_spaces=False, ignore_new_lines=True) -> list:
-        """ Tokenize source file text
+        """ Tokenize source file text into meaningful tokens
         Args:
-            text: text file string
+            text:         text file string
             keep_unknown: weather to keep an unknown token or not, a token that
                           doesn't have a type in regex_list
-            keep_spaces: weather white spaces should be added to list of tokens or not
+            keep_spaces:  weather white spaces should be added to list of tokens or not
 
         Returns:
             list of meaningful tokens
@@ -43,34 +66,37 @@ class EnhancedLexer(Lexer):
 
         idx = 0
         tokens = []
-        alphabets = "abcdefghijklmnopqrstuvwxyz"
-        caps_alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        numeric = "1234567890"
         line_number = 1
 
         while idx < len(text):
             current_char = text[idx]
-            if current_char in numeric:
+
+            # Numerical value
+            if self.is_numeric(current_char):
                 number = current_char
                 idx += 1
-                while (idx < len(text) and (text[idx] in numeric or text[idx] == '.')):
+                while (idx < len(text) and (self.is_numeric(text[idx]) or text[idx] == '.')):
                     number += text[idx]
                     idx += 1
                 idx -= 1
+                # Real number contains dot.
                 if '.' in number:
                     tokens.append(Token(TokenType.REAL, number, line_number))
                 else:
                     tokens.append(Token(TokenType.NUMBER, number, line_number))
-            elif current_char in alphabets or current_char in caps_alphabets:
+            # Alphabetical value
+            elif self.is_alpha(current_char):
                 identifier = text[idx]
                 idx += 1
-                while (idx < len(text) and (text[idx] in alphabets
-                        or text[idx] in caps_alphabets
-                        or text[idx] in numeric
+                # Identifier might contain letters, numbers or underscore.
+                while (idx < len(text) and (self.is_alpha(text[idx])
+                        or self.is_numeric(text[idx])
                         or text[idx] == '_')):
                     identifier += text[idx]
                     idx += 1
                 idx -= 1
+
+                # check if the found identifier is a keyword
                 if identifier == 'call':
                     tokens.append(Token(TokenType.CALL, identifier, line_number))
                 elif identifier == 'method':
@@ -115,85 +141,122 @@ class EnhancedLexer(Lexer):
                     tokens.append(Token(TokenType.FALSE, identifier, line_number))
                 else:
                     tokens.append(Token(TokenType.IDENTIFICATION, identifier, line_number))
+            # Space
             elif current_char == ' ':
                 if keep_spaces:
                     tokens.append(Token(TokenType.SPACE, current_char, line_number))
+            # New line
             elif current_char == '\n':
                 line_number += 1
                 if not ignore_new_lines:
                     tokens.append(Token(TokenType.NEWLINE, current_char, line_number))
+            # Equal
             elif current_char == '=':
-                if text[idx + 1] == '=':
+                # Equivalent
+                if idx < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.EQUIVALENT, "==", line_number))
                     idx += 1
                 else:
                     tokens.append(Token(TokenType.EQUAL, current_char, line_number))
+            # Greater than
             elif current_char == '>':
-                if text[idx + 1] == '=':
+                # Greater than or equal
+                if idx < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.GRATERTHANOREQUAL, ">=", line_number))
                     idx += 1
                 else:
                     tokens.append(Token(TokenType.GRATERTHAN, current_char, line_number))
                     idx += 1
+            # Less than
             elif current_char == '<':
-                if text[idx + 1] == '=':
+                # Less than or equal
+                if idx < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.LESSTHANOREQUAL, "<=", line_number))
                     idx += 1
                 else:
                     tokens.append(Token(TokenType.LESSTHAN, current_char, line_number))
+            # Plus
             elif current_char == '+':
-                if text[idx + 1] == '=':
+                # Plus Equal
+                if idx < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.PLUSEQUAL, "+=", line_number))
                     idx += 1
                 else:
                     tokens.append(Token(TokenType.ADD, current_char, line_number))
+            # Minus
             elif current_char == '-':
-                if text[idx + 1] == '=':
+                # Minus Equal
+                if idx < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.SUBEQUAL, "-=", line_number))
                     idx += 1
                 else:
                     tokens.append(Token(TokenType.SUB, current_char, line_number))
+            # Multiply
             elif current_char == '*':
-                if text[idx + 1] == '=':
+                # Multiply Equal
+                if idx < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.MULTEQUAL, "*=", line_number))
                     idx += 1
                 else:
                     tokens.append(Token(TokenType.MULT, current_char, line_number))
+            # Division
             elif current_char == '/':
-                if text[idx + 1] == '=':
+                # Division Equal
+                if idx < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.DIVEQUAL, "/=", line_number))
                     idx += 1
-                elif text[idx + 1] == '/':
+                # Comment
+                elif idx < len(text) and text[idx + 1] == '/':
                     # handle comment
                     idx += 1
                     while (idx < len(text) and text[idx] != '\n'):
                         idx += 1
                     pass
                     tokens.append(Token(TokenType.COMMENT, "", line_number))
+                elif idx < len(text) and text[idx + 1] == '*':
+                    # multi line comment
+                    idx += 2
+                    while (idx < len(text) and text[idx] != '*' and text[idx + 1] != '/'):
+                        idx += 1
+                    idx += 2
+                    tokens.append(Token(TokenType.COMMENT, "", line_number))
                 else:
+                    # Division
                     tokens.append(Token(TokenType.DIV, current_char, line_number))
+            # Modulus
             elif current_char == '%':
                 tokens.append(Token(TokenType.MOD, current_char, line_number))
+            # And
             elif current_char == '&':
                 tokens.append(Token(TokenType.AND, current_char, line_number))
+            # Or
             elif current_char == '|':
                 tokens.append(Token(TokenType.OR, current_char, line_number))
+            # Not
             elif current_char == '!':
                 tokens.append(Token(TokenType.NOT, current_char, line_number))
+            # Left Bracket
             elif current_char == '}':
-                tokens.append(Token(TokenType.LEFTBRAKET, current_char, line_number))
+                tokens.append(Token(TokenType.LEFTBRACKET, current_char, line_number))
+            # Right Bracket
             elif current_char == '{':
                 tokens.append(Token(TokenType.RIGHTBRAKET, current_char, line_number))
+            # Open Parenthesis
             elif current_char == '(':
                 tokens.append(Token(TokenType.OPENPARENTHESIS, current_char, line_number))
+            # Close Parenthesis
             elif current_char == ')':
                 tokens.append(Token(TokenType.CLOSINGPARENTHESIS, current_char, line_number))
+            # Open Square Parenthesis
             elif current_char == '[':
                 tokens.append(Token(TokenType.OPENSQUAREBRACKET, current_char, line_number))
+            # Close Square Parenthesis
             elif current_char == ']':
                 tokens.append(Token(TokenType.CLOSESQUAREBRACKET, current_char, line_number))
+            # Semicolon
             elif current_char == ';':
                 tokens.append(Token(TokenType.SEMICOLON, current_char, line_number))
+            # String value
             elif current_char == '"':
                 string_value = '"'
                 idx += 1
@@ -202,16 +265,17 @@ class EnhancedLexer(Lexer):
                     idx += 1
                 string_value += '"'
                 tokens.append(Token(TokenType.STRING, string_value, line_number))
+            # Dot
             elif current_char == '.':
                 tokens.append(Token(TokenType.DOT, ".", line_number))
+            # Comma
             elif current_char == ',':
                 tokens.append(Token(TokenType.COMMA, ",", line_number))
+            # Unknown chat
             else:
                 if keep_unknown:
                     tokens.append(Token(TokenType.UNKNOWN, "", line_number))
                 else:
-                    raise SyntaxError(f"Syntax Error at line {line_number} \n {current_char}")
+                    raise SyntaxError(f"Syntax Error index: {idx} at line: {line_number} char:\n {current_char}")
             idx += 1
         return tokens
-
-    pass

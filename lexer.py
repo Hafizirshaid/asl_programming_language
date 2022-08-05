@@ -213,7 +213,7 @@ class TokenType(Enum):
     CONDITION = 46
     SEMICOLON = 47
     PRINT = 48
-    LEFTBRAKET = 49
+    LEFTBRACKET = 49
     RIGHTBRAKET = 50
     COMMA = 51
     ENDMETHOD = 52
@@ -259,6 +259,10 @@ class Token:
     def __str__(self) -> str:
         return f"{self.line_number} {self.token_type} {self.match}"
 
+    def __eq__(self, __o: object) -> bool:
+        return (self.token_type == __o.token_type 
+                and self.match == __o.match 
+                and self.line_number == __o.line_number )
 
 class Lexer(object):
     """ Lexer Class
@@ -339,7 +343,7 @@ class Lexer(object):
             {'type': TokenType.NOT, 'regex': '^!'},
 
             #brackets and parenthesis
-            {'type': TokenType.LEFTBRAKET, 'regex': '^}'},
+            {'type': TokenType.LEFTBRACKET, 'regex': '^}'},
             {'type': TokenType.RIGHTBRAKET, 'regex': '^{'},
             {'type': TokenType.OPENPARENTHESIS, 'regex': '^\('},
             {'type': TokenType.CLOSINGPARENTHESIS, 'regex': '^\)'},

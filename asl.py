@@ -77,7 +77,7 @@ def main():
     # Argument identifier: --filename or -f
     # File name that contains source code to be executed.
     args_parser.add_argument('-f', '--filename',
-                        default='asl_files/strings.asl',
+                        default='asl_files/syntax_error.asl',
                         help='source file name',
                         nargs=argparse.OPTIONAL,
                         )

@@ -1,6 +1,7 @@
 
 # Assignment Operators
 from contextvars import Token
+from enhanced_lexer import EnhancedLexer
 from lexer import Lexer, TokenType
 
 
@@ -35,25 +36,36 @@ code = ""
 with open(file_name) as file:
     for line in file:
         code += line
-tokens_2 = Lexer().tokenize_text_2(code)
-for i in tokens_2:
+
+code = """
+// one line comment
+var = 1
+/* multiline 
+comment
+*/
+var2 = 2
+"""
+
+actual_tokens = EnhancedLexer().tokenize_text(code)
+tokens_2 = Lexer().tokenize_text(code)
+for i in actual_tokens:
     print(f"Token({i.token_type}, '{i.match}', {i.line_number}),")
 
-expected_tokens = [Token(TokenType.IDENTIFICATION, 'print_value', 1),
-      Token(TokenType.EQUAL, '=', 1),
-      Token(TokenType.NUMBER, '1', 1),
-      Token(TokenType.IDENTIFICATION, 'if_cond', 1),
-      Token(TokenType.EQUAL, '=', 1),
-      Token(TokenType.NUMBER, '2', 1),
-      Token(TokenType.IDENTIFICATION, 'else_cond', 1),
-      Token(TokenType.EQUAL, '=', 1),
-      Token(TokenType.NUMBER, '3', 1),
-      Token(TokenType.IDENTIFICATION, 'echo_var', 1),
-      Token(TokenType.EQUAL, '=', 1),
-      Token(TokenType.NUMBER, '333', 1),
-      Token(TokenType.IDENTIFICATION, 'elif_cond', 1),
-      Token(TokenType.EQUAL, '=', 1),
-      Token(TokenType.NUMBER, '22', 1),
-      Token(TokenType.IDENTIFICATION, 'fi_cond', 1),
-      Token(TokenType.EQUAL, '=', 1),
-      Token(TokenType.NUMBER, '22', 1)]
+# expected_tokens = [Token(TokenType.IDENTIFICATION, 'print_value', 1),
+#       Token(TokenType.EQUAL, '=', 1),
+#       Token(TokenType.NUMBER, '1', 1),
+#       Token(TokenType.IDENTIFICATION, 'if_cond', 1),
+#       Token(TokenType.EQUAL, '=', 1),
+#       Token(TokenType.NUMBER, '2', 1),
+#       Token(TokenType.IDENTIFICATION, 'else_cond', 1),
+#       Token(TokenType.EQUAL, '=', 1),
+#       Token(TokenType.NUMBER, '3', 1),
+#       Token(TokenType.IDENTIFICATION, 'echo_var', 1),
+#       Token(TokenType.EQUAL, '=', 1),
+#       Token(TokenType.NUMBER, '333', 1),
+#       Token(TokenType.IDENTIFICATION, 'elif_cond', 1),
+#       Token(TokenType.EQUAL, '=', 1),
+#       Token(TokenType.NUMBER, '22', 1),
+#       Token(TokenType.IDENTIFICATION, 'fi_cond', 1),
+#       Token(TokenType.EQUAL, '=', 1),
+#       Token(TokenType.NUMBER, '22', 1)]
