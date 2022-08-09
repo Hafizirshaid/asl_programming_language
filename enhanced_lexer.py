@@ -11,6 +11,7 @@ Example:
 """
 
 from lexer import Lexer, Token, TokenType
+from exceptions.language_exception import SyntaxError
 
 
 class EnhancedLexer(Lexer):

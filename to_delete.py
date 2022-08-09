@@ -2,30 +2,30 @@
 from io import StringIO
 import sys
 
-old_stdout = sys.stdout
-old_stdin = sys.stdin
+# old_stdout = sys.stdout
+# old_stdin = sys.stdin
 
-new_stdout = StringIO()
-sys.stdout = new_stdout
-sys.stdin = StringIO("qw\n12\n13\n14")
+# new_stdout = StringIO()
+# sys.stdout = new_stdout
+# sys.stdin = StringIO("qw\n12\n13\n14")
 
-x = input()
-y = input()
-z = input()
-w = input()
+# x = input()
+# y = input()
+# z = input()
+# w = input()
 
-print("hello this is hafiz")
+# print("hello this is hafiz")
 
-sys.stdout = old_stdout
+# sys.stdout = old_stdout
 
-print(new_stdout.getvalue())
-print(x)
-print(y)
-print(z)
-print(w)
+# print(new_stdout.getvalue())
+# print(x)
+# print(y)
+# print(z)
+# print(w)
 
 
-exit(0)
+
 # Assignment Operators
 from contextvars import Token
 from enhanced_lexer import EnhancedLexer
@@ -63,15 +63,12 @@ code = ""
 with open(file_name) as file:
     for line in file:
         code += line
-
+#code = """test_lexer_true_false"""
 code = """
-// one line comment
-var = 1
-/* multiline 
-comment
-*/
-var2 = 2
-"""
+        {
+
+        }
+        """
 
 actual_tokens = EnhancedLexer().tokenize_text(code)
 tokens_2 = Lexer().tokenize_text(code)

@@ -11,6 +11,7 @@ import unittest
 from enhanced_lexer import EnhancedLexer
 
 from lexer import Lexer, Token, TokenType
+from exceptions.language_exception import SyntaxError
 
 
 class LexerUnitTest(unittest.TestCase):
@@ -85,6 +86,7 @@ endfor
                  'asl_files/strings.asl',
                  'asl_files/variable.asl',
                  'asl_files/while_for.asl',
+                 'asl_files/swap_variables.asl',
                  'asl_files/while_loop.asl']
 
         for file_name in files:
@@ -362,7 +364,142 @@ endfor
 
         self.assertEqual(actual_tokens, expected_tokens)
 
+    def test_lexer_true_false(self):
+        """test_lexer_true_false"""
+        code = """
+x = true
+y = false
+        """
+        actual_tokens = EnhancedLexer().tokenize_text(code)
+        expected_tokens = [Token(TokenType.IDENTIFICATION, 'x', 2),
+                           Token(TokenType.EQUAL, '=', 2),
+                           Token(TokenType.TRUE, 'true', 2),
+                           Token(TokenType.IDENTIFICATION, 'y', 3),
+                           Token(TokenType.EQUAL, '=', 3),
+                           Token(TokenType.FALSE, 'false', 3)]
+
+        self.assertEqual(actual_tokens, expected_tokens)
+        pass
+
+    def test_lexer_keeps_spaces_and_ignore_lines(self):
+        """test_lexer_true_false"""
+        code = """
+echo "hello, world"
+"""
+        actual_tokens = EnhancedLexer().tokenize_text(
+            code, keep_spaces=True, ignore_new_lines=False)
+        expected_tokens = [Token(TokenType.NEWLINE, '\n', 2),
+                           Token(TokenType.ECHO, 'echo', 2),
+                           Token(TokenType.SPACE, ' ', 2),
+                           Token(TokenType.STRING, '"hello, world"', 2),
+                           Token(TokenType.NEWLINE, '\n', 3)]
+
+        self.assertEqual(actual_tokens, expected_tokens)
+        pass
+
+    def test_unknown_chars_raises_exception(self):
+
+        code = """
+$
+#
+        """
+
+        with self.assertRaises(SyntaxError):
+            EnhancedLexer().tokenize_text(code)
+
+    def test_unknown_chars(self):
+
+        code = """
+$
+#
+        """
+        expected_tokens = [Token(TokenType.UNKNOWN, '', 2),
+                           Token(TokenType.UNKNOWN, '', 3)]
+
+        actual_tokens = EnhancedLexer().tokenize_text(code, keep_unknown=True)
+
+        self.assertEqual(actual_tokens, expected_tokens)
+
     # TODO For each token type, create test case for it.
+
+    def test_minus_equal(self):
+        code = """
+x = 10
+y -= 2
+echo "{y}"
+        """
+
+        expected_tokens = [Token(TokenType.IDENTIFICATION, 'x', 2),
+                           Token(TokenType.EQUAL, '=', 2),
+                           Token(TokenType.NUMBER, '10', 2),
+                           Token(TokenType.IDENTIFICATION, 'y', 3),
+                           Token(TokenType.SUBEQUAL, '-=', 3),
+                           Token(TokenType.NUMBER, '2', 3),
+                           Token(TokenType.ECHO, 'echo', 4),
+                           Token(TokenType.STRING, '"{y}"', 4)]
+        actual_tokens = EnhancedLexer().tokenize_text(code)
+
+        self.assertEqual(expected_tokens, actual_tokens)
+        pass
+
+    def test_multiply_equal(self):
+        code = """
+x = 10
+y *= 2
+echo "{y}"
+        """
+
+        expected_tokens = [Token(TokenType.IDENTIFICATION, 'x', 2),
+                           Token(TokenType.EQUAL, '=', 2),
+                           Token(TokenType.NUMBER, '10', 2),
+                           Token(TokenType.IDENTIFICATION, 'y', 3),
+                           Token(TokenType.MULTEQUAL, '*=', 3),
+                           Token(TokenType.NUMBER, '2', 3),
+                           Token(TokenType.ECHO, 'echo', 4),
+                           Token(TokenType.STRING, '"{y}"', 4)]
+        actual_tokens = EnhancedLexer().tokenize_text(code)
+
+        self.assertEqual(expected_tokens, actual_tokens)
+        pass
+
+    def test_div_equal(self):
+        code = """
+x = 10
+y /= 2
+echo "{y}"
+        """
+
+        expected_tokens = [Token(TokenType.IDENTIFICATION, 'x', 2),
+                           Token(TokenType.EQUAL, '=', 2),
+                           Token(TokenType.NUMBER, '10', 2),
+                           Token(TokenType.IDENTIFICATION, 'y', 3),
+                           Token(TokenType.DIVEQUAL, '/=', 3),
+                           Token(TokenType.NUMBER, '2', 3),
+                           Token(TokenType.ECHO, 'echo', 4),
+                           Token(TokenType.STRING, '"{y}"', 4)]
+        actual_tokens = EnhancedLexer().tokenize_text(code)
+
+        self.assertEqual(expected_tokens, actual_tokens)
+        pass
+
+    def test_curly_brackets(self):
+        code = """
+        {
+
+        }
+        """
+        expected_tokens = [Token(TokenType.RIGHTBRAKET, '{', 2),
+                           Token(TokenType.LEFTBRACKET, '}', 4)]
+        actual_tokens = EnhancedLexer().tokenize_text(code)
+
+        self.assertEqual(expected_tokens, actual_tokens)
+
+    def test_not(self):
+        code = "!"
+        expected_tokens = [Token(TokenType.NOT, '!', 1)]
+        actual_tokens = EnhancedLexer().tokenize_text(code)
+
+        self.assertEqual(expected_tokens, actual_tokens)
 
     def tearDown(self):
         """tearDown"""
@@ -371,4 +508,3 @@ endfor
 
 if __name__ == '__main__':
     unittest.main()
-

@@ -71,7 +71,7 @@ def main():
     # Argument identifier: --filename or -f
     # File name that contains source code to be executed.
     args_parser.add_argument('-f', '--filename',
-                        default='asl_files/arrays.asl',
+                        default='asl_files/swap_variables.asl',
                         help='source file name',
                         nargs=argparse.OPTIONAL,
                         )
