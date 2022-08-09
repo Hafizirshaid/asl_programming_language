@@ -1,6 +1,16 @@
+# Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+
+"""
+
+Instructions Generator Unit Test
+
+"""
+
 import unittest
 
+
 class InstructionsGeneratorUnitTest(unittest.TestCase):
+
     def setUp(self):
         super(InstructionsGeneratorUnitTest, self).setUp()
 

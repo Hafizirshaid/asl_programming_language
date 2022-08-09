@@ -50,6 +50,7 @@ class VariableType(Enum):
     NUMERIC = 0
     STRING = 1
     STRUCT = 2
+    ARRAY = 3
 
 
 class Variable(Statement):

@@ -53,13 +53,7 @@ Classes Description:
 """
 
 import argparse
-
-from compiler import Compiler
-from enhanced_lexer import EnhancedLexer
-from enhanced_parser import EnhancedParser
-from executor import Executor
-from instructions_generator import InstructionsGenerator
-from lexer import Lexer
+from asl_runner import AslRunner
 
 
 def main():
@@ -72,12 +66,12 @@ def main():
     """
 
     # Parse program argument
-    args_parser = argparse.ArgumentParser("My Programming Language Command Line version 1.0")
+    args_parser = argparse.ArgumentParser("Asl Programming Language Command Line version 1.0")
 
     # Argument identifier: --filename or -f
     # File name that contains source code to be executed.
     args_parser.add_argument('-f', '--filename',
-                        default='asl_files/syntax_error.asl',
+                        default='asl_files/arrays.asl',
                         help='source file name',
                         nargs=argparse.OPTIONAL,
                         )
@@ -91,30 +85,12 @@ def main():
         raise Exception(f"file {filename} does not exist")
 
     # Read Text File and store in text string
-    text = ""
+    code = ""
     with open(filename) as file:
         for line in file:
-            text += line
+            code += line
 
-    # Tokenize Text file into list of meaningful tokens
-    lexer = EnhancedLexer()
-    tokens = lexer.tokenize_text(text)
-
-    # Parses list of tokens into list of statements
-    parser = EnhancedParser()
-    statements = parser.parse(tokens)
-
-    # Compiles list of statements into execution tree
-    compiler = Compiler()
-    execution_tree = compiler.compile(statements)
-
-    # Generates Instructions list
-    generator = InstructionsGenerator()
-    instructions = generator.generate_instructions(execution_tree)
-
-    # Executes Instructions list into meaningful program
-    executor = Executor()
-    executor.execute(instructions, execution_tree)
+    AslRunner().run(code)
 
 
 if __name__ == "__main__":

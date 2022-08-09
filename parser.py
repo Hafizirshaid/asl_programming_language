@@ -54,7 +54,6 @@ End For Loop
 """
 
 from lexer import TokenType
-from statements import statement
 from statements.statement import *
 
 
@@ -71,7 +70,6 @@ class Parser:
     def __init__(self) -> None:
         """ Parser Class Constructor """
         self.token_pointer = 0
-        pass
 
     def increment_token_pointer(self):
         self.token_pointer += 1

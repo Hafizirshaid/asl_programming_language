@@ -188,9 +188,9 @@ class TokenType(Enum):
     EQUIVALENT = 21
     EQUAL = 22
     NOTEQUIVALENT = 23
-    GRATERTHANOREQUAL = 24
+    GREATERTHANOREQUAL = 24
     LESSTHANOREQUAL = 25
-    GRATERTHAN = 26
+    GREATERTHAN = 26
     LESSTHAN = 27
     ADD = 28
     SUB = 29
@@ -260,8 +260,8 @@ class Token:
         return f"{self.line_number} {self.token_type} {self.match}"
 
     def __eq__(self, __o: object) -> bool:
-        return (self.token_type == __o.token_type 
-                and self.match == __o.match 
+        return (self.token_type == __o.token_type
+                and self.match == __o.match
                 and self.line_number == __o.line_number )
 
 class Lexer(object):
@@ -285,8 +285,8 @@ class Lexer(object):
             {'type': TokenType.COMMENT, 'regex': '(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)'},
 
             # KeyWords:
-            {'type': TokenType.CALL, 'regex': '^call\s'},
-            {'type': TokenType.METHOD, 'regex': '^method\s'},
+            {'type': TokenType.CALL, 'regex': '^call'},
+            {'type': TokenType.METHOD, 'regex': '^method'},
             {'type': TokenType.ELIF, 'regex': '^elif'},
             {'type': TokenType.IF, 'regex': '^if'},
             {'type': TokenType.ELSE, 'regex': '^else'},
@@ -301,8 +301,8 @@ class Lexer(object):
             {'type': TokenType.STRUCT, 'regex': '^struct'},
             {'type': TokenType.ENDSTRUCT, 'regex': '^endstruct'},
             {'type': TokenType.ECHO, 'regex': '^echo'},
-            {'type': TokenType.PRINT, 'regex': '^print\s'},
-            {'type': TokenType.INPUT, 'regex': '^input\s'},
+            {'type': TokenType.PRINT, 'regex': '^print'},
+            {'type': TokenType.INPUT, 'regex': '^input'},
             {'type': TokenType.RETURN, 'regex': '^return'},
             {'type': TokenType.TRUE, 'regex': '^true'},
             {'type': TokenType.FALSE, 'regex': '^false'},
@@ -325,9 +325,9 @@ class Lexer(object):
 
             # Logical Compare Operators
             {'type': TokenType.NOTEQUIVALENT, 'regex': '^!='},
-            {'type': TokenType.GRATERTHANOREQUAL, 'regex': '^>='},
+            {'type': TokenType.GREATERTHANOREQUAL, 'regex': '^>='},
             {'type': TokenType.LESSTHANOREQUAL, 'regex': '^<='},
-            {'type': TokenType.GRATERTHAN, 'regex': '^>'},
+            {'type': TokenType.GREATERTHAN, 'regex': '^>'},
             {'type': TokenType.LESSTHAN, 'regex': '^<'},
 
             # Mathematical Operators

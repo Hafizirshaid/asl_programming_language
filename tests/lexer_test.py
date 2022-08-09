@@ -1,18 +1,29 @@
+# Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+
+"""
+
+Lexer Unit Testing
+
+"""
+
 import unittest
 
-from numpy import true_divide
 from enhanced_lexer import EnhancedLexer
-from exceptions.language_exception import ExpressionEvaluationError
-from expression_evaluator import Evaluator
 
 from lexer import Lexer, Token, TokenType
 
 
 class LexerUnitTest(unittest.TestCase):
+    """ Lexer Unit Test Class """
+
     def setUp(self):
+        """ Unit Test Setup """
         super(LexerUnitTest, self).setUp()
 
-    def test_lexer2(self):
+    def test_lexer_if_and_for_loop(self):
+        """
+        Test case for the following code. it calculates grades rank based on grade
+        """
 
         code = """
 echo "Calculate Grades rank between 0 to 100"
@@ -36,11 +47,12 @@ for (grade = 0; grade <= 100; grade = grade + 1)
 endfor
         """
 
-        tokens_2 = EnhancedLexer().tokenize_text(code)
-        tokens_1 = Lexer().tokenize_text(code)
+        enhanced_lexer_tokens = EnhancedLexer().tokenize_text(code)
+        old_lexer_tokens = Lexer().tokenize_text(code)
 
-        for i, val in enumerate(tokens_1):
-            if val.token_type != tokens_2[i].token_type:
+        # Both Enhanced and old lexer should generate same tokens
+        for i, val in enumerate(old_lexer_tokens):
+            if val.token_type != enhanced_lexer_tokens[i].token_type:
                 self.fail(f"failed at index {i}")
         pass
 
@@ -88,36 +100,41 @@ endfor
                     self.fail(f"failed at index {i} for file {file_name}")
 
     def test_new_lexer_4(self):
+        """
+        Test case to show the new enhancement that EnhancedLexer provides.
+        The old lexer doesn't recognize identifiers correctly if the identifier contains a keyword.
+        """
+
         file_name = 'asl_files/new_lexer.asl'
         code = ""
         with open(file_name) as file:
             for line in file:
                 code += line
-        tokens_2 = EnhancedLexer().tokenize_text(code)
+        enhanced_lexer_tokens = EnhancedLexer().tokenize_text(code)
 
         expected_tokens = [Token(TokenType.IDENTIFICATION, 'print_value', 1),
                            Token(TokenType.EQUAL, '=', 1),
                            Token(TokenType.NUMBER, '1', 1),
-                           Token(TokenType.IDENTIFICATION, 'if_cond', 1),
-                           Token(TokenType.EQUAL, '=', 1),
-                           Token(TokenType.NUMBER, '2', 1),
-                           Token(TokenType.IDENTIFICATION, 'else_cond', 1),
-                           Token(TokenType.EQUAL, '=', 1),
-                           Token(TokenType.NUMBER, '3', 1),
-                           Token(TokenType.IDENTIFICATION, 'echo_var', 1),
-                           Token(TokenType.EQUAL, '=', 1),
-                           Token(TokenType.NUMBER, '333', 1),
-                           Token(TokenType.IDENTIFICATION, 'elif_cond', 1),
-                           Token(TokenType.EQUAL, '=', 1),
-                           Token(TokenType.NUMBER, '22', 1),
-                           Token(TokenType.IDENTIFICATION, 'fi_cond', 1),
-                           Token(TokenType.EQUAL, '=', 1),
-                           Token(TokenType.NUMBER, '22', 1)]
+                           Token(TokenType.IDENTIFICATION, 'if_cond', 2),
+                           Token(TokenType.EQUAL, '=', 2),
+                           Token(TokenType.NUMBER, '2', 2),
+                           Token(TokenType.IDENTIFICATION, 'else_cond', 3),
+                           Token(TokenType.EQUAL, '=', 3),
+                           Token(TokenType.NUMBER, '3', 3),
+                           Token(TokenType.IDENTIFICATION, 'echo_var', 4),
+                           Token(TokenType.EQUAL, '=', 4),
+                           Token(TokenType.NUMBER, '333', 4),
+                           Token(TokenType.IDENTIFICATION, 'elif_cond', 5),
+                           Token(TokenType.EQUAL, '=', 5),
+                           Token(TokenType.NUMBER, '22', 5),
+                           Token(TokenType.IDENTIFICATION, 'fi_cond', 6),
+                           Token(TokenType.EQUAL, '=', 6),
+                           Token(TokenType.NUMBER, '22', 6)]
 
-        for i, tok in enumerate(expected_tokens):
-            self.assertEqual(tok.token_type, tokens_2[i].token_type)
+        self.assertEqual(enhanced_lexer_tokens, expected_tokens)
 
     def test_tokenize_while_loop(self):
+        """test_tokenize_while_loop"""
 
         code = """
         var = 1
@@ -150,6 +167,8 @@ endfor
         self.assertEqual(actual_tokens, expected_tokens)
 
     def test_tokenize_variable(self):
+        """test_tokenize_variable"""
+
         code = """
         x = 1
         y = 2
@@ -169,6 +188,8 @@ endfor
         self.assertEqual(actual_tokens, expected_tokens)
 
     def test_tokenize_if_statement(self):
+        """ test_tokenize_if_statement """
+
         code = """
         if (x == 10)
             echo ("x is 10")
@@ -182,6 +203,7 @@ endfor
         """
 
         actual_tokens = EnhancedLexer().tokenize_text(code)
+
         expected_tokens = [Token(TokenType.IF, 'if', 2),
                            Token(TokenType.OPENPARENTHESIS, '(', 2),
                            Token(TokenType.IDENTIFICATION, 'x', 2),
@@ -222,12 +244,14 @@ endfor
         self.assertEqual(actual_tokens, expected_tokens)
 
     def test_tokenize_for_loop(self):
+        """test_tokenize_for_loop"""
 
         code = """
         for(var = 1; var < 10; var += 1)
             echo "var is {var}"
         endfor
         """
+
         actual_tokens = EnhancedLexer().tokenize_text(code)
         expected_tokens = [Token(TokenType.FOR, 'for', 2),
                            Token(TokenType.OPENPARENTHESIS, '(', 2),
@@ -249,24 +273,32 @@ endfor
         self.assertEqual(actual_tokens, expected_tokens)
 
     def test_tokenize_numerical_value(self):
+        """test_tokenize_numerical_value"""
+
         code = "222.333"
         actual_tokens = EnhancedLexer().tokenize_text(code)
         expected_tokens = [Token(TokenType.REAL, "222.333", 1)]
         self.assertEqual(actual_tokens, expected_tokens)
 
     def test_tokenize_identifier(self):
+        """test_tokenize_identifier"""
+
         code = "variable_1"
         actual_tokens = EnhancedLexer().tokenize_text(code)
         expected_tokens = [Token(TokenType.IDENTIFICATION, "variable_1", 1)]
         self.assertEqual(actual_tokens, expected_tokens)
 
     def test_tokenize_string(self):
+        """test_tokenize_string"""
+
         code = '"hello, world!"'
         actual_tokens = EnhancedLexer().tokenize_text(code)
         expected_tokens = [Token(TokenType.STRING, '"hello, world!"', 1)]
         self.assertEqual(actual_tokens, expected_tokens)
 
     def test_tokenize_comment(self):
+        """test_tokenize_comment"""
+
         code = """
         // one line comment
         var = 1
@@ -290,6 +322,8 @@ endfor
         self.assertEqual(actual_tokens, expected_tokens)
 
     def test_tokenize_input(self):
+        """test_tokenize_input"""
+
         code = """
         value_1 = 0
         value_2 = 0
@@ -311,6 +345,8 @@ endfor
         self.assertEqual(actual_tokens, expected_tokens)
 
     def test_tokenize_echo(self):
+        """test_tokenize_echo"""
+
         code = """
 
         echo "hello, world!"
@@ -326,11 +362,13 @@ endfor
 
         self.assertEqual(actual_tokens, expected_tokens)
 
-    # TODO For each char, create test case for it.
+    # TODO For each token type, create test case for it.
 
     def tearDown(self):
+        """tearDown"""
         super(LexerUnitTest, self).tearDown()
 
 
 if __name__ == '__main__':
     unittest.main()
+

@@ -31,7 +31,6 @@ class EnhancedLexer(Lexer):
         self.caps_alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         self.numeric = "1234567890"
 
-
     def is_numeric(self, char):
         """ Check if value is a numerical value
         Args:
@@ -42,7 +41,7 @@ class EnhancedLexer(Lexer):
         """
         return char in self.numeric
 
-    def is_alpha(self, char):
+    def is_alphabetical(self, char):
         """ Check if value is an alphabetical value
         Args:
             char:  Character to be checked
@@ -85,11 +84,11 @@ class EnhancedLexer(Lexer):
                 else:
                     tokens.append(Token(TokenType.NUMBER, number, line_number))
             # Alphabetical value
-            elif self.is_alpha(current_char):
+            elif self.is_alphabetical(current_char):
                 identifier = text[idx]
                 idx += 1
                 # Identifier might contain letters, numbers or underscore.
-                while (idx < len(text) and (self.is_alpha(text[idx])
+                while (idx < len(text) and (self.is_alphabetical(text[idx])
                         or self.is_numeric(text[idx])
                         or text[idx] == '_')):
                     identifier += text[idx]
@@ -162,10 +161,10 @@ class EnhancedLexer(Lexer):
             elif current_char == '>':
                 # Greater than or equal
                 if idx < len(text) and text[idx + 1] == '=':
-                    tokens.append(Token(TokenType.GRATERTHANOREQUAL, ">=", line_number))
+                    tokens.append(Token(TokenType.GREATERTHANOREQUAL, ">=", line_number))
                     idx += 1
                 else:
-                    tokens.append(Token(TokenType.GRATERTHAN, current_char, line_number))
+                    tokens.append(Token(TokenType.GREATERTHAN, current_char, line_number))
                     idx += 1
             # Less than
             elif current_char == '<':

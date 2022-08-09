@@ -12,7 +12,7 @@ Convert list of tokens into statements and extract their attributes
 from parser import Parser
 
 from lexer import TokenType
-from statements.statement import ElseIf, For, If, Variable, While
+from statements.statement import ElseIf, For, If, Variable, VariableType, While
 from exceptions.language_exception import SyntaxError
 
 
@@ -276,35 +276,67 @@ class EnhancedParser(Parser):
 
             operation = lexes[self.token_pointer].token_type
             self.increment_token_pointer()
-            variable_value = ""
 
-            should_continue = True
-            first_token_type = None
+            if lexes[self.token_pointer].token_type == TokenType.OPENSQUAREBRACKET:
+                # Handle Array Here initialization
+                variable_value = []
+                self.increment_token_pointer()
 
-            while (should_continue):
+                while lexes[self.token_pointer].token_type != TokenType.CLOSESQUAREBRACKET:
+                    if (lexes[self.token_pointer].token_type == TokenType.NUMBER
+                        or lexes[self.token_pointer].token_type == TokenType.REAL
+                        or lexes[self.token_pointer].token_type == TokenType.STRING):
 
-                next_lex = lexes[self.token_pointer]
+                        variable_value.append(lexes[self.token_pointer].match)
 
-                if (next_lex.token_type == TokenType.IDENTIFICATION
+                    self.increment_token_pointer()
+
+                first_token_type = VariableType.ARRAY
+                pass
+            else:
+                first_token_type, variable_value = self.parse_variable_expression(lexes)
+                # Token pointer now points at next token outside variable scope,
+                # this has caused an error with next statement
+                self.token_pointer -= 1
+
+            variable_statement = Variable(variable_name, operation, variable_value, first_token_type)
+            statements.append(variable_statement)
+        elif lexes[self.token_pointer].token_type == TokenType.OPENSQUAREBRACKET:
+            # Array referencing here.
+            self.increment_token_pointer()
+
+            while lexes[self.token_pointer].token_type != TokenType.CLOSESQUAREBRACKET:
+                self.increment_token_pointer()
+            pass
+        else:
+            raise SyntaxError("Invalid operation ",
+                              lexes[self.token_pointer])
+
+    def parse_variable_expression(self, lexes):
+        should_continue = True
+        first_token_type = None
+        variable_value = ""
+
+        while (should_continue):
+            next_lex = lexes[self.token_pointer]
+
+            if (next_lex.token_type == TokenType.IDENTIFICATION
                     or next_lex.token_type == TokenType.NUMBER
                     or next_lex.token_type == TokenType.REAL
                     or next_lex.token_type == TokenType.STRING):
+                first_token_type = next_lex.token_type
+                variable_value += next_lex.match
 
-                    first_token_type = next_lex.token_type
-                    variable_value += next_lex.match
+                self.increment_token_pointer()
+            else:
+                raise SyntaxError("Invalid id or num ", lexes[self.token_pointer])
 
-                    self.increment_token_pointer()
-                    #next_lex = lexes[self.token_pointer]
-                else:
-                    raise SyntaxError("Invalid id or num ", lexes[self.token_pointer])
+            if not self.is_there_more_tokens(lexes):
+                break
+            else:
+                next_lex = lexes[self.token_pointer]
 
-                if not self.is_there_more_tokens(lexes):
-
-                    break
-                else:
-                    next_lex = lexes[self.token_pointer]
-
-                if (next_lex.token_type == TokenType.ADD
+            if (next_lex.token_type == TokenType.ADD
                     or next_lex.token_type == TokenType.SUB
                     or next_lex.token_type == TokenType.DIV
                     or next_lex.token_type == TokenType.MULT
@@ -312,46 +344,12 @@ class EnhancedParser(Parser):
                     or next_lex.token_type == TokenType.OR
                     or next_lex.token_type == TokenType.EQUIVALENT
                     or next_lex.token_type == TokenType.NOTEQUIVALENT):
-                    variable_value += next_lex.match
-                    self.increment_token_pointer()
+                variable_value += next_lex.match
+                self.increment_token_pointer()
 
-                else:
-                    break
-                    #self.increment_token_pointer()
-                    #next_lex = lexes[self.token_pointer]
-
-
-                # if (next_lex.token_type == TokenType.IDENTIFICATION
-                #     or next_lex.token_type == TokenType.NUMBER
-                #     or next_lex.token_type == TokenType.REAL
-                #     or next_lex.token_type in self.keywords
-                #     or next_lex.token_type in self.comments):
-                #     should_continue = False
-                #     # Found new statement
-                #     break
-
-                # if (next_lex.token_type == TokenType.ADD
-                #     or next_lex.token_type == TokenType.SUB
-                #     or next_lex.token_type == TokenType.DIV
-                #     or next_lex.token_type == TokenType.MULT
-                #     or next_lex.token_type == TokenType.AND
-                #     or next_lex.token_type == TokenType.OR
-                #     or next_lex.token_type == TokenType.EQUIVALENT
-                #     or next_lex.token_type == TokenType.NOTEQUIVALENT):
-
-
-                # else:
-                #     raise SyntaxError("Invalid id or num ", lexes[self.token_pointer])
-
-            # Token pointer now points at next token outside variable scope,
-            # this has caused an error with next statement
-            self.token_pointer -= 1
-
-            variable_statement = Variable(variable_name, operation, variable_value, first_token_type)
-            statements.append(variable_statement)
-        else:
-            raise SyntaxError("Invalid operation ",
-                              lexes[self.token_pointer])
+            else:
+                break
+        return first_token_type, variable_value
 
     def is_valid_variable_operation(self, operation: TokenType):
         """ is_valid_variable_operation

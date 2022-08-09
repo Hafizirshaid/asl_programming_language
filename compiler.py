@@ -12,6 +12,7 @@ from statements.statement import *
 from symbols.symbols_table import SymbolTable
 from exceptions.language_exception import *
 
+
 class ExecutionTree:
     """ Execution Tree Class
 
@@ -155,7 +156,7 @@ class Compiler(object):
         for statement in execution_tree.tree:
             if isinstance(statement, Variable):
                 # don't store values yet, symbol table should contain the values
-                # after executing the variable instruction
+                # after executing the variable instruction, not during compilation.
                 execution_tree.symbols_table.add_entry(statement.variable_name, "", statement.type)
                 statement.symbols_table = execution_tree.symbols_table
 

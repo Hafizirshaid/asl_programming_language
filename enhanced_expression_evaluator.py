@@ -1,13 +1,14 @@
 
 from expression_evaluator import Evaluator
 from lexer import Lexer, TokenType
-
+"""
+This class is not used.
+"""
 
 class EnhancedExpressionEvaluator(Evaluator):
 
     def __init__(self) -> None:
         super().__init__()
-
 
     def calculate2(self, value1, value2, operator):
         if self.is_numeric(value1) and self.is_numeric(value2):
@@ -37,7 +38,6 @@ class EnhancedExpressionEvaluator(Evaluator):
                 break
         result = ""
         if contains_string:
-            pass
             for token in tokens:
                 if not self._is_operator(token.token_type):
                     result += token.match.strip('"')
@@ -64,7 +64,6 @@ class EnhancedExpressionEvaluator(Evaluator):
                 operator = operators_stack.pop()
                 result = self.calculate2(value2, value1, operator)
                 values_stack.append(result)
-                pass
 
             elif not self._is_operator(token_type):
                 # token_type == TokenType.NUMBER
@@ -77,7 +76,6 @@ class EnhancedExpressionEvaluator(Evaluator):
                     values_stack[-1] = v
                 else:
                     values_stack.append((value))
-            pass
 
         while operators_stack:
             operator = operators_stack.pop()

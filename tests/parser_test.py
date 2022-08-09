@@ -1,3 +1,11 @@
+# Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+
+"""
+
+Parser Unit Test
+
+"""
+
 import unittest
 
 from enhanced_parser import EnhancedParser
@@ -12,9 +20,12 @@ class ParserUnitTest(unittest.TestCase):
     """
 
     def setUp(self):
+        """setUp"""
         super(ParserUnitTest, self).setUp()
 
     def test_parser_echo(self):
+        """test_parser_echo"""
+
         lexes = []
         statements = []
         lexes.append(Token(TokenType.ECHO, "\"echo\"", 0))
@@ -27,6 +38,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(statements[0].echo_string == '"hello"', "Invalid string")
 
     def test_parser_variable(self):
+        """test_parser_variable"""
+
         lexes = []
         statements = []
         lexes.append(Token(TokenType.IDENTIFICATION, "x", 0))
@@ -43,6 +56,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(statements[0].type == TokenType.NUMBER, "Invalid variable value type")
 
     def test_parser_variable_2(self):
+        """test_parser_variable_2"""
+
         lexes = []
         statements = []
         lexes.append(Token(TokenType.IDENTIFICATION, "y", 0))
@@ -61,6 +76,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(statements[0].type == TokenType.NUMBER, "Invalid variable value type")
 
     def test_check_token_type_in_list(self):
+        """test_check_token_type_in_list"""
+
         # lexes = []
         # lexes.append(Token(TokenType.IDENTIFICATION, "y", 0))
         # lexes.append(Token(TokenType.EQUAL, "=", 0))
@@ -73,7 +90,10 @@ class ParserUnitTest(unittest.TestCase):
 
         # self.assertTrue(result, "invalid return type")
         pass
+
     def test_is_there_more_tokens(self):
+        """test_check_token_type_in_list"""
+
         # lexes = []
         # lexes.append(Token(TokenType.IDENTIFICATION, "y", 0))
         # lexes.append(Token(TokenType.EQUAL, "=", 0))
@@ -86,9 +106,12 @@ class ParserUnitTest(unittest.TestCase):
         pass
 
     def test_is_valid_variable_operation(self):
+        """test_is_valid_variable_operation"""
         pass
 
     def test_parse_for(self):
+        """test_parse_for"""
+
         code = """
         for (var = 0; var < 10; var = var + 1)
         """
@@ -106,6 +129,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(statements[0].loop_increment.variable_value == "var+1", "Invalid variable value")
 
     def test_parse_between_parenthesis(self):
+        """test_parse_between_parenthesis"""
+
         code = "((10 + 20 / 3) > 22)"
         lexes = Lexer().tokenize_text(code)
 
@@ -114,20 +139,28 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(result == "((10+20/3)>22)")
 
     def test_parse_between_parenthesis_syntax_error(self):
+        """test_parse_between_parenthesis_syntax_error"""
+
         code = "10 + 20 / (3 > 22"
         lexes = Lexer().tokenize_text(code)
         parser = EnhancedParser()
-        self.assertRaises(SyntaxError, parser.parse_between_parenthesis, lexes)
+        with self.assertRaises(SyntaxError):
+            parser.parse_between_parenthesis(lexes)
 
     def test_parse_between_parenthesis_syntax_error_2(self):
+        """test_parse_between_parenthesis_syntax_error_2"""
+
         code = "10 + 20 / 3) > 22"
         lexes = Lexer().tokenize_text(code)
 
         parser = EnhancedParser()
 
-        self.assertRaises(SyntaxError, parser.parse_between_parenthesis, lexes)
+        with self.assertRaises(SyntaxError):
+            parser.parse_between_parenthesis(lexes)
 
     def test_parse_while(self):
+        """test_parse_while"""
+
         code = """
         while (10 < 10)
         """
@@ -141,6 +174,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(statements[0].condition == "(10<10)", "Invalid condition")
 
     def test_parse_variable_numeric_value(self):
+        """test_parse_variable_numeric_value"""
+
         code = """
         var = 10
         """
@@ -156,6 +191,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(statements[0].type == TokenType.NUMBER, "Invalid variable type")
 
     def test_parse_variable_string_value(self):
+        """test_parse_variable_string_value"""
+
         code = """
         var = "hello"
         """
@@ -171,6 +208,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(statements[0].type == TokenType.STRING, "Invalid variable type")
 
     def test_parse_variable_expression_value(self):
+        """test_parse_variable_expression_value"""
+
         code = """
         var = 10 + 20 / x
         """
@@ -186,6 +225,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(statements[0].type == TokenType.IDENTIFICATION, "Invalid variable type")
 
     def test_parse_elseif(self):
+        """test_parse_elseif"""
+
         statements = []
         code = """
         elif (x == 10)"""
@@ -198,6 +239,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(statements[0].condition == "(x==10)", "Invalid if condition string")
 
     def test_parse_if(self):
+        """test_parse_if"""
+
         statements = []
         code = """
         if (x == 10)
@@ -211,6 +254,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(statements[0].condition == "(x==10)", "Invalid if condition string")
 
     def test_parse_echo(self):
+        """test_parse_echo"""
+
         code = """
         echo "hello, world!"
         """
@@ -224,6 +269,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(statements[0].echo_string == '"hello, world!"', "Invalid if condition string")
 
     def test_parse_endif(self):
+        """test_parse_endif"""
+
         statements = []
 
         EnhancedParser().parse_endif(statements)
@@ -232,6 +279,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(isinstance(statements[0], Fi), "Invalid Type")
 
     def test_parse_endfor(self):
+        """test_parse_endfor"""
+
         statements = []
 
         EnhancedParser().parse_endfor(statements)
@@ -240,6 +289,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(isinstance(statements[0], EndFor), "Invalid Type")
 
     def test_parse_endwhile(self):
+        """test_parse_endwhile"""
+
         statements = []
 
         EnhancedParser().parse_endwhile(statements)
@@ -248,6 +299,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(isinstance(statements[0], EndWhile), "Invalid Type")
 
     def test_parse_break(self):
+        """test_parse_break"""
+
         statements = []
 
         EnhancedParser().parse_break(statements)
@@ -256,6 +309,8 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(isinstance(statements[0], Break), "Invalid Type")
 
     def test_parse_continue(self):
+        """test_parse_continue"""
+
         statements = []
 
         EnhancedParser().parse_continue(statements)
@@ -264,6 +319,7 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(isinstance(statements[0], Continue), "Invalid Type")
 
     def tearDown(self):
+        """tearDown"""
         super(ParserUnitTest, self).tearDown()
 
 

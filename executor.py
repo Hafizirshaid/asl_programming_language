@@ -11,6 +11,7 @@ program logical output.
 
 from compiler import ExecutionTree
 from enhanced_expression_evaluator import EnhancedExpressionEvaluator
+from enhanced_lexer import EnhancedLexer
 from exceptions.language_exception import UnexpectedError, UnknownVariable
 from expression_evaluator import Evaluator
 from instructions.instruction import EchoInstruction, InputInstruction, InstructionType, VariableInstruction
@@ -183,17 +184,20 @@ class Executor(object):
         # variable_expression = instruction.variable_expression
         variable_name = instruction.variable_statement.variable_name
         variable_value = instruction.variable_statement.variable_value
-
         operation = instruction.variable_statement.operation
 
-        # Tokenize variable value to make sure variable can be evaluated
-        tokens = Lexer().tokenize_text(variable_value)
-
-        if len(tokens) == 1:
-            self.handle_one_token_variable(instruction, variable_name, variable_value, tokens, operation)
+        if instruction.variable_statement.type == VariableType.ARRAY:
+            # Array Type
+            symbols_table = self.find_symbol_table(variable_name, instruction.variable_statement)
+            symbols_table.modify_entry(variable_name, variable_value)
         else:
-            self.handle_multiple_tokens_variable(instruction, tokens, operation)
-        return
+            # Tokenize variable value to make sure variable can be evaluated
+            tokens = Lexer().tokenize_text(variable_value)
+            if len(tokens) == 1:
+                self.handle_one_token_variable(instruction, variable_name, variable_value, tokens, operation)
+            else:
+                self.handle_multiple_tokens_variable(instruction, tokens, operation)
+            return
 
     def handle_multiple_tokens_variable(self, instruction, tokens, operation):
         """ Evaluate multiple tokens variable expression.

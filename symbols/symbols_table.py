@@ -9,8 +9,6 @@ Contains Symbols table definitions and types
 """
 
 from enum import Enum
-from typing import Optional
-
 
 
 class SymbolsType(Enum):

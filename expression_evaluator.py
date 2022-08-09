@@ -112,21 +112,21 @@ class Evaluator:
             False if token is not an operator
         """
 
-        return (token_type == TokenType.EQUIVALENT or
-                token_type == TokenType.EQUAL or
-                token_type == TokenType.NOTEQUIVALENT or
-                token_type == TokenType.GRATERTHAN or
-                token_type == TokenType.LESSTHAN or
-                token_type == TokenType.GRATERTHANOREQUAL or
-                token_type == TokenType.LESSTHANOREQUAL or
-                token_type == TokenType.ADD or
-                token_type == TokenType.SUB or
-                token_type == TokenType.MULT or
-                token_type == TokenType.DIV or
-                token_type == TokenType.MOD or
-                token_type == TokenType.AND or
-                token_type == TokenType.OR or
-                token_type == TokenType.NOT)
+        return (token_type == TokenType.EQUIVALENT
+                or token_type == TokenType.EQUAL
+                or token_type == TokenType.NOTEQUIVALENT
+                or token_type == TokenType.GREATERTHAN
+                or token_type == TokenType.LESSTHAN
+                or token_type == TokenType.GREATERTHANOREQUAL
+                or token_type == TokenType.LESSTHANOREQUAL
+                or token_type == TokenType.ADD
+                or token_type == TokenType.SUB
+                or token_type == TokenType.MULT
+                or token_type == TokenType.DIV
+                or token_type == TokenType.MOD
+                or token_type == TokenType.AND
+                or token_type == TokenType.OR
+                or token_type == TokenType.NOT)
 
     def evaluate(self, expression: str):
         """
@@ -158,7 +158,8 @@ class Evaluator:
             try:
                 result = self.evaluate_tokens(tokens)
             except Exception as e:
-                raise ExpressionEvaluationError(f"Unable to evaluate expression {expression}")
+                raise ExpressionEvaluationError(
+                    f"Unable to evaluate expression {expression}")
         return result
 
     def evaluate_tokens(self, tokens: list):
@@ -180,8 +181,8 @@ class Evaluator:
             if self._is_operator(token_type):
                 operators_stack.append(value)
 
-            if (token_type == TokenType.SPACE or
-                token_type == TokenType.OPENPARENTHESIS):
+            if (token_type == TokenType.SPACE
+                or token_type == TokenType.OPENPARENTHESIS):
                 # Do Nothing
                 pass
 
@@ -193,7 +194,10 @@ class Evaluator:
                 values_stack.append(result)
                 pass
 
-            if token_type == TokenType.NUMBER or token_type == TokenType.REAL or token_type == TokenType.STRING or token_type == TokenType.IDENTIFICATION:
+            if (token_type == TokenType.NUMBER
+                or token_type == TokenType.REAL
+                or token_type == TokenType.STRING
+                or token_type == TokenType.IDENTIFICATION):
                 values_stack.append(value)
             pass
 

@@ -1,16 +1,16 @@
+# Author: Hafez Irshaid <hafezkm.irshaid@wmich.edu>.
+
+"""
+
+Expression Evaluator Unit Test
+
+"""
+
 import unittest
 
-from numpy import true_divide
 from exceptions.language_exception import ExpressionEvaluationError
 from expression_evaluator import Evaluator
 
-from lexer import Lexer, TokenType
-
-"""
-
-TODO: to be implemented
-
-"""
 
 class ExpressionEvaluatorUnitTest(unittest.TestCase):
     def setUp(self):
@@ -64,6 +64,14 @@ class ExpressionEvaluatorUnitTest(unittest.TestCase):
         result = Evaluator().evaluate("20 > 10")
         self.assertEqual(result, 20 > 10)
 
+    def test_expression_evaluator_12_1(self):
+        result = Evaluator().evaluate("20 >= 10")
+        self.assertEqual(result, 20 >= 10)
+
+    def test_expression_evaluator_12_2(self):
+        result = Evaluator().evaluate("20 <= 10")
+        self.assertEqual(result, 20 <= 10)
+
     def test_expression_evaluator_13(self):
         result = Evaluator().evaluate("10 == 1")
         self.assertEqual(result, 10 == 1)
@@ -78,7 +86,49 @@ class ExpressionEvaluatorUnitTest(unittest.TestCase):
 
     def test_expression_evaluator_16(self):
         evaluator = Evaluator()
-        self.assertRaises(ExpressionEvaluationError, evaluator.evaluate, "1 == ")
+        with self.assertRaises(ExpressionEvaluationError):
+            evaluator.evaluate("1 == ")
+
+    def test_expression_evaluator_17(self):
+        result = Evaluator().evaluate("((5 > 7) & (7 > 2))")
+        self.assertEqual(result, ((5 > 7) and (7 > 2)) == 1)
+
+    def test_expression_evaluator_18(self):
+        result = Evaluator().evaluate("(((10 * 1) == 10) & ((10 * 2) != 10))")
+        self.assertEqual(result, (((10 * 1) == 10) and ((10 * 2) != 10)) == 1)
+
+    def test_expression_evaluator_19(self):
+        result = Evaluator().evaluate("30 * 2.5")
+        self.assertEqual(result, 30 * 2.5)
+
+    def test_expression_evaluator_20(self):
+        result = Evaluator().evaluate("(30 * 2.5) - 2")
+        self.assertEqual(result, (30 * 2.5) - 2)
+
+    def test_expression_evaluator_21(self):
+        result = Evaluator().evaluate("(10 * 2) + (15 * 3) + (20 * 3.14) - 5.19")
+        self.assertEqual(result, (10 * 2) + (15 * 3) + (20 * 3.14) - 5.19)
+
+    def test_expression_evaluator_22(self):
+        result = Evaluator().evaluate("\"1\" == (2 - 1)")
+        self.assertEqual(result, "1" == (2 - 1))
+
+    def test_expression_evaluator_23(self):
+        result = Evaluator().evaluate("1 | 0")
+        self.assertEqual(result, 1 or 0)
+
+    def test_expression_evaluator_24(self):
+        result = Evaluator().evaluate("(11 % 2) == 1")
+        self.assertEqual(result, (11 % 2) == 1)
+
+    def test_expression_evaluator_25(self):
+        evaluator = Evaluator()
+        with self.assertRaises(ExpressionEvaluationError):
+            evaluator.evaluate("\"string\" + 10 / 2")
+
+    def test_expression_evaluator_26(self):
+        result = Evaluator().evaluate("(3.14 * 2.33) / 7")
+        self.assertEqual(result, (3.14 * 2.33) / 7)
 
     def tearDown(self):
         super(ExpressionEvaluatorUnitTest, self).tearDown()
