@@ -396,10 +396,13 @@ class Executor(object):
                 if not symbol_table:
                     raise UnknownVariable(f"Variable Not Found {var_name}")
 
-                value = symbol_table.get_entry_value(var_name)
-                final_echo_string += str(value.value)
+                value = symbol_table.get_entry_value(var_name).value
+                final_echo_string += str(value)
             else:
-                final_echo_string += token.match
+                if token.token_type == TokenType.NUMBER:
+                    final_echo_string += str(int(token.match))
+                else:
+                    final_echo_string += token.match
 
         # Print final echo string
         print(final_echo_string)

@@ -54,7 +54,7 @@ Classes Description:
 
 import argparse
 from runners.asl_runner import AslRunner
-from exceptions.language_exception import SyntaxError
+from exceptions.language_exception import SyntaxError, UnknownVariable
 
 def main():
     """ Main Function, calls modules Argument Parser, File Reader, Lexer,
@@ -101,6 +101,10 @@ if __name__ == "__main__":
         # Syntax Error
         print(e)
         exit(1)
+    except UnknownVariable as e:
+        print(e)
+        exit(1)
+        pass
     except Exception as e:
         print("Unhandled Internal Exception ", e)
         raise e

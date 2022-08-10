@@ -1,7 +1,9 @@
 echo "hi"
-echo $
+/*echo $
 %
 `
 `
 # 
 hi this is wrong
+*/
+input u
