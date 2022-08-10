@@ -130,6 +130,78 @@ class ExpressionEvaluatorUnitTest(unittest.TestCase):
         result = Evaluator().evaluate("(3.14 * 2.33) / 7")
         self.assertEqual(result, (3.14 * 2.33) / 7)
 
+    def test_expression_evaluator_27(self):
+        result = Evaluator().evaluate("")
+        self.assertFalse(result)
+
+    def test_expression_evaluator_28(self):
+        result = Evaluator().evaluate("2")
+        self.assertEqual(result, "2")
+
+    def test_expression_evaluator_29(self):
+        with self.assertRaises(ExpressionEvaluationError):
+            Evaluator().evaluate("10 } 20")
+
+    def test_calculate_method_1(self):
+        result = Evaluator().calculate(1,2,'+')
+        self.assertEqual(result, 1 + 2)
+
+    def test_calculate_method_2(self):
+        result = Evaluator().calculate(1,2,'-')
+        self.assertEqual(result, 1 - 2)
+
+    def test_calculate_method_3(self):
+        result = Evaluator().calculate(1,2,'*')
+        self.assertEqual(result, 1 * 2)
+
+    def test_calculate_method_4(self):
+        result = Evaluator().calculate(1,2,'/')
+        self.assertEqual(result, 1 / 2)
+
+    def test_calculate_method_5(self):
+        result = Evaluator().calculate(1, 2,'%')
+        self.assertEqual(result, 1 % 2)
+
+    def test_calculate_method_6(self):
+        result = Evaluator().calculate(1, 2,'^')
+        self.assertEqual(result, 1 ^ 2)
+
+    def test_calculate_method_7(self):
+        result = Evaluator().calculate(1,2,'&')
+        self.assertEqual(result, 1 and 2)
+
+    def test_calculate_method_8(self):
+        result = Evaluator().calculate(1,2,'|')
+        self.assertEqual(result, 1 or 2)
+
+    def test_calculate_method_9(self):
+        result = Evaluator().calculate(1,2,'<')
+        self.assertEqual(result, 1 < 2)
+
+    def test_calculate_method_10(self):
+        result = Evaluator().calculate(1,2,'>')
+        self.assertEqual(result, 1 > 2)
+
+    def test_calculate_method_11(self):
+        result = Evaluator().calculate(1,2,'<=')
+        self.assertEqual(result, 1 <= 2)
+
+    def test_calculate_method_12(self):
+        result = Evaluator().calculate(1,2,'>=')
+        self.assertEqual(result, 1 >= 2)
+
+    def test_calculate_method_13(self):
+        result = Evaluator().calculate(1,2,'==')
+        self.assertEqual(result, 1 == 2)
+
+    def test_calculate_method_14(self):
+        result = Evaluator().calculate(1,2,'!=')
+        self.assertEqual(result, 1 != 2)
+
+    def test_calculate_method_15(self):
+        with self.assertRaises(ExpressionEvaluationError):
+            Evaluator().calculate(1,2,'@')
+
     def tearDown(self):
         super(ExpressionEvaluatorUnitTest, self).tearDown()
 

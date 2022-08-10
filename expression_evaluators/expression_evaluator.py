@@ -67,7 +67,7 @@ class Evaluator:
         elif operator == "%":
             result = value1 % value2
         elif operator == "^":
-            result = value1 ^ value2
+            result = int(value1) ^ int(value2)
         elif operator == "&":
             result = value1 and value2
         elif operator == "|":
