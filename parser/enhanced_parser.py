@@ -12,7 +12,7 @@ Convert list of tokens into statements and extract their attributes
 # from parser import Parser
 
 
-from lexer import TokenType
+from lexer.lexer import TokenType
 from statements.statement import Echo, Else, ElseIf, EndFor, EndWhile, Fi, For, If, Input, Variable, VariableType, While, Break, Continue
 from exceptions.language_exception import SyntaxError
 

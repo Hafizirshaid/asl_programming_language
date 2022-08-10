@@ -7,11 +7,11 @@ Asl Runner:
 
 """
 
-from compiler import Compiler
-from enhanced_lexer import EnhancedLexer
-from enhanced_parser import EnhancedParser
-from executor import Executor
-from instructions_generator import InstructionsGenerator
+from compiler.compiler import Compiler
+from lexer.enhanced_lexer import EnhancedLexer
+from parser.enhanced_parser import EnhancedParser
+from executors.executor import Executor
+from instruction_generators.instructions_generator import InstructionsGenerator
 
 
 class AslRunner:

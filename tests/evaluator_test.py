@@ -9,7 +9,7 @@ Expression Evaluator Unit Test
 import unittest
 
 from exceptions.language_exception import ExpressionEvaluationError
-from expression_evaluator import Evaluator
+from expression_evaluators.expression_evaluator import Evaluator
 
 
 class ExpressionEvaluatorUnitTest(unittest.TestCase):

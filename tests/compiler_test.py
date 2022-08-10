@@ -7,10 +7,10 @@ Compiler Unit Test
 """
 
 import unittest
-from compiler import Compiler
+from compiler.compiler import Compiler
 
-from enhanced_lexer import EnhancedLexer
-from enhanced_parser import EnhancedParser
+from lexer.enhanced_lexer import EnhancedLexer
+from parser.enhanced_parser import EnhancedParser
 from statements.statement import ConditionStatement, Echo, For, Variable
 
 class CompilerUnitTest(unittest.TestCase):

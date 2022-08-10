@@ -10,7 +10,7 @@ Example:
 
 """
 
-from lexer import Lexer, Token, TokenType
+from lexer.lexer import Lexer, Token, TokenType
 from exceptions.language_exception import SyntaxError
 
 

@@ -53,7 +53,7 @@ Classes Description:
 """
 
 import argparse
-from asl_runner import AslRunner
+from runners.asl_runner import AslRunner
 
 
 def main():

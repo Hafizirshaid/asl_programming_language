@@ -7,13 +7,13 @@ Parser Unit Test
 """
 
 import unittest
-from enhanced_lexer import EnhancedLexer
+from lexer.enhanced_lexer import EnhancedLexer
 
-from enhanced_parser import EnhancedParser
-from lexer import Lexer, Token, TokenType
-from parser import Parser
+from parser.enhanced_parser import EnhancedParser
+from lexer.lexer import Lexer, Token, TokenType
 from statements.statement import Break, Continue, Echo, ElseIf, EndFor, EndWhile, Fi, For, If, Statement, StatementType, Variable, VariableType, While
 from exceptions.language_exception import SyntaxError
+
 
 class ParserUnitTest(unittest.TestCase):
     """

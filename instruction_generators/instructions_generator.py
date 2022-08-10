@@ -9,7 +9,7 @@ Converts execution tree into executable instructions list
 """
 
 
-from compiler import ExecutionTree
+from compiler.compiler import ExecutionTree
 from exceptions.language_exception import UnexpectedError
 from instructions.instruction import (EchoInstruction, GotoInstruction,
                                       InputInstruction, Instruction,

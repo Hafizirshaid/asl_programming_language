@@ -1,6 +1,6 @@
 
-from expression_evaluator import Evaluator
-from lexer import Lexer, TokenType
+from expression_evaluators.expression_evaluator import Evaluator
+from lexer.lexer import Lexer, TokenType
 """
 This class is not used.
 """

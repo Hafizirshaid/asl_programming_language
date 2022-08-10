@@ -10,7 +10,7 @@ from io import StringIO
 import unittest
 import sys
 
-from asl_runner import AslRunner
+from runners.asl_runner import AslRunner
 
 class ExecutorUnitTest(unittest.TestCase):
     def setUp(self):

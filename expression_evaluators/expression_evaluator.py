@@ -12,7 +12,7 @@ Contains methods that calculates expressions like
 """
 
 from exceptions.language_exception import ExpressionEvaluationError
-from lexer import Lexer, TokenType
+from lexer.lexer import Lexer, TokenType
 
 
 class Evaluator:

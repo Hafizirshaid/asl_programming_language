@@ -8,9 +8,9 @@ Lexer Unit Testing
 
 import unittest
 
-from enhanced_lexer import EnhancedLexer
+from lexer.enhanced_lexer import EnhancedLexer
 
-from lexer import Lexer, Token, TokenType
+from lexer.lexer import Lexer, Token, TokenType
 from exceptions.language_exception import SyntaxError
 
 

@@ -9,13 +9,13 @@ program logical output.
 
 """
 
-from compiler import ExecutionTree
-from enhanced_expression_evaluator import EnhancedExpressionEvaluator
-from enhanced_lexer import EnhancedLexer
+from compiler.compiler import ExecutionTree
+from expression_evaluators.enhanced_expression_evaluator import EnhancedExpressionEvaluator
+from lexer.enhanced_lexer import EnhancedLexer
 from exceptions.language_exception import UnexpectedError, UnknownVariable
-from expression_evaluator import Evaluator
+from expression_evaluators.expression_evaluator import Evaluator
 from instructions.instruction import EchoInstruction, InputInstruction, InstructionType, VariableInstruction
-from lexer import Lexer, TokenType
+from lexer.lexer import Lexer, TokenType
 from statements.statement import ConditionStatement, Else, ElseIf, For, If, Variable, VariableType, While
 
 

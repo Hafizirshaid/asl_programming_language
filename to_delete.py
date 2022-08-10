@@ -4,7 +4,7 @@ import sys
 from contextvars import Token
 from enhanced_lexer import EnhancedLexer
 from lexer import Lexer, TokenType
-from enhanced_parser import EnhancedParser
+from parser.enhanced_parser import EnhancedParser
 
 code = """// program that contains all statements
 
