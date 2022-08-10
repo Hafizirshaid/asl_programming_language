@@ -25,11 +25,11 @@ class AslRunner:
                 executor = None) -> None:
         """ AslRunner Class Constructor
         Args:
-            lexer:
-            parser:
-            compiler:
-            generator:
-            executor:
+            lexer: lexer class to tokenize code
+            parser: parser class to parse code
+            compiler: compiler class to compile code
+            generator: generator class to generate instructions for code
+            executor: executor class to execute generated instructions for code
         Returns:
             None
         """
