@@ -359,7 +359,10 @@ class Lexer(object):
             {'type': TokenType.DOT, 'regex': '^\.'},
         ]
 
-    def tokenize_text(self, text: str, keep_unknown=False, keep_spaces=False, ignore_new_lines=True) -> list:
+    def tokenize_text(self, text: str,
+                      keep_unknown=False,
+                      keep_spaces=False,
+                      ignore_new_lines=True) -> list:
         """ Tokenize source file text
         Args:
             text: text file string
