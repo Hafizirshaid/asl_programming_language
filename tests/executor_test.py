@@ -145,6 +145,47 @@ echo "user input is {var}"
 
         pass
 
+    def test_all_asl_files(self):
+
+        files = [
+                 #'asl_files/arrays.asl',
+                 'asl_files/break_statement.asl',
+                 #'asl_files/calculator.asl',
+                 'asl_files/continue_statement.asl',
+                 'asl_files/empty.asl',
+                 'asl_files/enhanced_variables.asl',
+                 'asl_files/errors.asl',
+                 'asl_files/fibonacci.asl',
+                 'asl_files/for_loop.asl',
+                 #'asl_files/functions.asl',
+                 'asl_files/grades.asl',
+                 #'asl_files/input_string.asl',
+                 #'asl_files/keyboard_input.asl',
+                 'asl_files/main.asl',
+                 'asl_files/main2.asl',
+                 'asl_files/new_syntax.asl',
+                 'asl_files/odd_even.asl',
+                 'asl_files/one_var.asl',
+                 'asl_files/prime.asl',
+                 'asl_files/real_numbers.asl',
+                 'asl_files/strings.asl',
+                 'asl_files/variable.asl',
+                 'asl_files/while_for.asl',
+                 'asl_files/swap_variables.asl',
+                 'asl_files/while_loop.asl']
+
+
+        for file_name in files:
+            code = ""
+            with open(file_name) as file:
+                for line in file:
+                    code += line
+            try:
+                AslRunner().run(code)
+            except Exception as e:
+                self.fail(f"Failed {e} in file {file_name}")
+
+        pass
     def tearDown(self):
         super(ExecutorUnitTest, self).tearDown()
 

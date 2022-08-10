@@ -61,9 +61,9 @@ class EnhancedLexer(Lexer):
         Args:
             text:         text file string
             keep_unknown: weather to keep an unknown token or not, a token that
-                          doesn't have a type in regex_list.
-            keep_spaces:  weather white spaces should be added to list of tokens or not.
-            ignore_new_lines: weather new line tokens should be ignored.
+                          doesn't have a type in regex_list
+            keep_spaces:  weather white spaces should be added to list of tokens or not
+            ignore_new_lines: weather new line tokens should be ignored
         Returns:
             list of meaningful tokens
         """

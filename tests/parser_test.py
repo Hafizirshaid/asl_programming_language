@@ -7,11 +7,12 @@ Parser Unit Test
 """
 
 import unittest
+from enhanced_lexer import EnhancedLexer
 
 from enhanced_parser import EnhancedParser
 from lexer import Lexer, Token, TokenType
 from parser import Parser
-from statements.statement import Break, Continue, Echo, ElseIf, EndFor, EndWhile, Fi, For, If, Variable, VariableType, While
+from statements.statement import Break, Continue, Echo, ElseIf, EndFor, EndWhile, Fi, For, If, Statement, StatementType, Variable, VariableType, While
 from exceptions.language_exception import SyntaxError
 
 class ParserUnitTest(unittest.TestCase):
@@ -335,6 +336,72 @@ class ParserUnitTest(unittest.TestCase):
         with self.assertRaises(SyntaxError):
             statements = EnhancedParser().parse(tokens)
 
+    def test_all_statements(self):
+        code = """// program that contains all statements
+
+for(i = 0; i < 10; i += 1)
+
+    if (i == 1)
+        echo "i is 1"
+    elif (i == 9)
+        echo ("i is 9, breaking")
+        break
+    else
+        echo "i value is {i}"
+        continue
+    fi
+
+endfor
+
+var = 1
+
+while (var < 10)
+
+    echo "var is {var}"
+    if ((var %2 ) == 0)
+        echo "var {var} is even"
+    else
+        echo "var {var} is odd"
+    fi
+    for(;;)
+        echo "infinite loop"
+    endfor
+endwhile
+input var
+"""
+
+        tokens = EnhancedLexer().tokenize_text(code)
+        actual_statements = EnhancedParser().parse(tokens)
+
+        expected_statements = [Statement(StatementType.FOR),
+                               Statement(StatementType.IF),
+                               Statement(StatementType.ECHO),
+                               Statement(StatementType.ELSEIF),
+                               Statement(StatementType.ECHO),
+                               Statement(StatementType.BREAK),
+                               Statement(StatementType.ELSE),
+                               Statement(StatementType.ECHO),
+                               Statement(StatementType.CONTINUE),
+                               Statement(StatementType.ENDIF),
+                               Statement(StatementType.ENDFOR),
+                               Statement(TokenType.NUMBER),
+                               Statement(StatementType.WHILE),
+                               Statement(StatementType.ECHO),
+                               Statement(StatementType.IF),
+                               Statement(StatementType.ECHO),
+                               Statement(StatementType.ELSE),
+                               Statement(StatementType.ECHO),
+                               Statement(StatementType.ENDIF),
+                               Statement(StatementType.FOR),
+                               Statement(StatementType.ECHO),
+                               Statement(StatementType.ENDFOR),
+                               Statement(StatementType.ENDWHILE),
+                               Statement(StatementType.INPUT)
+                               ]
+
+        for idx, statement in enumerate(expected_statements):
+            self.assertEqual(statement.type, actual_statements[idx].type)
+        pass
 
     def tearDown(self):
         """tearDown"""

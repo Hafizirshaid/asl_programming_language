@@ -379,8 +379,7 @@ class EnhancedParser:
                 self.increment_token_pointer()
             pass
         else:
-            raise SyntaxError("Invalid operation ",
-                              lexes[self.token_pointer])
+            raise SyntaxError("Invalid operation ", lexes[self.token_pointer])
 
     def parse_variable_expression(self, lexes):
         should_continue = True

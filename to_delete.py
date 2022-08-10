@@ -1,7 +1,46 @@
 
 from io import StringIO
 import sys
+from contextvars import Token
+from enhanced_lexer import EnhancedLexer
+from lexer import Lexer, TokenType
+from enhanced_parser import EnhancedParser
 
+code = """// program that contains all statements
+
+for(i = 0; i < 10; i += 1)
+
+    if (i == 1)
+        echo "i is 1"
+    elif (i == 9)
+        echo "i is 9, breaking"
+        break
+    else
+        echo "i value is {i}"
+        continue
+    fi
+
+endfor
+
+var = 1
+
+while (var < 10)
+
+    echo "var is {var}"
+    if ((var %2 ) == 0)
+        echo "var {var} is even"
+    else
+        echo "var {var} is odd"
+    fi
+
+endwhile
+"""
+tokens = EnhancedLexer().tokenize_text(code)
+statements = EnhancedParser().parse(tokens)
+
+for i in statements:
+    print(f"Statement({i.type}),")
+exit(1)
 # old_stdout = sys.stdout
 # old_stdin = sys.stdin
 
@@ -27,9 +66,7 @@ import sys
 
 
 # Assignment Operators
-from contextvars import Token
-from enhanced_lexer import EnhancedLexer
-from lexer import Lexer, TokenType
+
 
 
 x = [{'type': TokenType.CALL, 'regex': 'call'},
