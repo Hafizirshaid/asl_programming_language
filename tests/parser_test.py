@@ -403,6 +403,11 @@ input var
             self.assertEqual(statement.type, actual_statements[idx].type)
         pass
 
+    def test_handle_syntax_error_method(self):
+        """ Test if method handle_syntax_error raises exception SyntaxError """
+        with self.assertRaises(SyntaxError):
+            EnhancedParser().handle_syntax_error(Token(TokenType.UNKNOWN, '@', '1'), "unknown token")
+
     def tearDown(self):
         """tearDown"""
         super(ParserUnitTest, self).tearDown()

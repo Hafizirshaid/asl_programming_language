@@ -12,7 +12,7 @@ Convert list of tokens into statements and extract their attributes
 # from parser import Parser
 
 
-from lexer.lexer import TokenType
+from lexer.lexer import Token, TokenType
 from statements.statement import Echo, Else, ElseIf, EndFor, EndWhile, Fi, For, If, Input, Variable, VariableType, While, Break, Continue
 from exceptions.language_exception import SyntaxError
 
@@ -143,7 +143,7 @@ class EnhancedParser:
             elif lex_type == TokenType.COMMENT:
                 pass
             else:
-                raise SyntaxError("Unexpected token " + str(lex_type))
+                self.handle_syntax_error(lex, "Unexpected token")
 
             # Increment Index to get next token
             self.increment_token_pointer()
@@ -215,11 +215,11 @@ class EnhancedParser:
                     forloop = For([], loop_initial_variable, condition, increment)
                     statements.append(forloop)
                 else:
-                    raise SyntaxError("invalid for loop, unbalanced parenthesis", lexes[self.token_pointer])
+                    self.handle_syntax_error(lexes[self.token_pointer], "invalid for loop, unbalanced parenthesis")
             else:
-                raise SyntaxError("invalid for loop", lexes[self.token_pointer])
+                self.handle_syntax_error(lexes[self.token_pointer], "invalid for loop")
         else:
-            raise SyntaxError("invalid for loop", lexes[self.token_pointer])
+            self.handle_syntax_error(lexes[self.token_pointer], "invalid for loop")
 
     def parse_for_loop_condition(self, lexes, parenthesis_stack):
         """ Parse for loop condition
@@ -313,7 +313,7 @@ class EnhancedParser:
 
                 return Variable(var_name, var_operation, var_val)
             else:
-                raise SyntaxError("Invalid operation ", lexes[self.token_pointer])
+                self.handle_syntax_error(lexes[self.token_pointer], "Invalid operation")
         return None
 
     def parse_while(self, lexes, statements):
@@ -379,7 +379,7 @@ class EnhancedParser:
                 self.increment_token_pointer()
             pass
         else:
-            raise SyntaxError("Invalid operation ", lexes[self.token_pointer])
+            self.handle_syntax_error(lexes[self.token_pointer], "Invalid operation")
 
     def parse_variable_expression(self, lexes):
         should_continue = True
@@ -398,7 +398,7 @@ class EnhancedParser:
 
                 self.increment_token_pointer()
             else:
-                raise SyntaxError("Invalid id or num ", lexes[self.token_pointer])
+                self.handle_syntax_error(lexes[self.token_pointer], "Invalid identification or number")
 
             if not self.is_there_more_tokens(lexes):
                 break
@@ -489,12 +489,11 @@ class EnhancedParser:
                 if_condition += lexes[self.token_pointer].match
 
             if parenthesis_stack:
-                raise SyntaxError("parenthesis error", lexes[self.token_pointer])
+                self.handle_syntax_error(lexes[self.token_pointer], "parenthesis error")
 
             return if_condition
         else:
-            raise SyntaxError(
-                "invalid token should be ( instead of " + str(lexes[self.token_pointer].match), lexes[self.token_pointer])
+            self.handle_syntax_error(lexes[self.token_pointer], "invalid token should be ( instead of " + str(lexes[self.token_pointer].match))
 
     def parse_echo(self, lexes, statements):
         """ Parse Echo Statement
@@ -526,7 +525,7 @@ class EnhancedParser:
                 #self.increment_token_pointer()
                 pass
             else:
-                raise SyntaxError("Unclosed parenthesis in echo")
+                self.handle_syntax_error(next_lex, "Unclosed parenthesis in echo")
 
         echo_statement = Echo(echoString)
         statements.append(echo_statement)
@@ -546,7 +545,8 @@ class EnhancedParser:
         if next_lex.token_type == TokenType.IDENTIFICATION:
             input_variable = next_lex.match
         else:
-            raise SyntaxError("Invalid Input Function" +  str(next_lex.TokenType ))
+            self.handle_syntax_error(next_lex, "Invalid Input Function")
+
         input_statement = Input(input_variable)
         statements.append(input_statement)
 
@@ -615,3 +615,13 @@ class EnhancedParser:
 
         endif = Fi()
         statements.append(endif)
+
+    def handle_syntax_error(self, token: Token, message):
+        """ Handles Syntax Errors
+        Args:
+            token: token that has caused the issue
+            message: message
+        Raises:
+            SyntaxError
+        """
+        raise SyntaxError(f"Syntax Error at line {token.line_number} type: {token.token_type} match: {token.match}\n{message} ")
