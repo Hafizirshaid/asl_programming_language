@@ -94,17 +94,17 @@ def main():
 
 
 if __name__ == "__main__":
-    # Main function
+
     try:
+        # Main function
         main()
     except SyntaxError as e:
         # Syntax Error
         print(e)
-        exit(1)
     except UnknownVariable as e:
+        # Unknown Variable
         print(e)
-        exit(1)
-        pass
     except Exception as e:
+        # Unhandled Exception
         print("Unhandled Internal Exception ", e)
         raise e
