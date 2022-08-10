@@ -54,7 +54,7 @@ Classes Description:
 
 import argparse
 from runners.asl_runner import AslRunner
-
+from exceptions.language_exception import SyntaxError
 
 def main():
     """ Main Function, calls modules Argument Parser, File Reader, Lexer,
@@ -71,7 +71,7 @@ def main():
     # Argument identifier: --filename or -f
     # File name that contains source code to be executed.
     args_parser.add_argument('-f', '--filename',
-                        default='asl_files/swap_variables.asl',
+                        default='asl_files/syntax_error.asl',
                         help='source file name',
                         nargs=argparse.OPTIONAL,
                         )
@@ -97,6 +97,10 @@ if __name__ == "__main__":
     # Main function
     try:
         main()
+    except SyntaxError as e:
+        # Syntax Error
+        print(e)
+        exit(1)
     except Exception as e:
-        print("Unhandled Exception ", e)
+        print("Unhandled Internal Exception ", e)
         raise e
