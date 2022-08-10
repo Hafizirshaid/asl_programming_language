@@ -65,9 +65,13 @@ with open(file_name) as file:
         code += line
 #code = """test_lexer_true_false"""
 code = """
-        {
-
-        }
+        // one line comment
+        var = 1
+        /* multi
+        line
+        comment
+        */
+        var2 = 2
         """
 
 actual_tokens = EnhancedLexer().tokenize_text(code)

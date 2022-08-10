@@ -290,6 +290,37 @@ endfor
         expected_tokens = [Token(TokenType.IDENTIFICATION, "variable_1", 1)]
         self.assertEqual(actual_tokens, expected_tokens)
 
+    def test_tokenize_identifier_that_contains_keyword(self):
+        """ test_tokenize_identifier_that_contains_keyword 
+
+        This test case checks when identifier name contains a keyword,
+        lexer should not create token for the keyword, example:
+        for_loop_variable = 1
+
+        the old lexer thinks that the identifier is two parts:
+        for keyword
+        _loop_variable
+
+        """
+
+        code = """for_loop_var = 1
+            while_loop_var = 2
+            condition_if_else = 3
+        """
+        actual_tokens = EnhancedLexer().tokenize_text(code)
+        expected_tokens = [Token(TokenType.IDENTIFICATION, 'for_loop_var', 1),
+                           Token(TokenType.EQUAL, '=', 1),
+                           Token(TokenType.NUMBER, '1', 1),
+                           Token(TokenType.IDENTIFICATION,
+                                 'while_loop_var', 2),
+                           Token(TokenType.EQUAL, '=', 2),
+                           Token(TokenType.NUMBER, '2', 2),
+                           Token(TokenType.IDENTIFICATION,
+                                 'condition_if_else', 3),
+                           Token(TokenType.EQUAL, '=', 3),
+                           Token(TokenType.NUMBER, '3', 3), ]
+        self.assertEqual(actual_tokens, expected_tokens)
+
     def test_tokenize_string(self):
         """test_tokenize_string"""
 
@@ -312,14 +343,17 @@ endfor
         """
 
         actual_tokens = EnhancedLexer().tokenize_text(code)
-        expected_tokens = [Token(TokenType.COMMENT, '', 2),
-                           Token(TokenType.IDENTIFICATION, 'var', 2),
-                           Token(TokenType.EQUAL, '=', 2),
-                           Token(TokenType.NUMBER, '1', 2),
-                           Token(TokenType.COMMENT, '', 3),
-                           Token(TokenType.IDENTIFICATION, 'var2', 3),
+        expected_tokens = [Token(TokenType.COMMENT, '/ one line comment', 2),
+                           Token(TokenType.IDENTIFICATION, 'var', 3),
                            Token(TokenType.EQUAL, '=', 3),
-                           Token(TokenType.NUMBER, '2', 3)]
+                           Token(TokenType.NUMBER, '1', 3),
+                           Token(TokenType.COMMENT, """ multi
+        line
+        comment
+        """, 4),
+                           Token(TokenType.IDENTIFICATION, 'var2', 8),
+                           Token(TokenType.EQUAL, '=', 8),
+                           Token(TokenType.NUMBER, '2', 8)]
 
         self.assertEqual(actual_tokens, expected_tokens)
 
@@ -356,6 +390,7 @@ endfor
         echo "hello with variable {var}"
 
         """
+
         actual_tokens = EnhancedLexer().tokenize_text(code)
         expected_tokens = [Token(TokenType.ECHO, 'echo', 3),
                            Token(TokenType.STRING, '"hello, world!"', 3),
@@ -407,14 +442,14 @@ $
         with self.assertRaises(SyntaxError):
             EnhancedLexer().tokenize_text(code)
 
-    def test_unknown_chars(self):
+    def test_keep_unknown_chars(self):
 
         code = """
 $
 #
         """
-        expected_tokens = [Token(TokenType.UNKNOWN, '', 2),
-                           Token(TokenType.UNKNOWN, '', 3)]
+        expected_tokens = [Token(TokenType.UNKNOWN, '$', 2),
+                           Token(TokenType.UNKNOWN, '#', 3)]
 
         actual_tokens = EnhancedLexer().tokenize_text(code, keep_unknown=True)
 

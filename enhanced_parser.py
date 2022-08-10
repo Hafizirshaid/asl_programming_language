@@ -9,14 +9,15 @@ Convert list of tokens into statements and extract their attributes
 """
 
 
-from parser import Parser
+# from parser import Parser
+
 
 from lexer import TokenType
-from statements.statement import ElseIf, For, If, Variable, VariableType, While
+from statements.statement import Echo, Else, ElseIf, EndFor, EndWhile, Fi, For, If, Input, Variable, VariableType, While, Break, Continue
 from exceptions.language_exception import SyntaxError
 
 
-class EnhancedParser(Parser):
+class EnhancedParser:
     """
 
     Enhanced Parser Class
@@ -34,7 +35,8 @@ class EnhancedParser(Parser):
         Returns:
             list of statements
         """
-        super().__init__()
+
+        self.token_pointer = 0
 
         self.comments = [
             TokenType.COMMENT
@@ -88,6 +90,66 @@ class EnhancedParser(Parser):
             TokenType.OR
         ]
 
+    def increment_token_pointer(self):
+        """ Increment Token Pointer by 1 """
+        self.token_pointer += 1
+
+    def parse(self, lexes: list) -> list:
+        """ Parse list of lexes
+        Args:
+            lexes: list of lexes
+
+        Returns:
+            list of statements
+        """
+
+        statements = []
+
+        self.token_pointer = 0
+
+        while self.token_pointer <= len(lexes) - 1:
+
+            lex = lexes[self.token_pointer]
+            lex_type = lex.token_type
+
+            if lex_type == TokenType.ECHO or lex_type == TokenType.PRINT:
+                self.parse_echo(lexes, statements)
+            elif lex_type == TokenType.INPUT:
+                self.parse_input(lexes, statements)
+            elif lex_type == TokenType.IF:
+                self.parse_if(lexes, statements)
+            elif lex_type == TokenType.ELSE:
+                self.parse_else(statements)
+            elif lex_type == TokenType.ELIF:
+                self.parse_elseif(lexes, statements)
+            elif lex_type == TokenType.FI:
+                self.parse_endif(statements)
+            elif lex_type == TokenType.ENDFOR:
+                self.parse_endfor(statements)
+            elif lex_type == TokenType.ENDWHILE:
+                self.parse_endwhile(statements)
+            elif lex_type == TokenType.BREAK:
+                self.parse_break(statements)
+            elif lex_type == TokenType.CONTINUE:
+                self.parse_continue(statements)
+            elif lex_type == TokenType.FOR:
+                self.parse_for(lexes, statements)
+            elif lex_type == TokenType.WHILE:
+                self.parse_while(lexes, statements)
+            elif lex_type == TokenType.IDENTIFICATION:
+                self.parse_variable(lexes, statements)
+            elif lex_type == TokenType.NEWLINE:
+                pass
+            elif lex_type == TokenType.COMMENT:
+                pass
+            else:
+                raise SyntaxError("Unexpected token " + str(lex_type))
+
+            # Increment Index to get next token
+            self.increment_token_pointer()
+
+        return statements
+
     def check_token_type_in_list(self, lexes, token_types, stop_on=None):
         """ Checks if current token belongs to list of token types.
         Args:
@@ -98,6 +160,7 @@ class EnhancedParser(Parser):
             True:
             False:
         """
+
         token_type = lexes[self.token_pointer].token_type
         if token_type in token_types:
             return True
@@ -108,6 +171,13 @@ class EnhancedParser(Parser):
         return False
 
     def is_there_more_tokens(self, lexes):
+        """ This Method Checks if lexes list contains more tokens or not.
+        Args:
+            lexes: List of tokens.
+        Returns:
+            True:  If there are more tokens.
+            False: If there are not more tokens.
+        """
         return len(lexes) > self.token_pointer
 
     def parse_for(self, lexes, statements):
@@ -243,7 +313,7 @@ class EnhancedParser(Parser):
 
                 return Variable(var_name, var_operation, var_val)
             else:
-                raise SyntaxError("Invalid op ", lexes[self.token_pointer])
+                raise SyntaxError("Invalid operation ", lexes[self.token_pointer])
         return None
 
     def parse_while(self, lexes, statements):
@@ -374,8 +444,8 @@ class EnhancedParser(Parser):
 
         self.increment_token_pointer()
         elif_condition = self.parse_between_parenthesis(lexes)
-        elif_Statement = ElseIf(elif_condition, [])
-        statements.append(elif_Statement)
+        elif_statement = ElseIf(elif_condition, [])
+        statements.append(elif_statement)
         pass
 
     def parse_if(self, lexes, statements):
@@ -428,11 +498,121 @@ class EnhancedParser(Parser):
                 "invalid token should be ( instead of " + str(lexes[self.token_pointer].match), lexes[self.token_pointer])
 
     def parse_echo(self, lexes, statements):
-        """ Parse echo statement
+        """ Parse Echo Statement
         Args:
             lexes: list of lexes
-
+            statements: list of statements
         Returns:
-            list of statements
+            None
         """
-        super().parse_echo(lexes, statements)
+
+        echoString = ""
+        # ignore spaces
+        self.increment_token_pointer()
+        next_lex = lexes[self.token_pointer]
+
+        with_parenthesis = False
+        if next_lex.token_type == TokenType.OPENPARENTHESIS:
+            self.increment_token_pointer()
+            next_lex = lexes[self.token_pointer]
+            with_parenthesis = True
+
+        if next_lex.token_type == TokenType.STRING:
+            echoString = next_lex.match
+
+        if with_parenthesis:
+            self.increment_token_pointer()
+            next_lex = lexes[self.token_pointer]
+            if next_lex.token_type == TokenType.CLOSINGPARENTHESIS:
+                #self.increment_token_pointer()
+                pass
+            else:
+                raise SyntaxError("Unclosed parenthesis in echo")
+
+        echo_statement = Echo(echoString)
+        statements.append(echo_statement)
+
+    def parse_input(self, lexes, statements):
+        """ Parse Input Statement
+        Args:
+            lexes: list of lexes
+            statements: list of statements
+        Returns:
+            None
+        """
+
+        self.increment_token_pointer()
+        next_lex = lexes[self.token_pointer]
+        input_variable = ""
+        if next_lex.token_type == TokenType.IDENTIFICATION:
+            input_variable = next_lex.match
+        else:
+            raise SyntaxError("Invalid Input Function" +  str(next_lex.TokenType ))
+        input_statement = Input(input_variable)
+        statements.append(input_statement)
+
+    def parse_else(self, statements):
+        """ Parse Else Statement
+        Args:
+            statements: list of statements
+        Returns:
+            None
+        """
+
+        else_statement = Else([])
+        statements.append(else_statement)
+
+    def parse_continue(self, statements):
+        """ Parse Continue Statement
+        Args:
+            statements: list of statements
+        Returns:
+            None
+        """
+
+        continue_statement = Continue()
+        statements.append(continue_statement)
+
+    def parse_break(self, statements):
+        """ Parse Break
+        Args:
+            statements: list of statements
+        Returns:
+            None
+        """
+
+        break_statement = Break()
+        statements.append(break_statement)
+
+    def parse_endwhile(self, statements):
+        """ Parse End While
+        Args:
+            statements: list of statements
+        Returns:
+            None
+        """
+
+        endwhile = EndWhile()
+        statements.append(endwhile)
+
+    def parse_endfor(self, statements):
+        """ Parse End for
+        Args:
+            statements: list of statements
+        Returns:
+            None
+        """
+
+        endfor = EndFor()
+        statements.append(endfor)
+
+    def parse_endif(self, statements):
+        """ Parse End If
+        Args:
+            statements: list of statements
+        Returns:
+            None
+        """
+
+        endif = Fi()
+        statements.append(endif)

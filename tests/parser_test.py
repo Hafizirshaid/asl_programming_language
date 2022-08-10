@@ -318,6 +318,24 @@ class ParserUnitTest(unittest.TestCase):
         self.assertTrue(len(statements) == 1, "Parser returned more than one token")
         self.assertTrue(isinstance(statements[0], Continue), "Invalid Type")
 
+    def test_invalid_for(self):
+        """test_invalid_for
+
+        No Parenthesis
+        """
+
+        code = """
+        for i = 0; i < 10; i+= 1
+            echo "{i}"
+        endfor
+        """
+
+        tokens = Lexer().tokenize_text(code)
+
+        with self.assertRaises(SyntaxError):
+            statements = EnhancedParser().parse(tokens)
+
+
     def tearDown(self):
         """tearDown"""
         super(ParserUnitTest, self).tearDown()

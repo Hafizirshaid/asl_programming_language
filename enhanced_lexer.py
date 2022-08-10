@@ -52,14 +52,18 @@ class EnhancedLexer(Lexer):
         """
         return char in self.alphabets or char in self.caps_alphabets
 
-    def tokenize_text(self, text: str, keep_unknown=False, keep_spaces=False, ignore_new_lines=True) -> list:
+    def tokenize_text(self,
+                      text: str,
+                      keep_unknown=False,
+                      keep_spaces=False,
+                      ignore_new_lines=True) -> list:
         """ Tokenize source file text into meaningful tokens
         Args:
             text:         text file string
             keep_unknown: weather to keep an unknown token or not, a token that
-                          doesn't have a type in regex_list
-            keep_spaces:  weather white spaces should be added to list of tokens or not
-
+                          doesn't have a type in regex_list.
+            keep_spaces:  weather white spaces should be added to list of tokens or not.
+            ignore_new_lines: weather new line tokens should be ignored.
         Returns:
             list of meaningful tokens
         """
@@ -95,7 +99,6 @@ class EnhancedLexer(Lexer):
                     identifier += text[idx]
                     idx += 1
                 idx -= 1
-
                 # check if the found identifier is a keyword
                 if identifier == 'call':
                     tokens.append(Token(TokenType.CALL, identifier, line_number))
@@ -209,17 +212,24 @@ class EnhancedLexer(Lexer):
                 elif idx < len(text) and text[idx + 1] == '/':
                     # handle comment
                     idx += 1
+                    comment_content = ""
                     while (idx < len(text) and text[idx] != '\n'):
+                        comment_content += text[idx]
                         idx += 1
-                    pass
-                    tokens.append(Token(TokenType.COMMENT, "", line_number))
+                    tokens.append(Token(TokenType.COMMENT, comment_content, line_number))
+                    line_number += 1
                 elif idx < len(text) and text[idx + 1] == '*':
                     # multi line comment
+                    comment_line_number = line_number
+                    comment_content = ""
                     idx += 2
                     while (idx < len(text) and text[idx] != '*' and text[idx + 1] != '/'):
+                        comment_content += text[idx]
+                        if text[idx] == '\n':
+                            line_number += 1
                         idx += 1
-                    idx += 2
-                    tokens.append(Token(TokenType.COMMENT, "", line_number))
+                    idx += 1
+                    tokens.append(Token(TokenType.COMMENT, comment_content, comment_line_number))
                 else:
                     # Division
                     tokens.append(Token(TokenType.DIV, current_char, line_number))
@@ -274,7 +284,7 @@ class EnhancedLexer(Lexer):
             # Unknown chat
             else:
                 if keep_unknown:
-                    tokens.append(Token(TokenType.UNKNOWN, "", line_number))
+                    tokens.append(Token(TokenType.UNKNOWN, current_char, line_number))
                 else:
                     raise SyntaxError(f"Syntax Error index: {idx} at line: {line_number} char:\n {current_char}")
             idx += 1
