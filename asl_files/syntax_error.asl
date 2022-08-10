@@ -1,5 +1,5 @@
 echo "hi"
-$
+echo $
 %
 `
 `

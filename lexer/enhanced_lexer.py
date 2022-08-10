@@ -286,6 +286,16 @@ class EnhancedLexer(Lexer):
                 if keep_unknown:
                     tokens.append(Token(TokenType.UNKNOWN, current_char, line_number))
                 else:
-                    raise SyntaxError(f"Syntax Error index: {idx} at line: {line_number} char:\n {current_char}")
+                    self.handle_syntax_error(Token(TokenType.UNKNOWN, current_char, line_number), f"Syntax Error index: {idx}")
             idx += 1
         return tokens
+
+    def handle_syntax_error(self, token: Token, message):
+        """ Handles Syntax Errors
+        Args:
+            token: token that has caused the issue
+            message: message
+        Raises:
+            SyntaxError
+        """
+        raise SyntaxError(f"Syntax Error at line {token.line_number} type: {token.token_type} match: {token.match}\n{message} ")
