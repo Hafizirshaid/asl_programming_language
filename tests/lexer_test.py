@@ -530,8 +530,61 @@ echo "{y}"
         self.assertEqual(expected_tokens, actual_tokens)
 
     def test_not(self):
-        code = "!"
-        expected_tokens = [Token(TokenType.NOT, '!', 1)]
+        code = "x != y"
+        expected_tokens = [
+            Token(TokenType.IDENTIFICATION, 'x', 1),
+            Token(TokenType.NOTEQUIVALENT, '!=', 1),
+            Token(TokenType.IDENTIFICATION, 'y', 1),
+        ]
+        actual_tokens = EnhancedLexer().tokenize_text(code)
+
+        self.assertEqual(expected_tokens, actual_tokens)
+
+    def test_negative_numbers(self):
+
+        code = """
+x = -10
+y = -50
+z = x + y
+f = -10 + -20
+vv = 10 - 2
+dd = -1 + 2 + -22 - 3 + -1
+
+"""
+        expected_tokens = [
+            Token(TokenType.IDENTIFICATION, 'x', 2),
+            Token(TokenType.EQUAL, '=', 2),
+            Token(TokenType.NUMBER, '-10', 2),
+            Token(TokenType.IDENTIFICATION, 'y', 3),
+            Token(TokenType.EQUAL, '=', 3),
+            Token(TokenType.NUMBER, '-50', 3),
+            Token(TokenType.IDENTIFICATION, 'z', 4),
+            Token(TokenType.EQUAL, '=', 4),
+            Token(TokenType.IDENTIFICATION, 'x', 4),
+            Token(TokenType.ADD, '+', 4),
+            Token(TokenType.IDENTIFICATION, 'y', 4),
+            Token(TokenType.IDENTIFICATION, 'f', 5),
+            Token(TokenType.EQUAL, '=', 5),
+            Token(TokenType.NUMBER, '-10', 5),
+            Token(TokenType.ADD, '+', 5),
+            Token(TokenType.NUMBER, '-20', 5),
+            Token(TokenType.IDENTIFICATION, 'vv', 6),
+            Token(TokenType.EQUAL, '=', 6),
+            Token(TokenType.NUMBER, '10', 6),
+            Token(TokenType.SUB, '-', 6),
+            Token(TokenType.NUMBER, '2', 6),
+            Token(TokenType.IDENTIFICATION, 'dd', 7),
+            Token(TokenType.EQUAL, '=', 7),
+            Token(TokenType.NUMBER, '-1', 7),
+            Token(TokenType.ADD, '+', 7),
+            Token(TokenType.NUMBER, '2', 7),
+            Token(TokenType.ADD, '+', 7),
+            Token(TokenType.NUMBER, '-22', 7),
+            Token(TokenType.SUB, '-', 7),
+            Token(TokenType.NUMBER, '3', 7),
+            Token(TokenType.ADD, '+', 7),
+            Token(TokenType.NUMBER, '-1', 7)
+        ]
         actual_tokens = EnhancedLexer().tokenize_text(code)
 
         self.assertEqual(expected_tokens, actual_tokens)

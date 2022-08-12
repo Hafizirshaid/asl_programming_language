@@ -70,6 +70,9 @@ class AslRunner:
         # Tokenize Text file into list of meaningful tokens
         tokens = self.lexer.tokenize_text(code)
 
+        if not tokens:
+            return
+
         # Parses list of tokens into list of statements
         statements = self.parser.parse(tokens)
 

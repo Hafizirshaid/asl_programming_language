@@ -156,7 +156,7 @@ class EnhancedLexer(Lexer):
             # Equal
             elif current_char == '=':
                 # Equivalent
-                if idx < len(text) and text[idx + 1] == '=':
+                if idx + 1 < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.EQUIVALENT, "==", line_number))
                     idx += 1
                 else:
@@ -164,16 +164,16 @@ class EnhancedLexer(Lexer):
             # Greater than
             elif current_char == '>':
                 # Greater than or equal
-                if idx < len(text) and text[idx + 1] == '=':
+                if idx + 1 < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.GREATERTHANOREQUAL, ">=", line_number))
                     idx += 1
                 else:
                     tokens.append(Token(TokenType.GREATERTHAN, current_char, line_number))
-                    idx += 1
+                    # idx += 1
             # Less than
             elif current_char == '<':
                 # Less than or equal
-                if idx < len(text) and text[idx + 1] == '=':
+                if idx + 1 < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.LESSTHANOREQUAL, "<=", line_number))
                     idx += 1
                 else:
@@ -181,7 +181,7 @@ class EnhancedLexer(Lexer):
             # Plus
             elif current_char == '+':
                 # Plus Equal
-                if idx < len(text) and text[idx + 1] == '=':
+                if idx + 1 < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.PLUSEQUAL, "+=", line_number))
                     idx += 1
                 else:
@@ -189,15 +189,33 @@ class EnhancedLexer(Lexer):
             # Minus
             elif current_char == '-':
                 # Minus Equal
-                if idx < len(text) and text[idx + 1] == '=':
+                if idx + 1 < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.SUBEQUAL, "-=", line_number))
                     idx += 1
+                elif idx + 1 < len(text) and self.is_numeric(text[idx + 1]):
+                     # check previous token if it is also number,
+                    if tokens and tokens[-1].token_type in [TokenType.NUMBER, TokenType.REAL]:
+                        tokens.append(Token(TokenType.SUB, current_char, line_number))
+                    else:
+                        # Negative number
+                        idx += 1
+                        number = current_char
+                        while (idx < len(text) and (self.is_numeric(text[idx]) or text[idx] == '.')):
+                            number += text[idx]
+                            idx += 1
+                        idx -= 1
+                        # Real number contains dot.
+                        if '.' in number:
+                            tokens.append(Token(TokenType.REAL, number, line_number))
+                        else:
+                            tokens.append(Token(TokenType.NUMBER, number, line_number))
                 else:
+                    # Subtract
                     tokens.append(Token(TokenType.SUB, current_char, line_number))
             # Multiply
             elif current_char == '*':
                 # Multiply Equal
-                if idx < len(text) and text[idx + 1] == '=':
+                if idx + 1 < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.MULTEQUAL, "*=", line_number))
                     idx += 1
                 else:
@@ -205,11 +223,11 @@ class EnhancedLexer(Lexer):
             # Division
             elif current_char == '/':
                 # Division Equal
-                if idx < len(text) and text[idx + 1] == '=':
+                if idx + 1 < len(text) and text[idx + 1] == '=':
                     tokens.append(Token(TokenType.DIVEQUAL, "/=", line_number))
                     idx += 1
                 # Comment
-                elif idx < len(text) and text[idx + 1] == '/':
+                elif idx + 1 < len(text) and text[idx + 1] == '/':
                     # handle comment
                     idx += 1
                     comment_content = ""
@@ -218,12 +236,15 @@ class EnhancedLexer(Lexer):
                         idx += 1
                     tokens.append(Token(TokenType.COMMENT, comment_content, line_number))
                     line_number += 1
-                elif idx < len(text) and text[idx + 1] == '*':
-                    # multi line comment
+                elif idx + 1 < len(text) and text[idx + 1] == '*':
+                    # Multi line comment
                     comment_line_number = line_number
                     comment_content = ""
                     idx += 2
-                    while (idx < len(text) and text[idx] != '*' and text[idx + 1] != '/'):
+                    while (idx < len(text)
+                           and text[idx] != '*'
+                           and idx + 1 < len(text)
+                           and text[idx + 1] != '/'):
                         comment_content += text[idx]
                         if text[idx] == '\n':
                             line_number += 1
@@ -244,7 +265,11 @@ class EnhancedLexer(Lexer):
                 tokens.append(Token(TokenType.OR, current_char, line_number))
             # Not
             elif current_char == '!':
-                tokens.append(Token(TokenType.NOT, current_char, line_number))
+                if idx + 1 < len(text) and text[idx + 1] == '=':
+                    tokens.append(Token(TokenType.NOTEQUIVALENT, "!=", line_number))
+                    idx += 1
+                else:
+                    tokens.append(Token(TokenType.NOT, current_char, line_number))
             # Left Bracket
             elif current_char == '}':
                 tokens.append(Token(TokenType.LEFTBRACKET, current_char, line_number))

@@ -71,7 +71,7 @@ def main():
     # Argument identifier: --filename or -f
     # File name that contains source code to be executed.
     args_parser.add_argument('-f', '--filename',
-                        default='asl_files/syntax_error.asl',
+                        default='asl_files/negative_numbers.asl',
                         help='source file name',
                         nargs=argparse.OPTIONAL,
                         )
@@ -98,13 +98,15 @@ if __name__ == "__main__":
     try:
         # Main function
         main()
-    except SyntaxError as e:
-        # Syntax Error
-        print(e)
-    except UnknownVariable as e:
-        # Unknown Variable
-        print(e)
-    except Exception as e:
-        # Unhandled Exception
-        print("Unhandled Internal Exception ", e)
-        raise e
+    except:
+        raise
+    # except SyntaxError as e:
+    #     # Syntax Error
+    #     print(e)
+    # except UnknownVariable as e:
+    #     # Unknown Variable
+    #     print(e)
+    # except Exception as e:
+    #     # Unhandled Exception
+    #     print("Unhandled Internal Exception ", e)
+    #     raise e

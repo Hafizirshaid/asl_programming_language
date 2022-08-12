@@ -9,5 +9,3 @@ echo "printing all numbers between 0 to {var}"
 for (i = 0; i <= var; i += 1)
     echo "{i}"
 endfor
-
-

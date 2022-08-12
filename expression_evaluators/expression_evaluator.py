@@ -12,7 +12,8 @@ Contains methods that calculates expressions like
 """
 
 from exceptions.language_exception import ExpressionEvaluationError
-from lexer.lexer import Lexer, TokenType
+from lexer.enhanced_lexer import EnhancedLexer
+from lexer.lexer import TokenType
 
 
 class Evaluator:
@@ -147,7 +148,7 @@ class Evaluator:
         # expression = expression.strip("'")
         # expression = expression.strip('"')
 
-        lexer = Lexer()
+        lexer = EnhancedLexer()
         tokens = lexer.tokenize_text(expression)
         result = False
 

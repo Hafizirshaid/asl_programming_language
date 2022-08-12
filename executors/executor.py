@@ -10,7 +10,6 @@ program logical output.
 """
 
 from compiler.compiler import ExecutionTree
-from expression_evaluators.enhanced_expression_evaluator import EnhancedExpressionEvaluator
 from lexer.enhanced_lexer import EnhancedLexer
 from exceptions.language_exception import UnexpectedError, UnknownVariable
 from expression_evaluators.expression_evaluator import Evaluator
@@ -142,7 +141,7 @@ class Executor(object):
             Condition Result
         """
 
-        tokens = Lexer().tokenize_text(condition.strip('"'))
+        tokens = EnhancedLexer().tokenize_text(condition.strip('"'))
 
         # If condition contains variables, they should be substituted by
         # their values in the symbols table
@@ -192,7 +191,7 @@ class Executor(object):
             symbols_table.modify_entry(variable_name, variable_value)
         else:
             # Tokenize variable value to make sure variable can be evaluated
-            tokens = Lexer().tokenize_text(variable_value)
+            tokens = EnhancedLexer().tokenize_text(variable_value)
             if len(tokens) == 1:
                 self.handle_one_token_variable(instruction, variable_name, variable_value, tokens, operation)
             else:
@@ -234,7 +233,7 @@ class Executor(object):
         if is_concatenation:
             value = final_expression
         else:
-            value = EnhancedExpressionEvaluator().evaluate(final_expression)
+            value = Evaluator().evaluate(final_expression)
         name = instruction.variable_name
 
         # Store value of variable
