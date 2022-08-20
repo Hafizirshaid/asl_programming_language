@@ -245,6 +245,12 @@ class EnhancedParser:
 
         return condition
 
+    def parse_expression(self, lexes):
+        if (lexes[self.token_pointer].token_type == TokenType.NUMBER
+            or lexes[self.token_pointer].token_type == TokenType.REAL):
+            pass
+
+        pass
     def parse_for_loop_variable(self, lexes, parenthesis_stack):
         """ Parse for loop Variable
         Args:

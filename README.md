@@ -48,15 +48,16 @@ endfor
     - [x] String comparison
     - [ ] functions (methods) calls
     - [ ] Arrays and lists
-    - [ ] Signed number comparisons - sign minus
+    - [x] Signed number comparisons - sign minus
     - [ ] handle ++ and --
     - [ ] Enhanced Syntax Error Checking
     - [ ] Enhance expression evaluator to take priority
     - [ ] Implement ! operation
     - [ ] Implement exec command on shell
-        exec "ls -l"
-            should execute ls -l command on the shell
+            exec "ls -l"
+                should execute ls -l command on the shell
     - [ ] Implement Unit Testing.
+    - [ ] Enhance Expression Parsing.
 
 
 ## My Programming Language Block Diagram:

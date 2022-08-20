@@ -264,6 +264,7 @@ class Token:
                 and self.match == __o.match
                 and self.line_number == __o.line_number )
 
+
 class Lexer(object):
     """ Lexer Class
 

@@ -12,10 +12,25 @@
         "./asl"
     ],
     "cSpell.words": [
+        "CLOSESQUAREBRACKET",
+        "CLOSINGPARENTHESIS",
+        "DIVEQUAL",
         "endfor",
         "ENDSTRUCT",
         "endwhile",
+        "GREATERTHAN",
+        "GREATERTHANOREQUAL",
         "Hafez",
-        "Irshaid"
+        "Irshaid",
+        "LEFTBRACKET",
+        "LESSTHAN",
+        "LESSTHANOREQUAL",
+        "MULT",
+        "MULTEQUAL",
+        "NOTEQUIVALENT",
+        "OPENPARENTHESIS",
+        "OPENSQUAREBRACKET",
+        "RIGHTBRAKET",
+        "SUBEQUAL"
     ]
 }
