@@ -55,6 +55,7 @@ endfor
         for i, val in enumerate(old_lexer_tokens):
             if val.token_type != enhanced_lexer_tokens[i].token_type:
                 self.fail(f"failed at index {i}")
+
         pass
 
     def test_lexer_for_all_files(self):

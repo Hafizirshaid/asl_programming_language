@@ -127,7 +127,7 @@ class Compiler(object):
         """
 
         if stack:
-            # when adding break statement, the first loop in stack will be the loop 
+            # when adding break statement, the first loop in stack will be the loop
             # for this break statement.
             loop_found = False
 

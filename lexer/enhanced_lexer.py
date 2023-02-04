@@ -4,7 +4,7 @@
 
 Enhanced Lexer Library
 
-Converts code texts into meaningful lexemes to tokens:
+Converts code texts into meaningful lexemes:
 
 Example:
 
@@ -66,10 +66,10 @@ class EnhancedLexer(Lexer):
                       ignore_new_lines=True) -> list:
         """ Tokenize source file text into meaningful tokens
         Args:
-            text:         text file string
-            keep_unknown: weather to keep an unknown token or not, a token that
-                          doesn't have a type in regex_list
-            keep_spaces:  weather white spaces should be added to list of tokens or not
+            text:             text file string
+            keep_unknown:     weather to keep an unknown token or not, a token that
+                              doesn't have a type in regex_list
+            keep_spaces:      weather white spaces should be added to list of tokens or not
             ignore_new_lines: weather new line tokens should be ignored
         Returns:
             list of meaningful tokens
@@ -162,7 +162,9 @@ class EnhancedLexer(Lexer):
             # Unknown chat
             else:
                 self.handle_unknown_char(keep_unknown, tokens, current_char)
+
             self.idx += 1
+
         return tokens
 
     def handle_unknown_char(self, keep_unknown, tokens, current_char):

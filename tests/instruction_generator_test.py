@@ -10,7 +10,7 @@ import unittest
 
 
 class InstructionsGeneratorUnitTest(unittest.TestCase):
-    
+
     def setUp(self):
         super(InstructionsGeneratorUnitTest, self).setUp()
 

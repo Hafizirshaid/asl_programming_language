@@ -150,7 +150,7 @@ class Executor(object):
             if token.token_type == TokenType.IDENTIFICATION:
 
                 # Variable found, Lookup variable value in symbol tables
-                symbol_table = self.find_symbol_table(token.match, instruction.statement)
+                symbol_table = self.find_symbols_table(token.match, instruction.statement)
                 symbol_entry = symbol_table.get_entry_value(token.match)
 
                 # Substitute variable value in final condition
@@ -187,7 +187,7 @@ class Executor(object):
 
         if instruction.variable_statement.type == VariableType.ARRAY:
             # Array Type
-            symbols_table = self.find_symbol_table(variable_name, instruction.variable_statement)
+            symbols_table = self.find_symbols_table(variable_name, instruction.variable_statement)
             symbols_table.modify_entry(variable_name, variable_value)
         else:
             # Tokenize variable value to make sure variable can be evaluated
@@ -215,7 +215,7 @@ class Executor(object):
         for token in tokens:
             if token.token_type == TokenType.IDENTIFICATION:
                 # Substitute variable values in final expression to be evaluated
-                symbol_table = self.find_symbol_table(token.match, instruction.variable_statement)
+                symbol_table = self.find_symbols_table(token.match, instruction.variable_statement)
                 symbol = symbol_table.get_entry_value(token.match)
 
                 if symbol.type == TokenType.STRING:
@@ -256,7 +256,7 @@ class Executor(object):
         if tokens[0].token_type == TokenType.IDENTIFICATION:
 
             # Variable value is an assignment to another variable
-            symbol_table = self.find_symbol_table(variable_value, instruction.variable_statement)
+            symbol_table = self.find_symbols_table(variable_value, instruction.variable_statement)
 
             if not symbol_table:
                 raise UnknownVariable(f"Variable not found {variable_value}")
@@ -279,7 +279,7 @@ class Executor(object):
             None
         """
 
-        symbols_table = self.find_symbol_table(variable_name, instruction.variable_statement)
+        symbols_table = self.find_symbols_table(variable_name, instruction.variable_statement)
         new_variable_value = variable_value
 
         if operation != TokenType.EQUAL:
@@ -304,7 +304,7 @@ class Executor(object):
 
         symbols_table.modify_entry(variable_name, new_variable_value)
 
-    def find_symbol_table(self, name: str, statement):
+    def find_symbols_table(self, name: str, statement):
         """ Find Symbol table that contains variable name
 
         Args:
@@ -390,7 +390,7 @@ class Executor(object):
                 var_name = token.match
                 var_name = var_name.strip("{}")
 
-                symbol_table = self.find_symbol_table(var_name, instruction.statement)
+                symbol_table = self.find_symbols_table(var_name, instruction.statement)
 
                 if not symbol_table:
                     raise UnknownVariable(f"Variable Not Found {var_name}")
@@ -417,7 +417,7 @@ class Executor(object):
         """
 
         variable_name = instruction.input_variable
-        symbol_table = self.find_symbol_table(variable_name, instruction.statement)
+        symbol_table = self.find_symbols_table(variable_name, instruction.statement)
 
         if not symbol_table:
             raise UnknownVariable(f"Variable Not Found {variable_name}")
